@@ -1,0 +1,206 @@
+package gui;
+
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+
+import dao.AdministrateurDAO;
+import dao.EmprunteurDAO;
+import dao.PreteurDAO;
+import exo.Administrateur;
+import exo.Emprunteur;
+import exo.Preteur;
+import gui.administrateur.Dashboard_Administrateur;
+import gui.administrateur.Dashboard_Preteur;
+
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.JRadioButton;
+import javax.swing.JButton;
+import java.sql.Connection;
+import java.awt.event.ActionListener;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.awt.event.ActionEvent;
+
+public class CreerUser extends JFrame {
+	private Connection connect;
+	private JPanel contentPane;
+	private JTextField textFieldNom;
+	private JTextField textFieldPrenom;
+	private JTextField textFieldDateNaiss;
+	private JTextField textFieldEmail;
+	private JTextField textFieldPassword;
+	private JRadioButton rdbtnAdministrateur;
+	private JRadioButton rdbtnPreteur;
+	private JRadioButton rdbtnEmprunteur;
+	private JButton btnRetour;
+	private JLabel labelMsgErreur;
+
+	/**
+	 * Create the frame.
+	 */
+	public CreerUser(Connection connect) {
+		this.connect = connect;
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 436, 454);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+
+		JLabel lblNom = new JLabel("Nom");
+		lblNom.setBounds(24, 24, 46, 14);
+		contentPane.add(lblNom);
+
+		JLabel lblPrenom = new JLabel("Prenom");
+		lblPrenom.setBounds(24, 71, 46, 14);
+		contentPane.add(lblPrenom);
+
+		JLabel lblDateNaiss = new JLabel("Date de naissance");
+		lblDateNaiss.setBounds(24, 116, 106, 14);
+		contentPane.add(lblDateNaiss);
+
+		JLabel lblEmail = new JLabel("Email");
+		lblEmail.setBounds(24, 163, 46, 14);
+		contentPane.add(lblEmail);
+
+		JLabel lblPassword = new JLabel("Password");
+		lblPassword.setBounds(24, 213, 60, 14);
+		contentPane.add(lblPassword);
+
+		textFieldNom = new JTextField();
+		textFieldNom.setBounds(233, 21, 162, 20);
+		contentPane.add(textFieldNom);
+		textFieldNom.setColumns(10);
+
+		textFieldPrenom = new JTextField();
+		textFieldPrenom.setBounds(233, 68, 162, 20);
+		contentPane.add(textFieldPrenom);
+		textFieldPrenom.setColumns(10);
+
+		textFieldDateNaiss = new JTextField();
+		textFieldDateNaiss.setBounds(233, 113, 162, 20);
+		contentPane.add(textFieldDateNaiss);
+		textFieldDateNaiss.setColumns(10);
+
+		textFieldEmail = new JTextField();
+		textFieldEmail.setBounds(233, 160, 162, 20);
+		contentPane.add(textFieldEmail);
+		textFieldEmail.setColumns(10);
+
+		textFieldPassword = new JTextField();
+		textFieldPassword.setBounds(233, 210, 162, 20);
+		contentPane.add(textFieldPassword);
+		textFieldPassword.setColumns(10);
+
+		rdbtnAdministrateur = new JRadioButton("Administrateur");
+		rdbtnAdministrateur.setBounds(21, 275, 120, 23);
+		contentPane.add(rdbtnAdministrateur);
+
+		rdbtnPreteur = new JRadioButton("Preteur");
+		rdbtnPreteur.setBounds(163, 275, 109, 23);
+		contentPane.add(rdbtnPreteur);
+
+		rdbtnEmprunteur = new JRadioButton("Emprunteur");
+		rdbtnEmprunteur.setBounds(286, 275, 109, 23);
+		contentPane.add(rdbtnEmprunteur);
+
+		JButton btnCreerUser = new JButton("Cr\u00E9er");
+		btnCreerUser.addActionListener(new ActionListener() {
+			public void choixTypePersonne() {
+				labelMsgErreur.setText("Veuillez sélectionner un type de personne.");
+			}
+
+			public boolean champsVide() {
+				String regex = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
+
+				Pattern pattern = Pattern.compile(regex);
+				Matcher matcher = pattern.matcher(textFieldEmail.getText());
+				System.out.println();
+				boolean valid = true;
+				if (textFieldNom.getText().isEmpty() || textFieldPrenom.getText().isEmpty()
+						|| textFieldDateNaiss.getText().isEmpty() || textFieldEmail.getText().isEmpty()
+						|| textFieldPassword.getText().isEmpty()) {
+					labelMsgErreur.setText("Veuillez remplir tous les champs.");
+					valid = false;
+				}
+
+				else if (!(matcher.matches())) {
+					labelMsgErreur.setText("Veuillez entrer un e-mail valide.");
+					valid = false;
+				}
+
+				return valid;
+			}
+
+			public void actionPerformed(ActionEvent e) {
+				if (rdbtnAdministrateur.isSelected()) {
+					if (champsVide()) {
+						Administrateur administrateur = new Administrateur(textFieldNom.getText(), textFieldPrenom.getText(),
+								textFieldDateNaiss.getText(), textFieldEmail.getText(), textFieldPassword.getText());
+						if (administrateur.alreadyExist(textFieldEmail.getText())) {
+							labelMsgErreur.setText("Cet adresse e-mail existe déjà.");
+						} else {
+							AdministrateurDAO administrateurDAO = new AdministrateurDAO(connect);
+							administrateurDAO.create(administrateur);
+							dispose();
+							Dashboard_Administrateur dashboard_administrateur = new Dashboard_Administrateur();
+							dashboard_administrateur.setVisible(true);
+						}
+					}
+				} else if (rdbtnPreteur.isSelected()) {
+					if (champsVide()) {
+						Preteur preteur = new Preteur(textFieldNom.getText(), textFieldPrenom.getText(), textFieldDateNaiss.getText(),
+								textFieldEmail.getText(), textFieldPassword.getText());
+						if (preteur.alreadyExist(textFieldEmail.getText())) {
+							labelMsgErreur.setText("Cet adresse e-mail existe déjà.");
+						} else {
+							preteur.create(preteur);
+							dispose();
+							Dashboard_Preteur dashboard_Preteur = new Dashboard_Preteur();
+							dashboard_Preteur.setVisible(true);
+						}
+					}
+				}
+
+				else if (rdbtnEmprunteur.isSelected()) {
+					if (champsVide()) {
+						Emprunteur emprunteur = new Emprunteur(textFieldNom.getText(), textFieldPrenom.getText(),
+								textFieldDateNaiss.getText(), textFieldEmail.getText(), textFieldPassword.getText());
+						if (emprunteur.alreadyExist(textFieldEmail.getText())) {
+							labelMsgErreur.setText("Cet adresse e-mail existe déjà.");
+						} else {
+							emprunteur.create(emprunteur);
+							dispose();
+							Dashboard_Preteur dashboard_Preteur = new Dashboard_Preteur();
+							dashboard_Preteur.setVisible(true);
+						}
+					}
+				} else {
+					choixTypePersonne();
+				}
+			}
+		});
+		btnCreerUser.setBounds(41, 341, 89, 23);
+		contentPane.add(btnCreerUser);
+
+		btnRetour = new JButton("Retour");
+		btnRetour.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				Connexion connexion  = new Connexion();
+				connexion.setVisible(true);
+			}
+		});
+		btnRetour.setBounds(277, 341, 89, 23);
+		contentPane.add(btnRetour);
+
+		labelMsgErreur = new JLabel("");
+		labelMsgErreur.setBounds(41, 375, 325, 23);
+		contentPane.add(labelMsgErreur);
+	}
+}
