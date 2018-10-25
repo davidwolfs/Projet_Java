@@ -1,5 +1,8 @@
 package exo;
 
+import java.time.LocalDate;
+import java.util.Date;
+
 public abstract class Personne {
 	protected int iD;
 	protected String nom;

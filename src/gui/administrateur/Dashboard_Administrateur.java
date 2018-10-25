@@ -6,17 +6,24 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import exo.Administrateur;
+import gui.Main;
+
 import javax.swing.JTextField;
+import javax.swing.JLabel;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Dashboard_Administrateur extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField txtBienvenue;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -27,12 +34,12 @@ public class Dashboard_Administrateur extends JFrame {
 				}
 			}
 		});
-	}
+	}*/
 
 	/**
 	 * Create the frame.
 	 */
-	public Dashboard_Administrateur() {
+	public Dashboard_Administrateur(Administrateur currentAdministrateur) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -40,11 +47,18 @@ public class Dashboard_Administrateur extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		txtBienvenue = new JTextField();
-		txtBienvenue.setText("Bienvenue ");
-		txtBienvenue.setBounds(35, 29, 86, 20);
-		contentPane.add(txtBienvenue);
-		txtBienvenue.setColumns(10);
+		JLabel lblBienvenue = new JLabel("Bienvenue " + currentAdministrateur.getPrenom() + " " + currentAdministrateur.getNom() + ", vous êtes connecté en tant que : Administrateur");
+		lblBienvenue.setBounds(10, 27, 414, 21);
+		contentPane.add(lblBienvenue);
+		
+		JButton btnDeconnexion = new JButton("D\u00E9connexion");
+		btnDeconnexion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				dispose();
+				Main.creerConnexion();
+			}
+		});
+		btnDeconnexion.setBounds(10, 209, 117, 23);
+		contentPane.add(btnDeconnexion);
 	}
-
 }

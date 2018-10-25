@@ -1,10 +1,14 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import javax.swing.JOptionPane;
 
 import exo.Emprunteur;
+import exo.Preteur;
 
 public class EmprunteurDAO extends DAO<Emprunteur> {
 
@@ -14,16 +18,21 @@ public class EmprunteurDAO extends DAO<Emprunteur> {
 	}
 
 	@Override
-	public boolean create(Emprunteur obj) {
-		System.out.println("Nom : " + obj.getNom());
-		System.out.println("Prenom : " + obj.getPrenom());
-		System.out.println("Date de naissance : " + obj.getDateNaiss());
-		System.out.println("Email : " + obj.getEmail());
-		System.out.println("Password : " + obj.getPassword());
-		System.out.println("EMPRUNTEUR CREE.");
-		JOptionPane.showMessageDialog(null,  "EMPRUNTEUR CREE.");
-		// TODO Auto-generated method stub
-		return false;
+	public boolean create(Emprunteur emprunteur) {
+		boolean statementResult;
+		try {
+			Statement statement = connect.createStatement();
+			String query = "INSERT INTO Emprunteur (Nom, Prenom, DateNaiss,  Email, Password) VALUES ('" + emprunteur.getNom() + "','" + emprunteur.getPrenom() + "','" + "1994-02-18" + "','" + emprunteur.getEmail() + "','" + emprunteur.getPassword() + "')" + ";";
+			System.out.println(query);
+			statementResult = true;
+			statementResult = statement.execute(query);
+		} catch (SQLException e) {
+			statementResult = false;
+			e.printStackTrace();
+			System.out.println(e);
+		}
+		System.out.println(statementResult);
+		return statementResult;
 	}
 
 	@Override
@@ -44,4 +53,41 @@ public class EmprunteurDAO extends DAO<Emprunteur> {
 		return null;
 	}
 
+	public boolean findByEmailPassword(String email, String password, Connection connect) {
+		boolean existe = false;
+		Emprunteur emprunteur;
+		try {
+			ResultSet result = this.connect
+					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
+					.executeQuery("SELECT * FROM Emprunteur WHERE Email = " + "\"" + email + "\" AND Password = "
+							+ "\"" + password + "\"");
+			if (result.first()) {
+				emprunteur = new Emprunteur(result.getString("Nom"), result.getString("Prenom"),
+						result.getString("DateNaiss"), email, password, connect);
+				existe = true;
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return existe;
+	}
+	
+	public Emprunteur findEmprunteurByEmailPassword(String email, String password, Connection connect){
+		Emprunteur emprunteur = new Emprunteur();
+		try{
+			ResultSet result = this.connect.createStatement(
+					ResultSet.TYPE_SCROLL_INSENSITIVE,
+	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Emprunteur WHERE Email = " + "\"" + email + "\" AND Password = " + "\"" + password + "\"");
+			if(result.first())
+			{
+				emprunteur = new Emprunteur(result.getString("Nom"), result.getString("Prenom"),
+						result.getString("DateNaiss"), email, password, connect);
+			}
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		return emprunteur;
+	}
 }

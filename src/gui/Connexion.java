@@ -7,16 +7,18 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import driver.DriverACCESS;
 import exo.Administrateur;
 import exo.Emprunteur;
 import exo.Preteur;
 import gui.administrateur.Dashboard_Administrateur;
-import gui.administrateur.Dashboard_Emprunteur;
-import gui.administrateur.Dashboard_Preteur;
+import gui.emprunteur.Dashboard_Emprunteur;
+import gui.preteur.Dashboard_Preteur;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JRadioButton;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -27,27 +29,32 @@ public class Connexion extends JFrame {
 	private JPanel contentPane;
 	private JTextField textFieldUser;
 	private JTextField textFieldPassword;
+	private Administrateur currentAdministrateur;
+	private Preteur currentPreteur;
+	private Emprunteur currentEmprunteur;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Connexion frame = new Connexion();
+					Connexion frame = new Connexion(connect);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
-	}
+	}*/
 
 	/**
 	 * Create the frame.
 	 */
-	public Connexion() {
+	public Connexion(Connection connect) {
+		setTitle("Projet Jeux Video");
+		this.connect=connect;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 487, 286);
 		contentPane = new JPanel();
@@ -85,6 +92,11 @@ public class Connexion extends JFrame {
 		rdbtnEmprunteur.setBounds(313, 131, 109, 23);
 		contentPane.add(rdbtnEmprunteur);
 
+		ButtonGroup personneRadio = new ButtonGroup();
+		personneRadio.add(rdbtnAdministrateur);
+		personneRadio.add(rdbtnPreteur);
+		personneRadio.add(rdbtnEmprunteur);
+		
 		JLabel labelMsgErreur = new JLabel("");
 		labelMsgErreur.setBounds(64, 212, 334, 24);
 		contentPane.add(labelMsgErreur);
@@ -112,9 +124,11 @@ public class Connexion extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (rdbtnAdministrateur.isSelected()) {
 					if (!champsVide()) {
+						System.out.println("CONNECT IN CONNEXION : " + connect);
 						Administrateur administrateur = new Administrateur();
-						if (administrateur.findByEmailPassword(textFieldUser.getText(), textFieldPassword.getText())) {
-							Dashboard_Administrateur dashboard_administrateur = new Dashboard_Administrateur();
+						if (administrateur.findByEmailPassword(textFieldUser.getText(), textFieldPassword.getText(), connect)) {
+							currentAdministrateur = administrateur.findAdministrateurByEmailPassword(textFieldUser.getText(), textFieldPassword.getText(), connect);
+							Dashboard_Administrateur dashboard_administrateur = new Dashboard_Administrateur(currentAdministrateur);
 							dispose();
 							dashboard_administrateur.setVisible(true);
 						} else {
@@ -124,8 +138,9 @@ public class Connexion extends JFrame {
 				} else if (rdbtnPreteur.isSelected()) {
 					if (!champsVide()) {
 						Preteur preteur = new Preteur();
-						if (preteur.findByEmailPassword(textFieldUser.getText(), textFieldPassword.getText())) {
-							Dashboard_Preteur dashboard_preteur = new Dashboard_Preteur();
+						if (preteur.findByEmailPassword(textFieldUser.getText(), textFieldPassword.getText(), connect)) {
+							currentPreteur = preteur.findPreteurByEmailPassword(textFieldUser.getText(), textFieldPassword.getText(), connect);
+							Dashboard_Preteur dashboard_preteur = new Dashboard_Preteur(currentPreteur);
 							dispose();
 							dashboard_preteur.setVisible(true);
 						} else {
@@ -135,8 +150,9 @@ public class Connexion extends JFrame {
 				} else if (rdbtnEmprunteur.isSelected()) {
 					if (!champsVide()) {
 						Emprunteur emprunteur = new Emprunteur();
-						if (emprunteur.findByEmailPassword(textFieldUser.getText(), textFieldPassword.getText())) {
-							Dashboard_Emprunteur dashboard_emprunteur = new Dashboard_Emprunteur();
+						if (emprunteur.findByEmailPassword(textFieldUser.getText(), textFieldPassword.getText(), connect)) {
+							currentEmprunteur = emprunteur.findEmprunteurByEmailPassword(textFieldUser.getText(), textFieldPassword.getText(), connect);
+							Dashboard_Emprunteur dashboard_emprunteur = new Dashboard_Emprunteur(currentEmprunteur);
 							dispose();
 							dashboard_emprunteur.setVisible(true);
 						} else {
@@ -156,7 +172,7 @@ public class Connexion extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				CreerUser creerUser = new CreerUser(connect);
 				dispose();
-				creerUser.setVisible(true);;
+				creerUser.setVisible(true);
 			}
 		});
 		btnCreerCompte.setBounds(271, 178, 153, 23);

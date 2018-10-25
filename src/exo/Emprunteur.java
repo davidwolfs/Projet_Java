@@ -2,6 +2,7 @@ package exo;
 
 import java.sql.Connection;
 
+import dao.AdministrateurDAO;
 import dao.EmprunteurDAO;
 import dao.PreteurDAO;
 
@@ -15,8 +16,9 @@ public class Emprunteur extends Joueur {
 		this.cote = cote;
 	}
 
-	public Emprunteur(String nom, String prenom, String dateNaiss, String email, String password) {
+	public Emprunteur(String nom, String prenom, String dateNaiss, String email, String password, Connection connect) {
 		super(nom, prenom, dateNaiss, email, password);
+		this.connect=connect;
 	}
 	
 	public Emprunteur() {
@@ -45,11 +47,19 @@ public class Emprunteur extends Joueur {
 		emprunteurDAO.create(emprunteur);
 	}
 
-	public boolean findByEmailPassword(String email, String password) {
-		if (email.equals("david.wolfs@condorcet.be") && password.equals("test")) {
+	public boolean findByEmailPassword(String email, String password, Connection connect) {
+		EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
+		if(emprunteurDAO.findByEmailPassword(email, password, connect))
+		{
 			return true;
 		}
 		return false;
+	}
+	
+	public Emprunteur findEmprunteurByEmailPassword(String email, String password, Connection connect) {
+		EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
+		Emprunteur emprunteur = emprunteurDAO.findEmprunteurByEmailPassword(email, password, connect);
+		return emprunteur;
 	}
 	
 	public boolean alreadyExist(String email)

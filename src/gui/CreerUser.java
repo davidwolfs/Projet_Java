@@ -1,30 +1,26 @@
 package gui;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import dao.AdministrateurDAO;
-import dao.EmprunteurDAO;
-import dao.PreteurDAO;
 import exo.Administrateur;
 import exo.Emprunteur;
 import exo.Preteur;
 import gui.administrateur.Dashboard_Administrateur;
-import gui.administrateur.Dashboard_Preteur;
-
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.JRadioButton;
-import javax.swing.JButton;
-import java.sql.Connection;
-import java.awt.event.ActionListener;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.awt.event.ActionEvent;
+import gui.emprunteur.Dashboard_Emprunteur;
+import gui.preteur.Dashboard_Preteur;
 
 public class CreerUser extends JFrame {
 	private Connection connect;
@@ -44,6 +40,7 @@ public class CreerUser extends JFrame {
 	 * Create the frame.
 	 */
 	public CreerUser(Connection connect) {
+		setTitle("Projet Jeux Video");
 		this.connect = connect;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 436, 454);
@@ -109,6 +106,11 @@ public class CreerUser extends JFrame {
 		rdbtnEmprunteur.setBounds(286, 275, 109, 23);
 		contentPane.add(rdbtnEmprunteur);
 
+		ButtonGroup personneRadio = new ButtonGroup();
+		personneRadio.add(rdbtnAdministrateur);
+		personneRadio.add(rdbtnPreteur);
+		personneRadio.add(rdbtnEmprunteur);
+		
 		JButton btnCreerUser = new JButton("Cr\u00E9er");
 		btnCreerUser.addActionListener(new ActionListener() {
 			public void choixTypePersonne() {
@@ -140,28 +142,31 @@ public class CreerUser extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (rdbtnAdministrateur.isSelected()) {
 					if (champsVide()) {
-						Administrateur administrateur = new Administrateur(textFieldNom.getText(), textFieldPrenom.getText(),
-								textFieldDateNaiss.getText(), textFieldEmail.getText(), textFieldPassword.getText());
+						Administrateur administrateur = new Administrateur(textFieldNom.getText(),
+								textFieldPrenom.getText(), textFieldDateNaiss.getText(), textFieldEmail.getText(),
+								textFieldPassword.getText(), connect);
 						if (administrateur.alreadyExist(textFieldEmail.getText())) {
 							labelMsgErreur.setText("Cet adresse e-mail existe déjà.");
 						} else {
-							AdministrateurDAO administrateurDAO = new AdministrateurDAO(connect);
-							administrateurDAO.create(administrateur);
+
+							administrateur.create(administrateur);
 							dispose();
-							Dashboard_Administrateur dashboard_administrateur = new Dashboard_Administrateur();
+							Dashboard_Administrateur dashboard_administrateur = new Dashboard_Administrateur(
+									administrateur);
 							dashboard_administrateur.setVisible(true);
 						}
 					}
 				} else if (rdbtnPreteur.isSelected()) {
 					if (champsVide()) {
-						Preteur preteur = new Preteur(textFieldNom.getText(), textFieldPrenom.getText(), textFieldDateNaiss.getText(),
-								textFieldEmail.getText(), textFieldPassword.getText());
+						Preteur preteur = new Preteur(textFieldNom.getText(), textFieldPrenom.getText(),
+								textFieldDateNaiss.getText(), textFieldEmail.getText(), textFieldPassword.getText(),
+								connect);
 						if (preteur.alreadyExist(textFieldEmail.getText())) {
 							labelMsgErreur.setText("Cet adresse e-mail existe déjà.");
 						} else {
 							preteur.create(preteur);
 							dispose();
-							Dashboard_Preteur dashboard_Preteur = new Dashboard_Preteur();
+							Dashboard_Preteur dashboard_Preteur = new Dashboard_Preteur(preteur);
 							dashboard_Preteur.setVisible(true);
 						}
 					}
@@ -170,14 +175,15 @@ public class CreerUser extends JFrame {
 				else if (rdbtnEmprunteur.isSelected()) {
 					if (champsVide()) {
 						Emprunteur emprunteur = new Emprunteur(textFieldNom.getText(), textFieldPrenom.getText(),
-								textFieldDateNaiss.getText(), textFieldEmail.getText(), textFieldPassword.getText());
+								textFieldDateNaiss.getText(), textFieldEmail.getText(), textFieldPassword.getText(),
+								connect);
 						if (emprunteur.alreadyExist(textFieldEmail.getText())) {
 							labelMsgErreur.setText("Cet adresse e-mail existe déjà.");
 						} else {
 							emprunteur.create(emprunteur);
 							dispose();
-							Dashboard_Preteur dashboard_Preteur = new Dashboard_Preteur();
-							dashboard_Preteur.setVisible(true);
+							Dashboard_Emprunteur dashboard_Emprunteur = new Dashboard_Emprunteur(emprunteur);
+							dashboard_Emprunteur.setVisible(true);
 						}
 					}
 				} else {
@@ -192,7 +198,7 @@ public class CreerUser extends JFrame {
 		btnRetour.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
-				Connexion connexion  = new Connexion();
+				Connexion connexion = new Connexion(connect);
 				connexion.setVisible(true);
 			}
 		});
