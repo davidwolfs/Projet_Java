@@ -10,6 +10,7 @@ public class Jeu {
 	private double tarif;
 	private Date dateTarif;
 	private String adapterTarif;
+	private Console console;
 	private Set<Exemplaire> listExemplaire = new HashSet<>();
 
 	public Jeu(String nom, boolean dispo, double tarif, Date dateTarif, String adapterTarif) {

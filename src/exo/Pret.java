@@ -6,6 +6,9 @@ public class Pret {
 	private Date dateDebut;
 	private Date dateFin;
 	private boolean confirmer_pret;
+	private Exemplaire exemplaire;
+	private Emprunteur emprunteur;
+	private Preteur preteur;
 
 	public Pret(Date dateDebut, Date dateFin, boolean confirmer_pret) {
 		this.dateDebut = dateDebut;

@@ -1,13 +1,9 @@
 package gui;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import driver.DriverACCESS;
 import exo.Administrateur;
 import exo.Emprunteur;
 import exo.Preteur;
@@ -34,27 +30,11 @@ public class Connexion extends JFrame {
 	private Emprunteur currentEmprunteur;
 
 	/**
-	 * Launch the application.
-	 */
-	/*public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Connexion frame = new Connexion(connect);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}*/
-
-	/**
 	 * Create the frame.
 	 */
 	public Connexion(Connection connect) {
 		setTitle("Projet Jeux Video");
-		this.connect=connect;
+		this.connect = connect;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 487, 286);
 		contentPane = new JPanel();
@@ -96,7 +76,7 @@ public class Connexion extends JFrame {
 		personneRadio.add(rdbtnAdministrateur);
 		personneRadio.add(rdbtnPreteur);
 		personneRadio.add(rdbtnEmprunteur);
-		
+
 		JLabel labelMsgErreur = new JLabel("");
 		labelMsgErreur.setBounds(64, 212, 334, 24);
 		contentPane.add(labelMsgErreur);
@@ -126,9 +106,12 @@ public class Connexion extends JFrame {
 					if (!champsVide()) {
 						System.out.println("CONNECT IN CONNEXION : " + connect);
 						Administrateur administrateur = new Administrateur();
-						if (administrateur.findByEmailPassword(textFieldUser.getText(), textFieldPassword.getText(), connect)) {
-							currentAdministrateur = administrateur.findAdministrateurByEmailPassword(textFieldUser.getText(), textFieldPassword.getText(), connect);
-							Dashboard_Administrateur dashboard_administrateur = new Dashboard_Administrateur(currentAdministrateur);
+						if (administrateur.findByEmailPassword(textFieldUser.getText(), textFieldPassword.getText(),
+								connect)) {
+							currentAdministrateur = administrateur.findAdministrateurByEmailPassword(
+									textFieldUser.getText(), textFieldPassword.getText(), connect);
+							Dashboard_Administrateur dashboard_administrateur = new Dashboard_Administrateur(
+									currentAdministrateur);
 							dispose();
 							dashboard_administrateur.setVisible(true);
 						} else {
@@ -138,8 +121,10 @@ public class Connexion extends JFrame {
 				} else if (rdbtnPreteur.isSelected()) {
 					if (!champsVide()) {
 						Preteur preteur = new Preteur();
-						if (preteur.findByEmailPassword(textFieldUser.getText(), textFieldPassword.getText(), connect)) {
-							currentPreteur = preteur.findPreteurByEmailPassword(textFieldUser.getText(), textFieldPassword.getText(), connect);
+						if (preteur.findByEmailPassword(textFieldUser.getText(), textFieldPassword.getText(),
+								connect)) {
+							currentPreteur = preteur.findPreteurByEmailPassword(textFieldUser.getText(),
+									textFieldPassword.getText(), connect);
 							Dashboard_Preteur dashboard_preteur = new Dashboard_Preteur(currentPreteur);
 							dispose();
 							dashboard_preteur.setVisible(true);
@@ -150,8 +135,10 @@ public class Connexion extends JFrame {
 				} else if (rdbtnEmprunteur.isSelected()) {
 					if (!champsVide()) {
 						Emprunteur emprunteur = new Emprunteur();
-						if (emprunteur.findByEmailPassword(textFieldUser.getText(), textFieldPassword.getText(), connect)) {
-							currentEmprunteur = emprunteur.findEmprunteurByEmailPassword(textFieldUser.getText(), textFieldPassword.getText(), connect);
+						if (emprunteur.findByEmailPassword(textFieldUser.getText(), textFieldPassword.getText(),
+								connect)) {
+							currentEmprunteur = emprunteur.findEmprunteurByEmailPassword(textFieldUser.getText(),
+									textFieldPassword.getText(), connect);
 							Dashboard_Emprunteur dashboard_emprunteur = new Dashboard_Emprunteur(currentEmprunteur);
 							dispose();
 							dashboard_emprunteur.setVisible(true);

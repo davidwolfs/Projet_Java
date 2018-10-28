@@ -15,6 +15,8 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import com.toedter.calendar.JDateChooser;
+
 import exo.Administrateur;
 import exo.Emprunteur;
 import exo.Preteur;
@@ -27,7 +29,7 @@ public class CreerUser extends JFrame {
 	private JPanel contentPane;
 	private JTextField textFieldNom;
 	private JTextField textFieldPrenom;
-	private JTextField textFieldDateNaiss;
+	private JDateChooser dateChooserDateNaiss;
 	private JTextField textFieldEmail;
 	private JTextField textFieldPassword;
 	private JRadioButton rdbtnAdministrateur;
@@ -79,10 +81,9 @@ public class CreerUser extends JFrame {
 		contentPane.add(textFieldPrenom);
 		textFieldPrenom.setColumns(10);
 
-		textFieldDateNaiss = new JTextField();
-		textFieldDateNaiss.setBounds(233, 113, 162, 20);
-		contentPane.add(textFieldDateNaiss);
-		textFieldDateNaiss.setColumns(10);
+		dateChooserDateNaiss = new JDateChooser();
+		dateChooserDateNaiss.setBounds(233, 113, 162, 20);
+		contentPane.add(dateChooserDateNaiss);
 
 		textFieldEmail = new JTextField();
 		textFieldEmail.setBounds(233, 160, 162, 20);
@@ -125,7 +126,7 @@ public class CreerUser extends JFrame {
 				System.out.println();
 				boolean valid = true;
 				if (textFieldNom.getText().isEmpty() || textFieldPrenom.getText().isEmpty()
-						|| textFieldDateNaiss.getText().isEmpty() || textFieldEmail.getText().isEmpty()
+						|| dateChooserDateNaiss.getDateFormatString().isEmpty() || textFieldEmail.getText().isEmpty()
 						|| textFieldPassword.getText().isEmpty()) {
 					labelMsgErreur.setText("Veuillez remplir tous les champs.");
 					valid = false;
@@ -143,7 +144,7 @@ public class CreerUser extends JFrame {
 				if (rdbtnAdministrateur.isSelected()) {
 					if (champsVide()) {
 						Administrateur administrateur = new Administrateur(textFieldNom.getText(),
-								textFieldPrenom.getText(), textFieldDateNaiss.getText(), textFieldEmail.getText(),
+								textFieldPrenom.getText(), dateChooserDateNaiss.getDate(), textFieldEmail.getText(),
 								textFieldPassword.getText(), connect);
 						if (administrateur.alreadyExist(textFieldEmail.getText())) {
 							labelMsgErreur.setText("Cet adresse e-mail existe déjà.");
@@ -159,7 +160,7 @@ public class CreerUser extends JFrame {
 				} else if (rdbtnPreteur.isSelected()) {
 					if (champsVide()) {
 						Preteur preteur = new Preteur(textFieldNom.getText(), textFieldPrenom.getText(),
-								textFieldDateNaiss.getText(), textFieldEmail.getText(), textFieldPassword.getText(),
+								dateChooserDateNaiss.getDateFormatString(), textFieldEmail.getText(), textFieldPassword.getText(),
 								connect);
 						if (preteur.alreadyExist(textFieldEmail.getText())) {
 							labelMsgErreur.setText("Cet adresse e-mail existe déjà.");
@@ -175,7 +176,7 @@ public class CreerUser extends JFrame {
 				else if (rdbtnEmprunteur.isSelected()) {
 					if (champsVide()) {
 						Emprunteur emprunteur = new Emprunteur(textFieldNom.getText(), textFieldPrenom.getText(),
-								textFieldDateNaiss.getText(), textFieldEmail.getText(), textFieldPassword.getText(),
+								dateChooserDateNaiss.getDateFormatString(), textFieldEmail.getText(), textFieldPassword.getText(),
 								connect);
 						if (emprunteur.alreadyExist(textFieldEmail.getText())) {
 							labelMsgErreur.setText("Cet adresse e-mail existe déjà.");

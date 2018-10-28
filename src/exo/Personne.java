@@ -1,17 +1,16 @@
 package exo;
 
-import java.time.LocalDate;
 import java.util.Date;
 
 public abstract class Personne {
 	protected int iD;
 	protected String nom;
 	protected String prenom;
-	protected String dateNaiss;
+	protected Date dateNaiss;
 	protected String email;
 	protected String password;
 
-	public Personne(int iD, String nom, String prenom, String dateNaiss, String email, String password) {
+	public Personne(int iD, String nom, String prenom, Date dateNaiss, String email, String password) {
 		this.iD = iD;
 		this.nom = nom;
 		this.prenom = prenom;
@@ -20,7 +19,7 @@ public abstract class Personne {
 		this.password = password;
 	}
 
-	public Personne(String nom, String prenom, String dateNaiss, String email, String password) {
+	public Personne(String nom, String prenom, Date dateNaiss, String email, String password) {
 		this.nom = nom;
 		this.prenom = prenom;
 		this.dateNaiss = dateNaiss;
@@ -48,11 +47,11 @@ public abstract class Personne {
 		this.nom = nom;
 	}
 
-	public String getDateNaiss() {
+	public Date getDateNaiss() {
 		return dateNaiss;
 	}
 
-	public void setDateNaiss(String dateNaiss) {
+	public void setDateNaiss(Date dateNaiss) {
 		this.dateNaiss = dateNaiss;
 	}
 

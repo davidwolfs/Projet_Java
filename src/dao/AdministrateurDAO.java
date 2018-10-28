@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.JOptionPane;
 
@@ -18,11 +21,17 @@ public class AdministrateurDAO extends DAO<Administrateur> {
 
 	@Override
 	public boolean create(Administrateur administrateur) {
+	/*	Date maintenant = new Date(); 
+		SimpleDateFormat formatDateJour = new SimpleDateFormat("dd-MM-yy"); 
+		String dateFormatee = formatDateJour.format(maintenant); */
+		java.util.Date date = new java.util.Date();
+		date = administrateur.getDateNaiss();
+		
 		boolean statementResult;
 		try {
 			Statement statement = connect.createStatement();
 			String query = "INSERT INTO Administrateur (Nom, Prenom, DateNaiss, Email, Password) VALUES ('"
-					+ administrateur.getNom() + "','" + administrateur.getPrenom() + "','" + "23-10-18" + "','"
+					+ administrateur.getNom() + "','" + administrateur.getPrenom() + "','" + new Timestamp(date.getTime()) + "','"
 					+ administrateur.getEmail() + "','" + administrateur.getPassword() + "')" + ";";
 			System.out.println(query);
 			statementResult = true;
@@ -64,7 +73,7 @@ public class AdministrateurDAO extends DAO<Administrateur> {
 							+ "\"" + password + "\"");
 			if (result.first()) {
 				administrateur = new Administrateur(result.getString("Nom"), result.getString("Prenom"),
-						result.getString("DateNaiss"), email, password, connect);
+						result.getDate("DateNaiss"), email, password, connect);
 				existe = true;
 			}
 
@@ -83,7 +92,7 @@ public class AdministrateurDAO extends DAO<Administrateur> {
 			if(result.first())
 			{
 				administrateur = new Administrateur(result.getString("Nom"), result.getString("Prenom"),
-						result.getString("DateNaiss"), email, password, connect);
+						result.getDate("DateNaiss"), email, password, connect);
 			}
 		}
 		catch(SQLException e){

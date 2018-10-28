@@ -5,7 +5,17 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import exo.Jeu;
 import exo.Preteur;
+import gui.Main;
+
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.awt.event.ActionEvent;
+import javax.swing.JList;
 
 public class Dashboard_Preteur extends JFrame {
 
@@ -41,6 +51,27 @@ public class Dashboard_Preteur extends JFrame {
 		JLabel lblBienvenue = new JLabel("Bienvenue " + preteur.getNom() + " " + preteur.getPrenom() + ", vous êtes connecté en tant que : Preteur");
 		lblBienvenue.setBounds(10, 25, 414, 20);
 		contentPane.add(lblBienvenue);
+		
+		JButton btnDeconnexion = new JButton("D\u00E9connexion");
+		btnDeconnexion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				Main.creerConnexion();
+			}
+		});
+		btnDeconnexion.setBounds(10, 203, 118, 28);
+		contentPane.add(btnDeconnexion);
+		
+		List<Jeu> listJeu = new ArrayList<>();
+		Jeu jeu = new Jeu("GTA V", true, 50, new Date("26/10/2018"), "Tarif");
+		listJeu.add(jeu);
+		
+		
+				//List<Vehicule> listVehicule = vehiculeDAO.listVehicule();
+		Object[] jeux = listJeu.toArray();
+		
+		JList list = new JList();
+		list.setBounds(10, 81, 414, 100);
+		contentPane.add(list);
 	}
-
 }

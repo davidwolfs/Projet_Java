@@ -12,7 +12,7 @@ public class Joueur extends Personne {
 		this.date_en = date_en;
 	}
 
-	public Joueur(String nom, String prenom, String dateNaiss, String email, String password) {
+	public Joueur(String nom, String prenom, Date dateNaiss, String email, String password) {
 		super(nom, prenom, dateNaiss, email, password);
 	}
 	

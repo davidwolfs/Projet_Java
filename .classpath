@@ -7,5 +7,6 @@
 	<classpathentry kind="lib" path="C:/Program Files/UCanAccess-4.0.4-bin/lib/hsqldb.jar"/>
 	<classpathentry kind="lib" path="C:/Program Files/UCanAccess-4.0.4-bin/lib/jackcess-2.1.11.jar"/>
 	<classpathentry kind="lib" path="C:/Program Files/UCanAccess-4.0.4-bin/ucanaccess-4.0.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/David Wolfs/Desktop/JCalendar/lib/jcalendar-1.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
