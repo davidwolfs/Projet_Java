@@ -5,8 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
-
-import exo.Administrateur;
 import exo.Preteur;
 
 public class PreteurDAO extends DAO<Preteur> {
@@ -25,8 +23,8 @@ public class PreteurDAO extends DAO<Preteur> {
 		try {
 			Statement statement = connect.createStatement();
 			String query = "INSERT INTO Preteur (Nom, Prenom, DateNaiss,  Email, Password) VALUES ('" + preteur.getNom()
-					+ "','" + preteur.getPrenom() + "','" + new Timestamp(date.getTime()) + "','" + preteur.getEmail() + "','" 
-					+ preteur.getPassword() + "')" + ";";
+					+ "','" + preteur.getPrenom() + "','" + new Timestamp(date.getTime()) + "','" + preteur.getEmail()
+					+ "','" + preteur.getPassword() + "')" + ";";
 			System.out.println(query);
 			statementResult = true;
 			statementResult = statement.execute(query);
@@ -57,17 +55,17 @@ public class PreteurDAO extends DAO<Preteur> {
 		return null;
 	}
 
-	public boolean findByEmailPassword(String email, String password, Connection connect) {
+	public boolean findByEmailPassword(String email, String password) {
 		boolean existe = false;
-		Preteur preteur;
+		Preteur preteur = null;
 		try {
 			ResultSet result = this.connect
 					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
-					.executeQuery("SELECT * FROM Preteur WHERE Email = " + "\"" + email + "\" AND Password = "
-							+ "\"" + password + "\"");
+					.executeQuery("SELECT * FROM Preteur WHERE Email = " + "\"" + email + "\" AND Password = " + "\""
+							+ password + "\"");
 			if (result.first()) {
-				preteur = new Preteur(result.getString("Nom"), result.getString("Prenom"),
-						result.getDate("DateNaiss"), email, password, connect);
+				preteur = new Preteur(result.getString("Nom"), result.getString("Prenom"), result.getDate("DateNaiss"),
+						email, password);
 				existe = true;
 			}
 
@@ -76,22 +74,26 @@ public class PreteurDAO extends DAO<Preteur> {
 		}
 		return existe;
 	}
-	
-	public Preteur findPreteurByEmailPassword(String email, String password, Connection connect){
+
+	public Preteur findPreteurByEmailPassword(String email, String password) {
 		Preteur preteur = new Preteur();
-		try{
-			ResultSet result = this.connect.createStatement(
-					ResultSet.TYPE_SCROLL_INSENSITIVE,
-	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Preteur WHERE Email = " + "\"" + email + "\" AND Password = " + "\"" + password + "\"");
-			if(result.first())
-			{
-				preteur = new Preteur(result.getString("Nom"), result.getString("Prenom"),
-						result.getDate("DateNaiss"), email, password, connect);
+		try {
+			ResultSet result = this.connect
+					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
+					.executeQuery("SELECT * FROM Preteur WHERE Email = " + "\"" + email + "\" AND Password = " + "\""
+							+ password + "\"");
+			if (result.first()) {
+				preteur = new Preteur(result.getString("Nom"), result.getString("Prenom"), result.getDate("DateNaiss"),
+						email, password);
 			}
-		}
-		catch(SQLException e){
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return preteur;
+	}
+
+	public boolean alreadyExist(String text) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

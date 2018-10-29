@@ -4,6 +4,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import dao.AdministrateurDAO;
+import dao.EmprunteurDAO;
+import dao.PreteurDAO;
 import exo.Administrateur;
 import exo.Emprunteur;
 import exo.Preteur;
@@ -104,12 +107,12 @@ public class Connexion extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (rdbtnAdministrateur.isSelected()) {
 					if (!champsVide()) {
-						System.out.println("CONNECT IN CONNEXION : " + connect);
+						AdministrateurDAO administrateurDAO = new AdministrateurDAO(connect);
 						Administrateur administrateur = new Administrateur();
-						if (administrateur.findByEmailPassword(textFieldUser.getText(), textFieldPassword.getText(),
-								connect)) {
-							currentAdministrateur = administrateur.findAdministrateurByEmailPassword(
-									textFieldUser.getText(), textFieldPassword.getText(), connect);
+						if (administrateurDAO.findByEmailPassword(textFieldUser.getText(),
+								textFieldPassword.getText())) {
+							currentAdministrateur = administrateurDAO.findAdministrateurByEmailPassword(
+									textFieldUser.getText(), textFieldPassword.getText());
 							Dashboard_Administrateur dashboard_administrateur = new Dashboard_Administrateur(
 									currentAdministrateur);
 							dispose();
@@ -120,11 +123,11 @@ public class Connexion extends JFrame {
 					}
 				} else if (rdbtnPreteur.isSelected()) {
 					if (!champsVide()) {
+						PreteurDAO preteurDAO = new PreteurDAO(connect);
 						Preteur preteur = new Preteur();
-						if (preteur.findByEmailPassword(textFieldUser.getText(), textFieldPassword.getText(),
-								connect)) {
-							currentPreteur = preteur.findPreteurByEmailPassword(textFieldUser.getText(),
-									textFieldPassword.getText(), connect);
+						if (preteurDAO.findByEmailPassword(textFieldUser.getText(), textFieldPassword.getText())) {
+							currentPreteur = preteurDAO.findPreteurByEmailPassword(textFieldUser.getText(),
+									textFieldPassword.getText());
 							Dashboard_Preteur dashboard_preteur = new Dashboard_Preteur(currentPreteur);
 							dispose();
 							dashboard_preteur.setVisible(true);
@@ -134,11 +137,11 @@ public class Connexion extends JFrame {
 					}
 				} else if (rdbtnEmprunteur.isSelected()) {
 					if (!champsVide()) {
+						EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
 						Emprunteur emprunteur = new Emprunteur();
-						if (emprunteur.findByEmailPassword(textFieldUser.getText(), textFieldPassword.getText(),
-								connect)) {
-							currentEmprunteur = emprunteur.findEmprunteurByEmailPassword(textFieldUser.getText(),
-									textFieldPassword.getText(), connect);
+						if (emprunteurDAO.findByEmailPassword(textFieldUser.getText(), textFieldPassword.getText())) {
+							currentEmprunteur = emprunteurDAO.findEmprunteurByEmailPassword(textFieldUser.getText(),
+									textFieldPassword.getText());
 							Dashboard_Emprunteur dashboard_emprunteur = new Dashboard_Emprunteur(currentEmprunteur);
 							dispose();
 							dashboard_emprunteur.setVisible(true);

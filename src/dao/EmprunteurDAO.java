@@ -23,11 +23,14 @@ public class EmprunteurDAO extends DAO<Emprunteur> {
 		java.util.Date date = new java.util.Date();
 		date = emprunteur.getDateNaiss();
 		System.out.println(new Timestamp(date.getTime()));
-		
+
 		boolean statementResult;
 		try {
 			Statement statement = connect.createStatement();
-			String query = "INSERT INTO Emprunteur (Nom, Prenom, DateNaiss,  Email, Password, Unite) VALUES ('" + emprunteur.getNom() + "','" + emprunteur.getPrenom() + "','" + new Timestamp(date.getTime()) + "','" + emprunteur.getEmail() + "','" + emprunteur.getPassword() + "','" + emprunteur.getUnite() + "')" + ";";
+			String query = "INSERT INTO Emprunteur (Nom, Prenom, DateNaiss,  Email, Password, Unite) VALUES ('"
+					+ emprunteur.getNom() + "','" + emprunteur.getPrenom() + "','" + new Timestamp(date.getTime())
+					+ "','" + emprunteur.getEmail() + "','" + emprunteur.getPassword() + "','" + emprunteur.getUnite()
+					+ "')" + ";";
 			System.out.println(query);
 			statementResult = true;
 			statementResult = statement.execute(query);
@@ -58,17 +61,17 @@ public class EmprunteurDAO extends DAO<Emprunteur> {
 		return null;
 	}
 
-	public boolean findByEmailPassword(String email, String password, Connection connect) {
+	public boolean findByEmailPassword(String email, String password) {
 		boolean existe = false;
 		Emprunteur emprunteur;
 		try {
 			ResultSet result = this.connect
 					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
-					.executeQuery("SELECT * FROM Emprunteur WHERE Email = " + "\"" + email + "\" AND Password = "
-							+ "\"" + password + "\"");
+					.executeQuery("SELECT * FROM Emprunteur WHERE Email = " + "\"" + email + "\" AND Password = " + "\""
+							+ password + "\"");
 			if (result.first()) {
 				emprunteur = new Emprunteur(result.getString("Nom"), result.getString("Prenom"),
-						result.getDate("DateNaiss"), email, password, connect);
+						result.getDate("DateNaiss"), email, password);
 				existe = true;
 			}
 
@@ -77,22 +80,26 @@ public class EmprunteurDAO extends DAO<Emprunteur> {
 		}
 		return existe;
 	}
-	
-	public Emprunteur findEmprunteurByEmailPassword(String email, String password, Connection connect){
+
+	public Emprunteur findEmprunteurByEmailPassword(String email, String password) {
 		Emprunteur emprunteur = new Emprunteur();
-		try{
-			ResultSet result = this.connect.createStatement(
-					ResultSet.TYPE_SCROLL_INSENSITIVE,
-	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Emprunteur WHERE Email = " + "\"" + email + "\" AND Password = " + "\"" + password + "\"");
-			if(result.first())
-			{
+		try {
+			ResultSet result = this.connect
+					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
+					.executeQuery("SELECT * FROM Emprunteur WHERE Email = " + "\"" + email + "\" AND Password = " + "\""
+							+ password + "\"");
+			if (result.first()) {
 				emprunteur = new Emprunteur(result.getString("Nom"), result.getString("Prenom"),
-						result.getDate("DateNaiss"), email, password, connect);
+						result.getDate("DateNaiss"), email, password);
 			}
-		}
-		catch(SQLException e){
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return emprunteur;
+	}
+
+	public boolean alreadyExist(String text) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

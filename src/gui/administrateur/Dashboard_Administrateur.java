@@ -21,22 +21,6 @@ public class Dashboard_Administrateur extends JFrame {
 	private JPanel contentPane;
 
 	/**
-	 * Launch the application.
-	 */
-	/*public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Dashboard_Administrateur frame = new Dashboard_Administrateur();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}*/
-
-	/**
 	 * Create the frame.
 	 */
 	public Dashboard_Administrateur(Administrateur currentAdministrateur) {
@@ -60,5 +44,13 @@ public class Dashboard_Administrateur extends JFrame {
 		});
 		btnDeconnexion.setBounds(10, 209, 117, 23);
 		contentPane.add(btnDeconnexion);
+		
+		JButton btnGestionDesConsoles = new JButton("Gestion des consoles");
+		btnGestionDesConsoles.setBounds(152, 73, 159, 28);
+		contentPane.add(btnGestionDesConsoles);
+		
+		JButton btnGestionDesJeux = new JButton("Gestion des jeux");
+		btnGestionDesJeux.setBounds(152, 138, 159, 28);
+		contentPane.add(btnGestionDesJeux);
 	}
 }

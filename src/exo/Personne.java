@@ -10,6 +10,15 @@ public abstract class Personne {
 	protected String email;
 	protected String password;
 
+	/**
+	 * Ce constructeur permet de créer une personne
+	 * @param iD
+	 * @param nom
+	 * @param prenom
+	 * @param dateNaiss
+	 * @param email
+	 * @param password
+	 */
 	public Personne(int iD, String nom, String prenom, Date dateNaiss, String email, String password) {
 		this.iD = iD;
 		this.nom = nom;

@@ -63,7 +63,7 @@ public class AdministrateurDAO extends DAO<Administrateur> {
 		return null;
 	}
 
-	public boolean findByEmailPassword(String email, String password, Connection connect) {
+	public boolean findByEmailPassword(String email, String password) {
 		boolean existe = false;
 		Administrateur administrateur;
 		try {
@@ -73,7 +73,7 @@ public class AdministrateurDAO extends DAO<Administrateur> {
 							+ "\"" + password + "\"");
 			if (result.first()) {
 				administrateur = new Administrateur(result.getString("Nom"), result.getString("Prenom"),
-						result.getDate("DateNaiss"), email, password, connect);
+						result.getDate("DateNaiss"), email, password);
 				existe = true;
 			}
 
@@ -83,7 +83,7 @@ public class AdministrateurDAO extends DAO<Administrateur> {
 		return existe;
 	}
 	
-	public Administrateur findAdministrateurByEmailPassword(String email, String password, Connection connect){
+	public Administrateur findAdministrateurByEmailPassword(String email, String password){
 		Administrateur administrateur = new Administrateur();
 		try{
 			ResultSet result = this.connect.createStatement(
@@ -92,12 +92,20 @@ public class AdministrateurDAO extends DAO<Administrateur> {
 			if(result.first())
 			{
 				administrateur = new Administrateur(result.getString("Nom"), result.getString("Prenom"),
-						result.getDate("DateNaiss"), email, password, connect);
+						result.getDate("DateNaiss"), email, password);
 			}
 		}
 		catch(SQLException e){
 			e.printStackTrace();
 		}
 		return administrateur;
+	}
+	
+	
+
+	
+//TODO SELECT * FROM ADMINISTRATEUR WHERE EMAIL = email si il en trouve au moins un on return true, sinon return false
+	public boolean alreadyExist(String email) {
+		return false;
 	}
 }
