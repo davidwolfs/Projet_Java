@@ -35,7 +35,12 @@ public class Joueur extends Personne {
 	public void setDate_en(Date date_en) {
 		this.date_en = date_en;
 	}
-
+	
+	public void rayerJoueur()
+	{
+		
+	}
+	
 	@Override
 	public String toString() {
 		return "Joueur [solde=" + solde + ", date_en=" + date_en + "]";

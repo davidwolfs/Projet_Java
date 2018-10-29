@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 
 import javax.swing.JOptionPane;
 
@@ -19,10 +20,14 @@ public class EmprunteurDAO extends DAO<Emprunteur> {
 
 	@Override
 	public boolean create(Emprunteur emprunteur) {
+		java.util.Date date = new java.util.Date();
+		date = emprunteur.getDateNaiss();
+		System.out.println(new Timestamp(date.getTime()));
+		
 		boolean statementResult;
 		try {
 			Statement statement = connect.createStatement();
-			String query = "INSERT INTO Emprunteur (Nom, Prenom, DateNaiss,  Email, Password) VALUES ('" + emprunteur.getNom() + "','" + emprunteur.getPrenom() + "','" + "1994-02-18" + "','" + emprunteur.getEmail() + "','" + emprunteur.getPassword() + "')" + ";";
+			String query = "INSERT INTO Emprunteur (Nom, Prenom, DateNaiss,  Email, Password, Unite) VALUES ('" + emprunteur.getNom() + "','" + emprunteur.getPrenom() + "','" + new Timestamp(date.getTime()) + "','" + emprunteur.getEmail() + "','" + emprunteur.getPassword() + "','" + emprunteur.getUnite() + "')" + ";";
 			System.out.println(query);
 			statementResult = true;
 			statementResult = statement.execute(query);
@@ -63,7 +68,7 @@ public class EmprunteurDAO extends DAO<Emprunteur> {
 							+ "\"" + password + "\"");
 			if (result.first()) {
 				emprunteur = new Emprunteur(result.getString("Nom"), result.getString("Prenom"),
-						result.getString("DateNaiss"), email, password, connect);
+						result.getDate("DateNaiss"), email, password, connect);
 				existe = true;
 			}
 
@@ -82,7 +87,7 @@ public class EmprunteurDAO extends DAO<Emprunteur> {
 			if(result.first())
 			{
 				emprunteur = new Emprunteur(result.getString("Nom"), result.getString("Prenom"),
-						result.getString("DateNaiss"), email, password, connect);
+						result.getDate("DateNaiss"), email, password, connect);
 			}
 		}
 		catch(SQLException e){

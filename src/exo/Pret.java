@@ -10,10 +10,14 @@ public class Pret {
 	private Emprunteur emprunteur;
 	private Preteur preteur;
 
-	public Pret(Date dateDebut, Date dateFin, boolean confirmer_pret) {
+	public Pret(Date dateDebut, Date dateFin, boolean confirmer_pret, Exemplaire exemplaire, Emprunteur emprunteur,
+			Preteur preteur) {
 		this.dateDebut = dateDebut;
 		this.dateFin = dateFin;
 		this.confirmer_pret = confirmer_pret;
+		this.exemplaire = exemplaire;
+		this.emprunteur = emprunteur;
+		this.preteur = preteur;
 
 	}
 
@@ -41,6 +45,50 @@ public class Pret {
 		this.confirmer_pret = confirmer_pret;
 	}
 
+	public Exemplaire getExemplaire() {
+		return exemplaire;
+	}
+
+	public void setExemplaire(Exemplaire exemplaire) {
+		this.exemplaire = exemplaire;
+	}
+
+	public Emprunteur getEmprunteur() {
+		return emprunteur;
+	}
+
+	public void setEmprunteur(Emprunteur emprunteur) {
+		this.emprunteur = emprunteur;
+	}
+
+	public Preteur getPreteur() {
+		return preteur;
+	}
+
+	public void setPreteur(Preteur preteur) {
+		this.preteur = preteur;
+	}
+
+	public boolean ConfirmationEmprunteurDebut()
+	{
+		return false;
+	}
+	
+	public boolean ConfirmationPreteurDebut()
+	{
+		return false;
+	}
+	
+	public boolean ConfirmationEmprunteurFin()
+	{
+		return false;
+	}
+	
+	public boolean ConfirmationPreteurFin()
+	{
+		return false;
+	}
+	
 	@Override
 	public String toString() {
 		return "Pret [dateDebut=" + dateDebut + ", dateFin=" + dateFin + ", confirmer_pret=" + confirmer_pret + "]";

@@ -1,17 +1,20 @@
 package exo;
 
+import java.sql.Connection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import dao.JeuDAO;
+
 public class Jeu {
+	private Connection connect;
 	private String nom;
 	private boolean dispo;
 	private double tarif;
 	private Date dateTarif;
 	private String adapterTarif;
 	private Console console;
-	private Set<Exemplaire> listExemplaire = new HashSet<>();
 
 	public Jeu(String nom, boolean dispo, double tarif, Date dateTarif, String adapterTarif) {
 		this.nom = nom;
@@ -61,18 +64,16 @@ public class Jeu {
 		this.adapterTarif = adapterTarif;
 	}
 
-	public Set<Exemplaire> getListExemplaire() {
-		return listExemplaire;
+	public void create(Jeu jeu)
+	{
+		JeuDAO jeuDAO = new JeuDAO(connect);
+		jeuDAO.create(jeu);
 	}
-
-	public void setListExemplaire(Set<Exemplaire> listExemplaire) {
-		this.listExemplaire = listExemplaire;
-	}
-
+	
 	@Override
 	public String toString() {
 		return "Jeu [nom=" + nom + ", dispo=" + dispo + ", tarif=" + tarif + ", dateTarif=" + dateTarif
-				+ ", adapterTarif=" + adapterTarif + ", listExemplaire=" + listExemplaire + "]";
+				+ ", adapterTarif=" + adapterTarif + ", console=" + console + "]";
 	}
 
 }

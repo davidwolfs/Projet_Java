@@ -49,7 +49,7 @@ public class Dashboard_Emprunteur extends JFrame {
 		JLabel lblBienvenue = new JLabel("Bienvenue " + emprunteur.getPrenom() + " " + emprunteur.getNom() + ", vous êtes connecté en tant que : Emprunteur");
 		lblBienvenue.setBounds(10, 26, 414, 24);
 		contentPane.add(lblBienvenue);
-		
+		System.out.println(emprunteur.getUnite());
 		JButton btnDeconnexion = new JButton("D\u00E9connexion");
 		btnDeconnexion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {

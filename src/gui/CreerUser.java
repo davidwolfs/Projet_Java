@@ -126,7 +126,7 @@ public class CreerUser extends JFrame {
 				System.out.println();
 				boolean valid = true;
 				if (textFieldNom.getText().isEmpty() || textFieldPrenom.getText().isEmpty()
-						|| dateChooserDateNaiss.getDateFormatString().isEmpty() || textFieldEmail.getText().isEmpty()
+						|| ((JTextField)dateChooserDateNaiss.getDateEditor().getUiComponent()).getText().isEmpty() || textFieldEmail.getText().isEmpty()
 						|| textFieldPassword.getText().isEmpty()) {
 					labelMsgErreur.setText("Veuillez remplir tous les champs.");
 					valid = false;
@@ -146,6 +146,9 @@ public class CreerUser extends JFrame {
 						Administrateur administrateur = new Administrateur(textFieldNom.getText(),
 								textFieldPrenom.getText(), dateChooserDateNaiss.getDate(), textFieldEmail.getText(),
 								textFieldPassword.getText(), connect);
+						System.out.println("DATE STRING : " + ((JTextField)dateChooserDateNaiss.getDateEditor().getUiComponent()).getText());
+						//System.out.println("DATE FORMAT STRING IS EMPTY : " + dateChooserDateNaiss.getValue().isEmpty());
+						System.out.println("DATE IS VALID : " + dateChooserDateNaiss.getDateFormatString());
 						if (administrateur.alreadyExist(textFieldEmail.getText())) {
 							labelMsgErreur.setText("Cet adresse e-mail existe déjà.");
 						} else {
@@ -160,8 +163,9 @@ public class CreerUser extends JFrame {
 				} else if (rdbtnPreteur.isSelected()) {
 					if (champsVide()) {
 						Preteur preteur = new Preteur(textFieldNom.getText(), textFieldPrenom.getText(),
-								dateChooserDateNaiss.getDateFormatString(), textFieldEmail.getText(), textFieldPassword.getText(),
+								dateChooserDateNaiss.getDate(), textFieldEmail.getText(), textFieldPassword.getText(),
 								connect);
+						System.out.println("DATE DAO : " + dateChooserDateNaiss.getDate());
 						if (preteur.alreadyExist(textFieldEmail.getText())) {
 							labelMsgErreur.setText("Cet adresse e-mail existe déjà.");
 						} else {
@@ -176,8 +180,9 @@ public class CreerUser extends JFrame {
 				else if (rdbtnEmprunteur.isSelected()) {
 					if (champsVide()) {
 						Emprunteur emprunteur = new Emprunteur(textFieldNom.getText(), textFieldPrenom.getText(),
-								dateChooserDateNaiss.getDateFormatString(), textFieldEmail.getText(), textFieldPassword.getText(),
+								dateChooserDateNaiss.getDate(), textFieldEmail.getText(), textFieldPassword.getText(),
 								connect);
+						System.out.println("DATE DAO : " + dateChooserDateNaiss.getDate());
 						if (emprunteur.alreadyExist(textFieldEmail.getText())) {
 							labelMsgErreur.setText("Cet adresse e-mail existe déjà.");
 						} else {

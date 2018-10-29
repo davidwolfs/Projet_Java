@@ -3,14 +3,17 @@ package exo;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import dao.PreteurDAO;
 
 public class Preteur extends Joueur {
 	private Connection connect;
-	private List<Exemplaire> listExemplaire = new ArrayList<>();
+	private Set<Exemplaire> listExemplaire = new HashSet<>();
 
-	public Preteur(List<Exemplaire> listExemplaire) {
+	public Preteur(Set<Exemplaire> listExemplaire) {
 		this.listExemplaire = listExemplaire;
 	}
 
@@ -23,14 +26,24 @@ public class Preteur extends Joueur {
 
 	}
 
-	public List<Exemplaire> getListExemplaire() {
+	public Set<Exemplaire> getListExemplaire() {
 		return listExemplaire;
 	}
 
-	public void setListExamplaire(List<Exemplaire> listExemplaire) {
+	public void setListExamplaire(Set<Exemplaire> listExemplaire) {
 		this.listExemplaire = listExemplaire;
 	}
+	
+	public void addExemplaire(Exemplaire exemplaire)
+	{
+		this.listExemplaire.add(exemplaire);
+	}
 
+	public void remoteExemplaire(Exemplaire exemplaire)
+	{
+		this.listExemplaire.remove(exemplaire);
+	}
+	
 	public void create(Preteur preteur) {
 		PreteurDAO preteurDAO = new PreteurDAO(connect);
 		preteurDAO.create(preteur);

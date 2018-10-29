@@ -26,7 +26,7 @@ public class AdministrateurDAO extends DAO<Administrateur> {
 		String dateFormatee = formatDateJour.format(maintenant); */
 		java.util.Date date = new java.util.Date();
 		date = administrateur.getDateNaiss();
-		
+		System.out.println(new Timestamp(date.getTime()));
 		boolean statementResult;
 		try {
 			Statement statement = connect.createStatement();

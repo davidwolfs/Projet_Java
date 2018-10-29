@@ -19,6 +19,7 @@ public class Emprunteur extends Joueur {
 	public Emprunteur(String nom, String prenom, Date dateNaiss, String email, String password, Connection connect) {
 		super(nom, prenom, dateNaiss, email, password);
 		this.connect = connect;
+		this.unite = 10;
 	}
 
 	public Emprunteur() {
@@ -39,6 +40,16 @@ public class Emprunteur extends Joueur {
 
 	public void setCote(int cote) {
 		this.cote = cote;
+	}
+	
+	public void soustraireUnite(int unite)
+	{
+		this.unite -= unite;
+	}
+	
+	public void soustraireCote(int cote)
+	{
+		this.cote -= cote;
 	}
 
 	public void create(Emprunteur emprunteur) {

@@ -73,5 +73,16 @@ public class Dashboard_Preteur extends JFrame {
 		JList list = new JList();
 		list.setBounds(10, 81, 414, 100);
 		contentPane.add(list);
+		
+		JButton btnAjouterJeu = new JButton("Ajouter un jeu");
+		btnAjouterJeu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				AjouterJeu ajouterJeu = new AjouterJeu();
+				ajouterJeu.setVisible(true);
+				dispose();
+			}
+		});
+		btnAjouterJeu.setBounds(168, 206, 129, 25);
+		contentPane.add(btnAjouterJeu);
 	}
 }

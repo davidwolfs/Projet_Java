@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 
 import exo.Administrateur;
 import exo.Preteur;
@@ -17,11 +18,14 @@ public class PreteurDAO extends DAO<Preteur> {
 
 	@Override
 	public boolean create(Preteur preteur) {
+		java.util.Date date = new java.util.Date();
+		date = preteur.getDateNaiss();
+		System.out.println(new Timestamp(date.getTime()));
 		boolean statementResult;
 		try {
 			Statement statement = connect.createStatement();
 			String query = "INSERT INTO Preteur (Nom, Prenom, DateNaiss,  Email, Password) VALUES ('" + preteur.getNom()
-					+ "','" + preteur.getPrenom() + "','" + preteur.getDateNaiss() + "','" + preteur.getEmail() + "','"
+					+ "','" + preteur.getPrenom() + "','" + new Timestamp(date.getTime()) + "','" + preteur.getEmail() + "','" 
 					+ preteur.getPassword() + "')" + ";";
 			System.out.println(query);
 			statementResult = true;
@@ -63,7 +67,7 @@ public class PreteurDAO extends DAO<Preteur> {
 							+ "\"" + password + "\"");
 			if (result.first()) {
 				preteur = new Preteur(result.getString("Nom"), result.getString("Prenom"),
-						result.getString("DateNaiss"), email, password, connect);
+						result.getDate("DateNaiss"), email, password, connect);
 				existe = true;
 			}
 
@@ -82,7 +86,7 @@ public class PreteurDAO extends DAO<Preteur> {
 			if(result.first())
 			{
 				preteur = new Preteur(result.getString("Nom"), result.getString("Prenom"),
-						result.getString("DateNaiss"), email, password, connect);
+						result.getDate("DateNaiss"), email, password, connect);
 			}
 		}
 		catch(SQLException e){

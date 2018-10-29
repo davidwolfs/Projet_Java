@@ -10,8 +10,9 @@ public class Reservation {
 	private Connection connect;
 	private Jeu jeu;
 
-	public Reservation(Date dateReservation) {
+	public Reservation(Date dateReservation, Jeu jeu) {
 		this.dateReservation = dateReservation;
+		this.jeu = jeu;
 	}
 
 	public Date getDateReservation() {
@@ -22,12 +23,11 @@ public class Reservation {
 		this.dateReservation = dateReservation;
 	}
 
-	public void create(Reservation reservation)
-	{
+	public void create(Reservation reservation) {
 		ReservationDAO reservationDAO = new ReservationDAO(connect);
 		reservationDAO.createReservation(reservation);
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Reservation [dateReservation=" + dateReservation + "]";
