@@ -84,6 +84,7 @@ public class Gestion_Jeux extends JFrame {
 			System.out.println(listJeu.get(i).toString());
 			donnees[i] = listJeu.get(i).getNom() + " - "
 					+ dispo + " - "
+					+ listJeu.get(i).getTarif() + " - " 
 					+ simpleDateFormat.format(listJeu.get(i).getDateTarif()) + " - "
 					+ listJeu.get(i).getAdapterTarif();
 		}

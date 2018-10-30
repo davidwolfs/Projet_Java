@@ -41,7 +41,7 @@ public class Modifier_Jeu extends JFrame {
 	public Modifier_Jeu(Connection connect, Administrateur currentAdministrateur, Jeu jeuAModifier) {
 		this.connect=connect;
 		this.jeuAModifier=jeuAModifier;
-		setTitle("Ajouter un jeu");
+		setTitle("Modifier un jeu");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 430, 439);
 		contentPane = new JPanel();
@@ -71,24 +71,29 @@ public class Modifier_Jeu extends JFrame {
 		
 		textFieldNom = new JTextField();
 		textFieldNom.setBounds(251, 42, 131, 20);
+		textFieldNom.setText(jeuAModifier.getNom());
 		contentPane.add(textFieldNom);
 		textFieldNom.setColumns(10);
 		
 		JCheckBox chckbxDisponibilite = new JCheckBox("Disponible");
 		chckbxDisponibilite.setBounds(252, 78, 130, 20);
+		chckbxDisponibilite.setSelected(jeuAModifier.isDispo());
 		contentPane.add(chckbxDisponibilite);
 		
 		textFieldTarif = new JTextField();
 		textFieldTarif.setBounds(251, 114, 131, 20);
+		textFieldTarif.setText(jeuAModifier.getNom());
 		contentPane.add(textFieldTarif);
 		textFieldTarif.setColumns(10);
 		
 		JDateChooser dateChooserDateTarif = new JDateChooser();
 		dateChooserDateTarif.setBounds(251, 160, 131, 20);
+		dateChooserDateTarif.setDate(jeuAModifier.getDateTarif());
 		contentPane.add(dateChooserDateTarif);
 		
 		textFieldAdapterTarif = new JTextField();
 		textFieldAdapterTarif.setBounds(251, 209, 131, 20);
+		textFieldAdapterTarif.setText(jeuAModifier.getAdapterTarif());
 		contentPane.add(textFieldAdapterTarif);
 		textFieldAdapterTarif.setColumns(10);
 		
