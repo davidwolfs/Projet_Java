@@ -23,6 +23,10 @@ public class Jeu {
 		this.dateTarif = dateTarif;
 		this.adapterTarif = adapterTarif;
 	}
+	
+	public Jeu() {
+		
+	}
 
 	public String getNom() {
 		return nom;
@@ -62,12 +66,6 @@ public class Jeu {
 
 	public void setAdapterTarif(String adapterTarif) {
 		this.adapterTarif = adapterTarif;
-	}
-
-	public void create(Jeu jeu)
-	{
-		JeuDAO jeuDAO = new JeuDAO(connect);
-		jeuDAO.create(jeu);
 	}
 	
 	@Override

@@ -6,7 +6,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 
@@ -101,7 +103,25 @@ public class AdministrateurDAO extends DAO<Administrateur> {
 		return administrateur;
 	}
 	
-	
+	public List<Administrateur> findAll(){
+		List<Administrateur> listAdministrateurs = new ArrayList<>();
+		Administrateur administrateur = new Administrateur();
+		try{
+			ResultSet result = this.connect.createStatement(
+					ResultSet.TYPE_SCROLL_INSENSITIVE,
+	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Administrateur");
+			while(result.next())
+			{
+				administrateur = new Administrateur(result.getString("Nom"), result.getString("Prenom"),
+						result.getDate("DateNaiss"), result.getString("Email"), result.getString("Password"));
+				listAdministrateurs.add(administrateur);
+			}
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		return listAdministrateurs;
+	}
 
 	
 //TODO SELECT * FROM ADMINISTRATEUR WHERE EMAIL = email si il en trouve au moins un on return true, sinon return false

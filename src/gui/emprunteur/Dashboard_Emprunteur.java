@@ -64,7 +64,7 @@ public class Dashboard_Emprunteur extends JFrame {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
-				PasserReservation passerReservation = new PasserReservation();
+				Passer_Reservation passerReservation = new Passer_Reservation();
 				passerReservation.setVisible(true);
 			}
 		});

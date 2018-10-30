@@ -8,6 +8,7 @@ import javax.swing.border.EmptyBorder;
 import exo.Jeu;
 import exo.Preteur;
 import gui.Main;
+import gui.administrateur.Ajouter_Jeu;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -70,16 +71,16 @@ public class Dashboard_Preteur extends JFrame {
 				//List<Vehicule> listVehicule = vehiculeDAO.listVehicule();
 		Object[] jeux = listJeu.toArray();
 		
-		JList list = new JList();
+		JList list = new JList(jeux);
 		list.setBounds(10, 81, 414, 100);
 		contentPane.add(list);
 		
 		JButton btnAjouterJeu = new JButton("Ajouter un jeu");
 		btnAjouterJeu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				AjouterJeu ajouterJeu = new AjouterJeu();
+				/*Ajouter_Jeu ajouterJeu = new Ajouter_Jeu();
 				ajouterJeu.setVisible(true);
-				dispose();
+				dispose();*/
 			}
 		});
 		btnAjouterJeu.setBounds(168, 206, 129, 25);

@@ -22,15 +22,16 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.awt.event.ActionEvent;
+import javax.swing.JPasswordField;
 
 public class Connexion extends JFrame {
 	private Connection connect;
 	private JPanel contentPane;
 	private JTextField textFieldUser;
-	private JTextField textFieldPassword;
 	private Administrateur currentAdministrateur;
 	private Preteur currentPreteur;
 	private Emprunteur currentEmprunteur;
+	private JPasswordField passwordField;
 
 	/**
 	 * Create the frame.
@@ -58,21 +59,20 @@ public class Connexion extends JFrame {
 		contentPane.add(textFieldUser);
 		textFieldUser.setColumns(10);
 
-		textFieldPassword = new JTextField();
-		textFieldPassword.setBounds(253, 77, 171, 27);
-		contentPane.add(textFieldPassword);
-		textFieldPassword.setColumns(10);
-
+		passwordField = new JPasswordField();
+		passwordField.setBounds(253, 80, 171, 27);
+		contentPane.add(passwordField);
+		
 		JRadioButton rdbtnAdministrateur = new JRadioButton("Administrateur");
 		rdbtnAdministrateur.setBounds(64, 131, 120, 23);
 		contentPane.add(rdbtnAdministrateur);
-
+		
 		JRadioButton rdbtnPreteur = new JRadioButton("Pr\u00EAteur");
-		rdbtnPreteur.setBounds(202, 131, 109, 23);
+		rdbtnPreteur.setBounds(203, 131, 109, 23);
 		contentPane.add(rdbtnPreteur);
-
+		
 		JRadioButton rdbtnEmprunteur = new JRadioButton("Emprunteur");
-		rdbtnEmprunteur.setBounds(313, 131, 109, 23);
+		rdbtnEmprunteur.setBounds(342, 131, 109, 23);
 		contentPane.add(rdbtnEmprunteur);
 
 		ButtonGroup personneRadio = new ButtonGroup();
@@ -92,7 +92,7 @@ public class Connexion extends JFrame {
 
 			public boolean champsVide() {
 				boolean vide = false;
-				if (textFieldUser.getText().isEmpty() || textFieldPassword.getText().isEmpty()) {
+				if (textFieldUser.getText().isEmpty() || passwordField.getText().isEmpty()) {
 					labelMsgErreur.setText("Veuillez remplir tous les champs.");
 					vide = true;
 				}
@@ -110,13 +110,14 @@ public class Connexion extends JFrame {
 						AdministrateurDAO administrateurDAO = new AdministrateurDAO(connect);
 						Administrateur administrateur = new Administrateur();
 						if (administrateurDAO.findByEmailPassword(textFieldUser.getText(),
-								textFieldPassword.getText())) {
+								passwordField.getText())) {
 							currentAdministrateur = administrateurDAO.findAdministrateurByEmailPassword(
-									textFieldUser.getText(), textFieldPassword.getText());
-							Dashboard_Administrateur dashboard_administrateur = new Dashboard_Administrateur(
+									textFieldUser.getText(), passwordField.getText());
+							Dashboard_Administrateur dashboard_administrateur = new Dashboard_Administrateur(connect,
 									currentAdministrateur);
 							dispose();
 							dashboard_administrateur.setVisible(true);
+							dashboard_administrateur.setResizable(false);
 						} else {
 							loginpasswordIncorrect();
 						}
@@ -125,12 +126,15 @@ public class Connexion extends JFrame {
 					if (!champsVide()) {
 						PreteurDAO preteurDAO = new PreteurDAO(connect);
 						Preteur preteur = new Preteur();
-						if (preteurDAO.findByEmailPassword(textFieldUser.getText(), textFieldPassword.getText())) {
+						EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
+						Emprunteur emprunteur = new Emprunteur();
+						if (preteurDAO.findByEmailPassword(textFieldUser.getText(), passwordField.getText())) {
 							currentPreteur = preteurDAO.findPreteurByEmailPassword(textFieldUser.getText(),
-									textFieldPassword.getText());
+									passwordField.getText());
 							Dashboard_Preteur dashboard_preteur = new Dashboard_Preteur(currentPreteur);
 							dispose();
 							dashboard_preteur.setVisible(true);
+							dashboard_preteur.setResizable(false);
 						} else {
 							loginpasswordIncorrect();
 						}
@@ -139,12 +143,13 @@ public class Connexion extends JFrame {
 					if (!champsVide()) {
 						EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
 						Emprunteur emprunteur = new Emprunteur();
-						if (emprunteurDAO.findByEmailPassword(textFieldUser.getText(), textFieldPassword.getText())) {
+						if (emprunteurDAO.findByEmailPassword(textFieldUser.getText(), passwordField.getText())) {
 							currentEmprunteur = emprunteurDAO.findEmprunteurByEmailPassword(textFieldUser.getText(),
-									textFieldPassword.getText());
+									passwordField.getText());
 							Dashboard_Emprunteur dashboard_emprunteur = new Dashboard_Emprunteur(currentEmprunteur);
 							dispose();
 							dashboard_emprunteur.setVisible(true);
+							dashboard_emprunteur.setResizable(false);
 						} else {
 							loginpasswordIncorrect();
 						}
@@ -163,10 +168,10 @@ public class Connexion extends JFrame {
 				CreerUser creerUser = new CreerUser(connect);
 				dispose();
 				creerUser.setVisible(true);
+				creerUser.setResizable(false);
 			}
 		});
 		btnCreerCompte.setBounds(271, 178, 153, 23);
 		contentPane.add(btnCreerCompte);
-
 	}
 }

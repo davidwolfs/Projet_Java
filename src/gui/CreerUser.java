@@ -26,6 +26,7 @@ import exo.Preteur;
 import gui.administrateur.Dashboard_Administrateur;
 import gui.emprunteur.Dashboard_Emprunteur;
 import gui.preteur.Dashboard_Preteur;
+import javax.swing.JPasswordField;
 
 public class CreerUser extends JFrame {
 	private Connection connect;
@@ -34,12 +35,11 @@ public class CreerUser extends JFrame {
 	private JTextField textFieldPrenom;
 	private JDateChooser dateChooserDateNaiss;
 	private JTextField textFieldEmail;
-	private JTextField textFieldPassword;
-	private JRadioButton rdbtnAdministrateur;
-	private JRadioButton rdbtnPreteur;
-	private JRadioButton rdbtnEmprunteur;
 	private JButton btnRetour;
 	private JLabel labelMsgErreur;
+	private JPasswordField passwordField;
+	private JRadioButton rdbtnPreteur;
+	private JRadioButton rdbtnEmprunteur;
 
 	/**
 	 * Create the frame.
@@ -85,7 +85,7 @@ public class CreerUser extends JFrame {
 		textFieldPrenom.setColumns(10);
 
 		dateChooserDateNaiss = new JDateChooser();
-		dateChooserDateNaiss.setBounds(233, 113, 162, 20);
+		dateChooserDateNaiss.setBounds(233, 115, 162, 20);
 		contentPane.add(dateChooserDateNaiss);
 
 		textFieldEmail = new JTextField();
@@ -93,28 +93,22 @@ public class CreerUser extends JFrame {
 		contentPane.add(textFieldEmail);
 		textFieldEmail.setColumns(10);
 
-		textFieldPassword = new JTextField();
-		textFieldPassword.setBounds(233, 210, 162, 20);
-		contentPane.add(textFieldPassword);
-		textFieldPassword.setColumns(10);
+		passwordField = new JPasswordField();
+		passwordField.setBounds(233, 209, 162, 20);
+		contentPane.add(passwordField);
 
-		rdbtnAdministrateur = new JRadioButton("Administrateur");
-		rdbtnAdministrateur.setBounds(21, 275, 120, 23);
-		contentPane.add(rdbtnAdministrateur);
-
-		rdbtnPreteur = new JRadioButton("Preteur");
-		rdbtnPreteur.setBounds(163, 275, 109, 23);
+		rdbtnPreteur = new JRadioButton("Pr\u00EAteur");
+		rdbtnPreteur.setBounds(52, 276, 109, 23);
 		contentPane.add(rdbtnPreteur);
 
 		rdbtnEmprunteur = new JRadioButton("Emprunteur");
-		rdbtnEmprunteur.setBounds(286, 275, 109, 23);
+		rdbtnEmprunteur.setBounds(257, 276, 109, 23);
 		contentPane.add(rdbtnEmprunteur);
 
 		ButtonGroup personneRadio = new ButtonGroup();
-		personneRadio.add(rdbtnAdministrateur);
 		personneRadio.add(rdbtnPreteur);
 		personneRadio.add(rdbtnEmprunteur);
-		
+
 		JButton btnCreerUser = new JButton("Cr\u00E9er");
 		btnCreerUser.addActionListener(new ActionListener() {
 			public void choixTypePersonne() {
@@ -127,12 +121,13 @@ public class CreerUser extends JFrame {
 				Pattern pattern = Pattern.compile(regex);
 				Pattern pattern2 = Pattern.compile(regex2);
 				Matcher matcher = pattern.matcher(textFieldEmail.getText());
-				Matcher matcher2 = pattern2.matcher(((JTextField)dateChooserDateNaiss.getDateEditor().getUiComponent()).getText());
+				Matcher matcher2 = pattern2
+						.matcher(((JTextField) dateChooserDateNaiss.getDateEditor().getUiComponent()).getText());
 				System.out.println();
 				boolean valid = true;
 				if (textFieldNom.getText().isEmpty() || textFieldPrenom.getText().isEmpty()
-						|| ((JTextField)dateChooserDateNaiss.getDateEditor().getUiComponent()).getText().isEmpty() || textFieldEmail.getText().isEmpty()
-						|| textFieldPassword.getText().isEmpty()) {
+						|| ((JTextField) dateChooserDateNaiss.getDateEditor().getUiComponent()).getText().isEmpty()
+						|| textFieldEmail.getText().isEmpty() || passwordField.getText().isEmpty()) {
 					labelMsgErreur.setText("Veuillez remplir tous les champs.");
 					valid = false;
 				}
@@ -141,9 +136,9 @@ public class CreerUser extends JFrame {
 					labelMsgErreur.setText("Veuillez entrer un e-mail valide.");
 					valid = false;
 				}
-				
+
 				else if (!(matcher2.matches())) {
-					labelMsgErreur.setText("Veuillez entrer une date de naissance sous le format \"dd-MMM-yyyy\"");
+					labelMsgErreur.setText("Format de date de naissance attendu \"dd-MMM-yyyy\".");
 					valid = false;
 				}
 
@@ -151,31 +146,31 @@ public class CreerUser extends JFrame {
 			}
 
 			public void actionPerformed(ActionEvent e) {
-				if (rdbtnAdministrateur.isSelected()) {
-					if (champsVide()) {
-						AdministrateurDAO administrateurDAO = new AdministrateurDAO(connect);
-						Administrateur administrateur = new Administrateur(textFieldNom.getText(),
-								textFieldPrenom.getText(), dateChooserDateNaiss.getDate(), textFieldEmail.getText(),
-								textFieldPassword.getText());
-						System.out.println("DATE STRING : " + ((JTextField)dateChooserDateNaiss.getDateEditor().getUiComponent()).getText());
-						//System.out.println("DATE FORMAT STRING IS EMPTY : " + dateChooserDateNaiss.getValue().isEmpty());
-						System.out.println("DATE IS VALID : " + dateChooserDateNaiss.getDateFormatString());
-						if (administrateurDAO.alreadyExist(textFieldEmail.getText())) {
-							labelMsgErreur.setText("Cet adresse e-mail existe déjà.");
-						} else {
+				// if (rdbtnAdministrateur.isSelected()) {
+				if (champsVide()) {
+					AdministrateurDAO administrateurDAO = new AdministrateurDAO(connect);
+					Administrateur administrateur = new Administrateur(textFieldNom.getText(),
+							textFieldPrenom.getText(), dateChooserDateNaiss.getDate(), textFieldEmail.getText(),
+							passwordField.getText());
+					System.out.println("DATE STRING : "
+							+ ((JTextField) dateChooserDateNaiss.getDateEditor().getUiComponent()).getText());
+					System.out.println("DATE IS VALID : " + dateChooserDateNaiss.getDateFormatString());
+					if (administrateurDAO.alreadyExist(textFieldEmail.getText())) {
+						labelMsgErreur.setText("Cet adresse e-mail existe déjà.");
+					} else {
 
-							administrateurDAO.create(administrateur);
-							dispose();
-							Dashboard_Administrateur dashboard_administrateur = new Dashboard_Administrateur(
-									administrateur);
-							dashboard_administrateur.setVisible(true);
-						}
+						administrateurDAO.create(administrateur);
+						dispose();
+						Dashboard_Administrateur dashboard_administrateur = new Dashboard_Administrateur(connect,
+								administrateur);
+						dashboard_administrateur.setVisible(true);
 					}
-				} else if (rdbtnPreteur.isSelected()) {
+				}
+				/* } */if (rdbtnPreteur.isSelected()) {
 					if (champsVide()) {
 						PreteurDAO preteurDAO = new PreteurDAO(connect);
 						Preteur preteur = new Preteur(textFieldNom.getText(), textFieldPrenom.getText(),
-								dateChooserDateNaiss.getDate(), textFieldEmail.getText(), textFieldPassword.getText());
+								dateChooserDateNaiss.getDate(), textFieldEmail.getText(), passwordField.getText());
 						System.out.println("DATE DAO : " + dateChooserDateNaiss.getDate());
 						if (preteurDAO.alreadyExist(textFieldEmail.getText())) {
 							labelMsgErreur.setText("Cet adresse e-mail existe déjà.");
@@ -192,7 +187,7 @@ public class CreerUser extends JFrame {
 					if (champsVide()) {
 						EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
 						Emprunteur emprunteur = new Emprunteur(textFieldNom.getText(), textFieldPrenom.getText(),
-								dateChooserDateNaiss.getDate(), textFieldEmail.getText(), textFieldPassword.getText());
+								dateChooserDateNaiss.getDate(), textFieldEmail.getText(), passwordField.getText());
 						System.out.println("DATE DAO : " + dateChooserDateNaiss.getDate());
 						if (emprunteurDAO.alreadyExist(textFieldEmail.getText())) {
 							labelMsgErreur.setText("Cet adresse e-mail existe déjà.");
@@ -217,6 +212,7 @@ public class CreerUser extends JFrame {
 				dispose();
 				Connexion connexion = new Connexion(connect);
 				connexion.setVisible(true);
+				connexion.setResizable(false);
 			}
 		});
 		btnRetour.setBounds(277, 341, 89, 23);

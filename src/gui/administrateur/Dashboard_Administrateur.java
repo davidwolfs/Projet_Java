@@ -14,16 +14,18 @@ import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
 import java.awt.event.ActionEvent;
 
 public class Dashboard_Administrateur extends JFrame {
 
 	private JPanel contentPane;
-
+	private Connection connect;
 	/**
 	 * Create the frame.
 	 */
-	public Dashboard_Administrateur(Administrateur currentAdministrateur) {
+	public Dashboard_Administrateur(Connection connect, Administrateur currentAdministrateur) {
+		this.connect=connect;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -46,11 +48,35 @@ public class Dashboard_Administrateur extends JFrame {
 		contentPane.add(btnDeconnexion);
 		
 		JButton btnGestionDesConsoles = new JButton("Gestion des consoles");
-		btnGestionDesConsoles.setBounds(152, 73, 159, 28);
+		btnGestionDesConsoles.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		btnGestionDesConsoles.setBounds(152, 73, 189, 28);
 		contentPane.add(btnGestionDesConsoles);
 		
 		JButton btnGestionDesJeux = new JButton("Gestion des jeux");
-		btnGestionDesJeux.setBounds(152, 138, 159, 28);
+		btnGestionDesJeux.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Gestion_Jeux gestion_Jeux = new Gestion_Jeux(connect, currentAdministrateur);
+				gestion_Jeux.setVisible(true);
+				gestion_Jeux.setResizable(false);
+				dispose();
+			}
+		});
+		btnGestionDesJeux.setBounds(152, 122, 189, 28);
 		contentPane.add(btnGestionDesJeux);
+		
+		JButton btnGestionDesUtilisateurs = new JButton("Gestion des utilisateurs");
+		btnGestionDesUtilisateurs.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				Gestion_Utilisateurs gestion_Utilisateurs = new Gestion_Utilisateurs(connect, currentAdministrateur);
+				gestion_Utilisateurs.setVisible(true);
+				gestion_Utilisateurs.setResizable(false);
+			}
+		});
+		btnGestionDesUtilisateurs.setBounds(152, 168, 189, 28);
+		contentPane.add(btnGestionDesUtilisateurs);
 	}
 }

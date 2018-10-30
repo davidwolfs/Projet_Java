@@ -10,6 +10,7 @@ public class Main {
 	public static void creerConnexion() {
 		Connexion connexion = new Connexion(connect);
 		connexion.setVisible(true);
+		connexion.setResizable(false);
 	}
 
 	public static void main(String[] args) {
