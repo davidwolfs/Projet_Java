@@ -5,9 +5,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import exo.Administrateur;
 import exo.Emprunteur;
 import exo.Preteur;
 
@@ -98,6 +101,26 @@ public class EmprunteurDAO extends DAO<Emprunteur> {
 		return emprunteur;
 	}
 
+	public List<Emprunteur> findAll(){
+		List<Emprunteur> listEmprunteurs = new ArrayList<>();
+		Emprunteur emprunteur = new Emprunteur();
+		try{
+			ResultSet result = this.connect.createStatement(
+					ResultSet.TYPE_SCROLL_INSENSITIVE,
+	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Emprunteur");
+			while(result.next())
+			{
+				emprunteur = new Emprunteur(result.getString("Nom"), result.getString("Prenom"),
+						result.getDate("DateNaiss"), result.getString("Email"), result.getString("Password"), result.getInt("Unite"));
+				listEmprunteurs.add(emprunteur);
+			}
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		return listEmprunteurs;
+	}
+	
 	public boolean alreadyExist(String text) {
 		// TODO Auto-generated method stub
 		return false;

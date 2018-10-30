@@ -21,10 +21,12 @@ public class Dashboard_Administrateur extends JFrame {
 
 	private JPanel contentPane;
 	private Connection connect;
+	private Administrateur currentAdministrateur;
 	/**
 	 * Create the frame.
 	 */
 	public Dashboard_Administrateur(Connection connect, Administrateur currentAdministrateur) {
+		this.currentAdministrateur=currentAdministrateur;
 		this.connect=connect;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);

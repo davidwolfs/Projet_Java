@@ -1,4 +1,4 @@
-package gui;
+package gui.administrateur;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,7 +28,7 @@ import gui.emprunteur.Dashboard_Emprunteur;
 import gui.preteur.Dashboard_Preteur;
 import javax.swing.JPasswordField;
 
-public class CreerUser extends JFrame {
+public class Modifier_Administrateur extends JFrame {
 	private Connection connect;
 	private JPanel contentPane;
 	private JTextField textFieldNom;
@@ -38,13 +38,16 @@ public class CreerUser extends JFrame {
 	private JButton btnRetour;
 	private JLabel labelMsgErreur;
 	private JPasswordField passwordField;
-
+	private Administrateur currentAdministrateur;
+	private Administrateur adminAModifier;
 	/**
 	 * Create the frame.
 	 */
-	public CreerUser(Connection connect) {
+	public Modifier_Administrateur(Connection connect, Administrateur currentAdministrateur, Administrateur adminAModifier) {
 		setTitle("Projet Jeux Video");
 		this.connect = connect;
+		this.currentAdministrateur=currentAdministrateur;
+		this.adminAModifier=adminAModifier;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 436, 454);
 		contentPane = new JPanel();
@@ -74,31 +77,36 @@ public class CreerUser extends JFrame {
 
 		textFieldNom = new JTextField();
 		textFieldNom.setBounds(233, 21, 162, 20);
+		textFieldNom.setText(adminAModifier.getNom());
 		contentPane.add(textFieldNom);
 		textFieldNom.setColumns(10);
 
 		textFieldPrenom = new JTextField();
 		textFieldPrenom.setBounds(233, 68, 162, 20);
+		textFieldPrenom.setText(adminAModifier.getPrenom());
 		contentPane.add(textFieldPrenom);
 		textFieldPrenom.setColumns(10);
 
 		dateChooserDateNaiss = new JDateChooser();
 		dateChooserDateNaiss.setBounds(233, 115, 162, 20);
+		dateChooserDateNaiss.setDate(adminAModifier.getDateNaiss());
 		contentPane.add(dateChooserDateNaiss);
 
 		textFieldEmail = new JTextField();
 		textFieldEmail.setBounds(233, 160, 162, 20);
+		textFieldEmail.setText(adminAModifier.getEmail());
 		contentPane.add(textFieldEmail);
 		textFieldEmail.setColumns(10);
 
 		passwordField = new JPasswordField();
 		passwordField.setBounds(233, 209, 162, 20);
+		passwordField.setText(adminAModifier.getPassword());
 		contentPane.add(passwordField);
 
 		ButtonGroup personneRadio = new ButtonGroup();
 
-		JButton btnCreerUser = new JButton("Cr\u00E9er");
-		btnCreerUser.addActionListener(new ActionListener() {
+		JButton btnModifierAdministrateur = new JButton("Modifier");
+		btnModifierAdministrateur.addActionListener(new ActionListener() {
 			public void choixTypePersonne() {
 				labelMsgErreur.setText("Veuillez sélectionner un type de personne.");
 			}
@@ -153,26 +161,23 @@ public class CreerUser extends JFrame {
 				 * (rdbtnPreteur.isSelected()) {
 				 */
 				if (champsVide()) {
-					PreteurDAO preteurDAO = new PreteurDAO(connect);
-					Preteur preteur = new Preteur(textFieldNom.getText(), textFieldPrenom.getText(),
-							dateChooserDateNaiss.getDate(), textFieldEmail.getText(), passwordField.getText());
-					System.out.println("DATE DAO : " + dateChooserDateNaiss.getDate());
-					EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
-					Emprunteur emprunteur = new Emprunteur(textFieldNom.getText(), textFieldPrenom.getText(),
-							dateChooserDateNaiss.getDate(), textFieldEmail.getText(), passwordField.getText());
-					System.out.println("DATE DAO : " + dateChooserDateNaiss.getDate());
-					if (preteurDAO.alreadyExist(textFieldEmail.getText())) {
+					AdministrateurDAO administrateurDAO = new AdministrateurDAO(connect);
+					if (administrateurDAO.alreadyExist(textFieldEmail.getText())) {
 						labelMsgErreur.setText("Cet adresse e-mail existe déjà.");
-					} else if (emprunteurDAO.alreadyExist(textFieldEmail.getText())) {
-						labelMsgErreur.setText("Cet adresse e-mail existe déjà.");
+					
 					} else {
-						preteurDAO.create(preteur);
+						adminAModifier.setNom(textFieldNom.getText());
+						adminAModifier.setPrenom(textFieldPrenom.getText());
+						adminAModifier.setDateNaiss(dateChooserDateNaiss.getDate());
+						adminAModifier.setEmail(textFieldEmail.getText());
+						adminAModifier.setPassword(passwordField.getText());
+						
+						administrateurDAO.update(adminAModifier);
 
-						emprunteurDAO.create(emprunteur);
 						dispose();
-						Connexion connexion = new Connexion(connect);
-						connexion.setVisible(true);
-						connexion.setResizable(false);
+						Gestion_Utilisateurs gestion_Utilisateurs = new Gestion_Utilisateurs(connect, currentAdministrateur);
+						gestion_Utilisateurs.setVisible(true);
+						gestion_Utilisateurs.setResizable(false);
 					}
 				}
 				// }
@@ -194,16 +199,16 @@ public class CreerUser extends JFrame {
 				}*/
 			}
 		});
-		btnCreerUser.setBounds(41, 341, 89, 23);
-		contentPane.add(btnCreerUser);
+		btnModifierAdministrateur.setBounds(41, 341, 89, 23);
+		contentPane.add(btnModifierAdministrateur);
 
 		btnRetour = new JButton("Retour");
 		btnRetour.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
-				Connexion connexion = new Connexion(connect);
-				connexion.setVisible(true);
-				connexion.setResizable(false);
+				Gestion_Utilisateurs gestion_Utilisateurs = new Gestion_Utilisateurs(connect, currentAdministrateur);
+				gestion_Utilisateurs.setVisible(true);
+				gestion_Utilisateurs.setResizable(false);
 			}
 		});
 		btnRetour.setBounds(277, 341, 89, 23);

@@ -19,6 +19,11 @@ public class Emprunteur extends Joueur {
 		super(nom, prenom, dateNaiss, email, password);
 		this.unite = 10;
 	}
+	
+	public Emprunteur(String nom, String prenom, Date dateNaiss, String email, String password, int unite) {
+		super(nom, prenom, dateNaiss, email, password);
+		this.unite = unite;
+	}
 
 	public Emprunteur() {
 		super();
