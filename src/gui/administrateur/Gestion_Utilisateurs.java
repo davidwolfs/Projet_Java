@@ -96,6 +96,14 @@ public class Gestion_Utilisateurs extends JFrame {
 		contentPane.add(btnRetour);
 
 		JButton btnAjouterAdministrateur = new JButton("Ajouter un administrateur");
+		btnAjouterAdministrateur.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				Ajouter_Administrateur ajouter_Administrateur = new Ajouter_Administrateur(connect, currentAdministrateur);
+				ajouter_Administrateur.setVisible(true);
+				ajouter_Administrateur.setResizable(false);
+			}
+		});
 		btnAjouterAdministrateur.setBounds(10, 198, 200, 23);
 		contentPane.add(btnAjouterAdministrateur);
 
@@ -177,6 +185,10 @@ public class Gestion_Utilisateurs extends JFrame {
 		JButton btnAjouterParticipant = new JButton("Ajouter un participant");
 		btnAjouterParticipant.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				dispose();
+				Ajouter_Participant ajouter_Participant = new Ajouter_Participant(connect, currentAdministrateur);
+				ajouter_Participant.setVisible(true);
+				ajouter_Participant.setResizable(false);
 			}
 		});
 		btnAjouterParticipant.setBounds(10, 474, 200, 23);
