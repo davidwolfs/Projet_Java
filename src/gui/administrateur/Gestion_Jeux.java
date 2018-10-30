@@ -95,6 +95,10 @@ public class Gestion_Jeux extends JFrame {
 		contentPane.add(btnAjouterJeu);
 
 		JButton btnModifierJeu = new JButton("Modifier");
+		btnModifierJeu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		btnModifierJeu.setBounds(158, 163, 89, 23);
 		contentPane.add(btnModifierJeu);
 

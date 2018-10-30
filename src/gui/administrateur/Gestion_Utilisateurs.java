@@ -60,18 +60,16 @@ public class Gestion_Utilisateurs extends JFrame {
 
 		for (int i = 0; i < listAdministrateur.size(); i++) {
 			System.out.println(listAdministrateur.get(i).toString());
-			donnees[i] = listAdministrateur.get(i).getNom() + " " + listAdministrateur.get(i).getPrenom()
-			 + " - " +  simpleDateFormat.format(listAdministrateur.get(i).getDateNaiss())
-			+ " - " +  listAdministrateur.get(i).getEmail();
+			donnees[i] = listAdministrateur.get(i).getiD() + " " + listAdministrateur.get(i).getNom() + " " + listAdministrateur.get(i).getPrenom() + " - "
+					+ simpleDateFormat.format(listAdministrateur.get(i).getDateNaiss()) + " - "
+					+ listAdministrateur.get(i).getEmail();
 		}
-		
+
 		JList listAdministrateurs = new JList(donnees);
 		listAdministrateurs.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		listAdministrateurs.setBounds(10, 36, 764, 150);
 		contentPane.add(listAdministrateurs);
-		
-		
-		
+
 		JButton btnDeconnexion = new JButton("D\u00E9connexion");
 		btnDeconnexion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -88,7 +86,8 @@ public class Gestion_Utilisateurs extends JFrame {
 		btnRetour.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				dispose();
-				Dashboard_Administrateur dashboard_Administrateur = new Dashboard_Administrateur(connect, currentAdministrateur);
+				Dashboard_Administrateur dashboard_Administrateur = new Dashboard_Administrateur(connect,
+						currentAdministrateur);
 				dashboard_Administrateur.setVisible(true);
 				dashboard_Administrateur.setResizable(false);
 			}
@@ -100,16 +99,29 @@ public class Gestion_Utilisateurs extends JFrame {
 		btnAjouterAdministrateur.setBounds(10, 198, 200, 23);
 		contentPane.add(btnAjouterAdministrateur);
 
+		JLabel lblMsgErrorAdministrateur = new JLabel("");
+		lblMsgErrorAdministrateur.setBounds(214, 231, 351, 23);
+		contentPane.add(lblMsgErrorAdministrateur);
+
+		JLabel lblMsgErrorParticipant = new JLabel("");
+		lblMsgErrorParticipant.setBounds(214, 508, 305, 23);
+		contentPane.add(lblMsgErrorParticipant);
+
 		JButton btnModifierAdministrateur = new JButton("Modifier un administrateur");
 		btnModifierAdministrateur.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
 				int index = listAdministrateurs.getSelectedIndex();
-				System.out.println(index);
-				dispose();
-				Modifier_Administrateur modifier_Administrateur = new Modifier_Administrateur(connect, currentAdministrateur, listAdministrateur.get(index));
-				modifier_Administrateur.setVisible(true);
-				modifier_Administrateur.setResizable(false);
+
+				if (index == -1) {
+					lblMsgErrorAdministrateur.setText("Veuillez sélectionner un administrateur.");
+				} else {
+					System.out.println(index);
+					dispose();
+					Modifier_Administrateur modifier_Administrateur = new Modifier_Administrateur(connect,
+							currentAdministrateur, listAdministrateur.get(index));
+					modifier_Administrateur.setVisible(true);
+					modifier_Administrateur.setResizable(false);
+				}
 			}
 		});
 		btnModifierAdministrateur.setBounds(318, 198, 185, 23);
@@ -118,19 +130,24 @@ public class Gestion_Utilisateurs extends JFrame {
 		JButton btnSupprimerAdministrateur = new JButton("Supprimer un administrateur");
 		btnSupprimerAdministrateur.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int input = JOptionPane.showConfirmDialog(null, "Êtes-vous sûr de bien vouloir supprimer cette administrateur ?");
-				if(input == 0)
-				{
-					int index = listAdministrateurs.getSelectedIndex();
-					System.out.println(index);
-					int id = listAdministrateur.get(index).getiD();
-					System.out.println(id);
-					administrateurDAO.delete(listAdministrateur.get(index));
-					
-					dispose();
-					Gestion_Utilisateurs gestion_Utilisateurs = new Gestion_Utilisateurs(connect, currentAdministrateur);
-					gestion_Utilisateurs.setVisible(true);
-					gestion_Utilisateurs.setResizable(false);
+				int index = listAdministrateurs.getSelectedIndex();
+				System.out.println(index);
+				if (index == -1) {
+					lblMsgErrorAdministrateur.setText("Veuillez sélectionner un administrateur.");
+				} else {
+					int input = JOptionPane.showConfirmDialog(null,
+							"Êtes-vous sûr de bien vouloir supprimer cette administrateur ?");
+					if (input == 0) {
+						int id = listAdministrateur.get(index).getiD();
+						System.out.println(id);
+						administrateurDAO.delete(listAdministrateur.get(index));
+
+						dispose();
+						Gestion_Utilisateurs gestion_Utilisateurs = new Gestion_Utilisateurs(connect,
+								currentAdministrateur);
+						gestion_Utilisateurs.setVisible(true);
+						gestion_Utilisateurs.setResizable(false);
+					}
 				}
 			}
 		});
@@ -141,7 +158,6 @@ public class Gestion_Utilisateurs extends JFrame {
 		lblListeParticipants.setBounds(10, 255, 146, 14);
 		contentPane.add(lblListeParticipants);
 
-		
 		EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
 		List<Emprunteur> listEmprunteurs = emprunteurDAO.findAll();
 
@@ -149,28 +165,68 @@ public class Gestion_Utilisateurs extends JFrame {
 
 		for (int i = 0; i < listEmprunteurs.size(); i++) {
 			System.out.println(listEmprunteurs.get(i).toString());
-			donnees2[i] = listEmprunteurs.get(i).getNom() + " " + listEmprunteurs.get(i).getPrenom()
-			 + " - " +  simpleDateFormat.format(listEmprunteurs.get(i).getDateNaiss())
-			+ " - " +  listEmprunteurs.get(i).getEmail()
-			+ " - " + listEmprunteurs.get(i).getUnite() + " U";
+			donnees2[i] =  listEmprunteurs.get(i).getiD() + " " +  listEmprunteurs.get(i).getNom() + " " + listEmprunteurs.get(i).getPrenom() + " - "
+					+ simpleDateFormat.format(listEmprunteurs.get(i).getDateNaiss()) + " - "
+					+ listEmprunteurs.get(i).getEmail() + " - " + listEmprunteurs.get(i).getUnite() + " U";
 		}
-		
+
 		JList listEmprunteur = new JList(donnees2);
 		listEmprunteur.setBounds(10, 296, 764, 150);
 		contentPane.add(listEmprunteur);
 
+		JButton btnAjouterParticipant = new JButton("Ajouter un participant");
+		btnAjouterParticipant.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnAjouterParticipant.setBounds(10, 474, 200, 23);
+		contentPane.add(btnAjouterParticipant);
 
-		JButton btnNewButton = new JButton("Ajouter un participant");
-		btnNewButton.setBounds(10, 474, 200, 23);
-		contentPane.add(btnNewButton);
+		JButton btnModifierParticipant = new JButton("Modifier un participant");
+		btnModifierParticipant.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int index = listEmprunteur.getSelectedIndex();
 
-		JButton btnNewButton_1 = new JButton("Modifier un participant");
-		btnNewButton_1.setBounds(318, 474, 185, 23);
-		contentPane.add(btnNewButton_1);
+				if (index == -1) {
+					lblMsgErrorParticipant.setText("Veuillez sélectionner un participant.");
+				} else {
+					System.out.println(index);
+					dispose();
+					Modifier_Participant modifier_Participant = new Modifier_Participant(connect,
+							currentAdministrateur, listEmprunteurs.get(index));
+					modifier_Participant.setVisible(true);
+					modifier_Participant.setResizable(false);
+				}
+			}
+		});
+		btnModifierParticipant.setBounds(318, 474, 185, 23);
+		contentPane.add(btnModifierParticipant);
 
-		JButton btnNewButton_2 = new JButton("Supprimer un participant");
-		btnNewButton_2.setBounds(567, 474, 193, 23);
-		contentPane.add(btnNewButton_2);
+		JButton btnSupprimerParticipant = new JButton("Supprimer un participant");
+		btnSupprimerParticipant.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int index = listEmprunteur.getSelectedIndex();
+				System.out.println(index);
+				if (index == -1) {
+					lblMsgErrorParticipant.setText("Veuillez sélectionner un participant.");
+				} else {
+					int input = JOptionPane.showConfirmDialog(null,
+							"Êtes-vous sûr de bien vouloir supprimer ce participant ?");
+					if (input == 0) {
+						int id = listEmprunteurs.get(index).getiD();
+						System.out.println(id);
+						emprunteurDAO.delete(listEmprunteurs.get(index));
 
+						dispose();
+						Gestion_Utilisateurs gestion_Utilisateurs = new Gestion_Utilisateurs(connect,
+								currentAdministrateur);
+						gestion_Utilisateurs.setVisible(true);
+						gestion_Utilisateurs.setResizable(false);
+					}
+				}
+			}
+		});
+		btnSupprimerParticipant.setBounds(567, 474, 193, 23);
+		contentPane.add(btnSupprimerParticipant);
 	}
 }

@@ -47,15 +47,40 @@ public class EmprunteurDAO extends DAO<Emprunteur> {
 	}
 
 	@Override
-	public boolean delete(Emprunteur obj) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean delete(Emprunteur emprunteur) {
+		boolean statementResult;
+		try {
+			Statement statement = connect.createStatement();
+			String query = "DELETE FROM Emprunteur WHERE ID = " + emprunteur.getiD() + ";";
+			System.out.println(query);
+			statementResult = true;
+			statementResult = statement.execute(query);
+		} catch (SQLException e) {
+			statementResult = false;
+			e.printStackTrace();
+			System.out.println(e);
+		}
+		System.out.println(statementResult);
+		return statementResult;
 	}
 
 	@Override
-	public boolean update(Emprunteur obj) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean update(Emprunteur emprunteur) {
+		System.out.println("Mon objet depuis la méthode update : " + emprunteur);
+		boolean statementResult;
+		try {
+			Statement statement = connect.createStatement();
+			String query = "UPDATE Emprunteur SET Nom = " + "'" + emprunteur.getNom() +  "', " + "Prenom = " + "'" + emprunteur.getPrenom() + "', " +  "DateNaiss = " + "'" + new Timestamp(emprunteur.getDateNaiss().getTime()) + "', " + "Email = " + "'" + emprunteur.getEmail() + "', " + "Password = " + "'" + emprunteur.getPassword() + "'" + " WHERE ID = " + emprunteur.getiD() + ";";
+			System.out.println(query);
+			statementResult = true;
+			statementResult = statement.execute(query);
+		} catch (SQLException e) {
+			statementResult = false;
+			e.printStackTrace();
+			System.out.println(e);
+		}
+		System.out.println(statementResult);
+		return statementResult;
 	}
 
 	@Override
@@ -110,7 +135,7 @@ public class EmprunteurDAO extends DAO<Emprunteur> {
 	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Emprunteur");
 			while(result.next())
 			{
-				emprunteur = new Emprunteur(result.getString("Nom"), result.getString("Prenom"),
+				emprunteur = new Emprunteur(result.getInt("ID"), result.getString("Nom"), result.getString("Prenom"),
 						result.getDate("DateNaiss"), result.getString("Email"), result.getString("Password"), result.getInt("Unite"));
 				listEmprunteurs.add(emprunteur);
 			}

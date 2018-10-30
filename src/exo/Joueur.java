@@ -12,6 +12,10 @@ public class Joueur extends Personne {
 		this.date_en = date_en;
 	}
 
+	public Joueur(int id, String nom, String prenom, Date dateNaiss, String email, String password) {
+		super(id, nom, prenom, dateNaiss, email, password);
+	}
+	
 	public Joueur(String nom, String prenom, Date dateNaiss, String email, String password) {
 		super(nom, prenom, dateNaiss, email, password);
 	}
