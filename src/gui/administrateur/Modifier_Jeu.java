@@ -12,6 +12,7 @@ import javax.swing.JTextField;
 import javax.swing.JCheckBox;
 import com.toedter.calendar.JDateChooser;
 
+import dao.AdministrateurDAO;
 import dao.EmprunteurDAO;
 import dao.JeuDAO;
 import dao.PreteurDAO;
@@ -26,18 +27,20 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.awt.event.ActionEvent;
 
-public class Ajouter_Jeu extends JFrame {
+public class Modifier_Jeu extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textFieldNom;
 	private JTextField textFieldTarif;
 	private JTextField textFieldAdapterTarif;
 	private Connection connect;
+	private Jeu jeuAModifier;
 	/**
 	 * Create the frame.
 	 */
-	public Ajouter_Jeu(Connection connect, Administrateur currentAdministrateur) {
+	public Modifier_Jeu(Connection connect, Administrateur currentAdministrateur, Jeu jeuAModifier) {
 		this.connect=connect;
+		this.jeuAModifier=jeuAModifier;
 		setTitle("Ajouter un jeu");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 430, 439);
@@ -93,8 +96,8 @@ public class Ajouter_Jeu extends JFrame {
 		labelMsgErreur.setBounds(69, 360, 313, 29);
 		contentPane.add(labelMsgErreur);
 		
-		JButton btnAjouter = new JButton("Ajouter");
-		btnAjouter.addActionListener(new ActionListener() {
+		JButton btnModifier = new JButton("Modifier");
+		btnModifier.addActionListener(new ActionListener() {
 			
 			public boolean champsVide() {
 				boolean valid = true;
@@ -113,23 +116,27 @@ public class Ajouter_Jeu extends JFrame {
 					JeuDAO jeuDAO = new JeuDAO(connect);
 					/*if (jeuDAO.alreadyExist(textFieldEmail.getText())) {
 						labelMsgErreur.setText("Cet adresse e-mail existe déjà.");
+					
 					} else {*/
+						jeuAModifier.setNom(textFieldNom.getText());
+						jeuAModifier.setDispo((chckbxDisponibilite.isSelected()));
+						jeuAModifier.setTarif((Double.parseDouble(textFieldTarif.getText())));
+						jeuAModifier.setDateTarif((dateChooserDateTarif.getDate()));
+						jeuAModifier.setAdapterTarif((textFieldAdapterTarif.getText()));
 						
-						Jeu jeu = new Jeu(textFieldNom.getText(), chckbxDisponibilite.isSelected(), Double.parseDouble(textFieldTarif.getText()), dateChooserDateTarif.getDate(), textFieldAdapterTarif.getText());
-						System.out.println(jeu.getNom() + " " + jeu.isDispo() + " " +  jeu.getTarif() + " " +  jeu.getDateTarif() + " " +  jeu.getAdapterTarif());
-						jeuDAO.create(jeu);
-						
+						jeuDAO.update(jeuAModifier);
+
 						dispose();
 						Gestion_Jeux gestion_Jeux = new Gestion_Jeux(connect, currentAdministrateur);
 						gestion_Jeux.setVisible(true);
 						gestion_Jeux.setResizable(false);
-					//}
-				}
+					}
+				//}
 				
 			}
 		});
-		btnAjouter.setBounds(69, 329, 89, 23);
-		contentPane.add(btnAjouter);
+		btnModifier.setBounds(69, 329, 89, 23);
+		contentPane.add(btnModifier);
 		
 		JButton btnRetour = new JButton("Retour");
 		btnRetour.addActionListener(new ActionListener() {

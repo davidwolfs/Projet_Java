@@ -5,6 +5,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+
+import exo.Emprunteur;
 import exo.Preteur;
 
 public class PreteurDAO extends DAO<Preteur> {
@@ -92,8 +94,22 @@ public class PreteurDAO extends DAO<Preteur> {
 		return preteur;
 	}
 
-	public boolean alreadyExist(String text) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean alreadyExist(String email) {
+		boolean existe = false;
+		Preteur preteur;
+		try {
+			ResultSet result = this.connect
+					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
+					.executeQuery("SELECT * FROM Preteur WHERE Email = " + "\"" + email + "\"");
+			if (result.first()) {
+				preteur = new Preteur(result.getString("Nom"), result.getString("Prenom"),
+						result.getDate("DateNaiss"), email, result.getString("Password"));
+				existe = true;
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return existe;
 	}
 }

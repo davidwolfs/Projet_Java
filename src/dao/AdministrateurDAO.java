@@ -23,9 +23,11 @@ public class AdministrateurDAO extends DAO<Administrateur> {
 
 	@Override
 	public boolean create(Administrateur administrateur) {
-	/*	Date maintenant = new Date(); 
-		SimpleDateFormat formatDateJour = new SimpleDateFormat("dd-MM-yy"); 
-		String dateFormatee = formatDateJour.format(maintenant); */
+		/*
+		 * Date maintenant = new Date(); SimpleDateFormat formatDateJour = new
+		 * SimpleDateFormat("dd-MM-yy"); String dateFormatee =
+		 * formatDateJour.format(maintenant);
+		 */
 		java.util.Date date = new java.util.Date();
 		date = administrateur.getDateNaiss();
 		System.out.println(new Timestamp(date.getTime()));
@@ -33,8 +35,9 @@ public class AdministrateurDAO extends DAO<Administrateur> {
 		try {
 			Statement statement = connect.createStatement();
 			String query = "INSERT INTO Administrateur (Nom, Prenom, DateNaiss, Email, Password) VALUES ('"
-					+ administrateur.getNom() + "','" + administrateur.getPrenom() + "','" + new Timestamp(date.getTime()) + "','"
-					+ administrateur.getEmail() + "','" + administrateur.getPassword() + "')" + ";";
+					+ administrateur.getNom() + "','" + administrateur.getPrenom() + "','"
+					+ new Timestamp(date.getTime()) + "','" + administrateur.getEmail() + "','"
+					+ administrateur.getPassword() + "')" + ";";
 			System.out.println(query);
 			statementResult = true;
 			statementResult = statement.execute(query);
@@ -71,7 +74,11 @@ public class AdministrateurDAO extends DAO<Administrateur> {
 		boolean statementResult;
 		try {
 			Statement statement = connect.createStatement();
-			String query = "UPDATE Administrateur SET Nom = " + "'" + administrateur.getNom() +  "', " + "Prenom = " + "'" + administrateur.getPrenom() + "', " +  "DateNaiss = " + "'" + new Timestamp(administrateur.getDateNaiss().getTime()) + "', " + "Email = " + "'" + administrateur.getEmail() + "', " + "Password = " + "'" + administrateur.getPassword() + "'" + " WHERE ID = " + administrateur.getiD() + ";";
+			String query = "UPDATE Administrateur SET Nom = " + "'" + administrateur.getNom() + "', " + "Prenom = "
+					+ "'" + administrateur.getPrenom() + "', " + "DateNaiss = " + "'"
+					+ new Timestamp(administrateur.getDateNaiss().getTime()) + "', " + "Email = " + "'"
+					+ administrateur.getEmail() + "', " + "Password = " + "'" + administrateur.getPassword() + "'"
+					+ " WHERE ID = " + administrateur.getiD() + ";";
 			System.out.println(query);
 			statementResult = true;
 			statementResult = statement.execute(query);
@@ -109,48 +116,59 @@ public class AdministrateurDAO extends DAO<Administrateur> {
 		}
 		return existe;
 	}
-	
-	public Administrateur findAdministrateurByEmailPassword(String email, String password){
+
+	public Administrateur findAdministrateurByEmailPassword(String email, String password) {
 		Administrateur administrateur = new Administrateur();
-		try{
-			ResultSet result = this.connect.createStatement(
-					ResultSet.TYPE_SCROLL_INSENSITIVE,
-	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Administrateur WHERE Email = " + "\"" + email + "\" AND Password = " + "\"" + password + "\"");
-			if(result.first())
-			{
+		try {
+			ResultSet result = this.connect
+					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
+					.executeQuery("SELECT * FROM Administrateur WHERE Email = " + "\"" + email + "\" AND Password = "
+							+ "\"" + password + "\"");
+			if (result.first()) {
 				administrateur = new Administrateur(result.getString("Nom"), result.getString("Prenom"),
 						result.getDate("DateNaiss"), email, password);
 			}
-		}
-		catch(SQLException e){
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return administrateur;
 	}
-	
-	public List<Administrateur> findAll(){
+
+	public List<Administrateur> findAll() {
 		List<Administrateur> listAdministrateurs = new ArrayList<>();
 		Administrateur administrateur = new Administrateur();
-		try{
-			ResultSet result = this.connect.createStatement(
-					ResultSet.TYPE_SCROLL_INSENSITIVE,
-	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Administrateur");
-			while(result.next())
-			{
-				administrateur = new Administrateur(result.getInt("ID"), result.getString("Nom"), result.getString("Prenom"),
-						result.getDate("DateNaiss"), result.getString("Email"), result.getString("Password"));
+		try {
+			ResultSet result = this.connect
+					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
+					.executeQuery("SELECT * FROM Administrateur");
+			while (result.next()) {
+				administrateur = new Administrateur(result.getInt("ID"), result.getString("Nom"),
+						result.getString("Prenom"), result.getDate("DateNaiss"), result.getString("Email"),
+						result.getString("Password"));
 				listAdministrateurs.add(administrateur);
 			}
-		}
-		catch(SQLException e){
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return listAdministrateurs;
 	}
 
-	
-//TODO SELECT * FROM ADMINISTRATEUR WHERE EMAIL = email si il en trouve au moins un on return true, sinon return false
 	public boolean alreadyExist(String email) {
-		return false;
+		boolean existe = false;
+		Administrateur administrateur;
+		try {
+			ResultSet result = this.connect
+					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
+					.executeQuery("SELECT * FROM Administrateur WHERE Email = " + "\"" + email + "\"");
+			if (result.first()) {
+				administrateur = new Administrateur(result.getString("Nom"), result.getString("Prenom"),
+						result.getDate("DateNaiss"), email, result.getString("Password"));
+				existe = true;
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return existe;
 	}
 }

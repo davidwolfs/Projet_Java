@@ -9,12 +9,22 @@ import dao.JeuDAO;
 
 public class Jeu {
 	private Connection connect;
+	private int id;
 	private String nom;
 	private boolean dispo;
 	private double tarif;
 	private Date dateTarif;
 	private String adapterTarif;
 	private Console console;
+
+	public Jeu(int id, String nom, boolean dispo, double tarif, Date dateTarif, String adapterTarif) {
+		this.id = id;
+		this.nom = nom;
+		this.dispo = dispo;
+		this.tarif = tarif;
+		this.dateTarif = dateTarif;
+		this.adapterTarif = adapterTarif;
+	}
 
 	public Jeu(String nom, boolean dispo, double tarif, Date dateTarif, String adapterTarif) {
 		this.nom = nom;
@@ -23,9 +33,17 @@ public class Jeu {
 		this.dateTarif = dateTarif;
 		this.adapterTarif = adapterTarif;
 	}
-	
+
 	public Jeu() {
-		
+
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getNom() {
@@ -67,7 +85,7 @@ public class Jeu {
 	public void setAdapterTarif(String adapterTarif) {
 		this.adapterTarif = adapterTarif;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Jeu [nom=" + nom + ", dispo=" + dispo + ", tarif=" + tarif + ", dateTarif=" + dateTarif

@@ -26,7 +26,7 @@ public class JeuDAO extends DAO<Jeu>{
 		boolean statementResult;
 		try {
 			Statement statement = connect.createStatement();
-			String query = "INSERT INTO Jeu (Nom, Dispo, Tarif, DateTarif, AdapterTarif) VALUES ('" + jeu.getNom() + "','" + jeu.isDispo() + "','" + new Timestamp(date.getTime()) + "','" + jeu.getAdapterTarif() + "')" + ";";
+			String query = "INSERT INTO Jeu (Nom, Dispo, Tarif, DateTarif, AdapterTarif, IDReservation) VALUES ('" + jeu.getNom() + "','" + jeu.isDispo() + "','" + jeu.getTarif() + "','" + new Timestamp(date.getTime()) + "','" + jeu.getAdapterTarif() + "','" + 3 + "')" + ";";
 			System.out.println(query);
 			statementResult = true;
 			statementResult = statement.execute(query);
@@ -40,9 +40,21 @@ public class JeuDAO extends DAO<Jeu>{
 	}
 
 	@Override
-	public boolean delete(Jeu obj) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean delete(Jeu jeu) {
+		boolean statementResult;
+		try {
+			Statement statement = connect.createStatement();
+			String query = "DELETE FROM Jeu WHERE ID = " + jeu.getId() + ";";
+			System.out.println(query);
+			statementResult = true;
+			statementResult = statement.execute(query);
+		} catch (SQLException e) {
+			statementResult = false;
+			e.printStackTrace();
+			System.out.println(e);
+		}
+		System.out.println(statementResult);
+		return statementResult;
 	}
 
 	@Override
@@ -63,10 +75,10 @@ public class JeuDAO extends DAO<Jeu>{
 		try{
 			ResultSet result = this.connect.createStatement(
 					ResultSet.TYPE_SCROLL_INSENSITIVE,
-	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Administrateur");
+	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Jeu");
 			while(result.next())
 			{
-				jeu = new Jeu(result.getString("Nom"), result.getBoolean("Dispo"),
+				jeu = new Jeu(result.getInt("ID"), result.getString("Nom"), result.getBoolean("Dispo"),
 						result.getInt("Tarif"), result.getDate("DateTarif"), result.getString("AdapterTarif"));
 				listJeux.add(jeu);
 			}

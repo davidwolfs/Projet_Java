@@ -60,7 +60,8 @@ public class Gestion_Utilisateurs extends JFrame {
 
 		for (int i = 0; i < listAdministrateur.size(); i++) {
 			System.out.println(listAdministrateur.get(i).toString());
-			donnees[i] = listAdministrateur.get(i).getiD() + " " + listAdministrateur.get(i).getNom() + " " + listAdministrateur.get(i).getPrenom() + " - "
+			donnees[i] = listAdministrateur.get(i).getNom() + " "
+					+ listAdministrateur.get(i).getPrenom() + " - "
 					+ simpleDateFormat.format(listAdministrateur.get(i).getDateNaiss()) + " - "
 					+ listAdministrateur.get(i).getEmail();
 		}
@@ -99,7 +100,8 @@ public class Gestion_Utilisateurs extends JFrame {
 		btnAjouterAdministrateur.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
-				Ajouter_Administrateur ajouter_Administrateur = new Ajouter_Administrateur(connect, currentAdministrateur);
+				Ajouter_Administrateur ajouter_Administrateur = new Ajouter_Administrateur(connect,
+						currentAdministrateur);
 				ajouter_Administrateur.setVisible(true);
 				ajouter_Administrateur.setResizable(false);
 			}
@@ -142,6 +144,8 @@ public class Gestion_Utilisateurs extends JFrame {
 				System.out.println(index);
 				if (index == -1) {
 					lblMsgErrorAdministrateur.setText("Veuillez sélectionner un administrateur.");
+				} else if (index == 0) {
+					lblMsgErrorAdministrateur.setText("Vous ne pouvez pas supprimer cet administrateur.");
 				} else {
 					int input = JOptionPane.showConfirmDialog(null,
 							"Êtes-vous sûr de bien vouloir supprimer cette administrateur ?");
@@ -173,7 +177,8 @@ public class Gestion_Utilisateurs extends JFrame {
 
 		for (int i = 0; i < listEmprunteurs.size(); i++) {
 			System.out.println(listEmprunteurs.get(i).toString());
-			donnees2[i] =  listEmprunteurs.get(i).getiD() + " " +  listEmprunteurs.get(i).getNom() + " " + listEmprunteurs.get(i).getPrenom() + " - "
+			donnees2[i] = listEmprunteurs.get(i).getNom() + " "
+					+ listEmprunteurs.get(i).getPrenom() + " - "
 					+ simpleDateFormat.format(listEmprunteurs.get(i).getDateNaiss()) + " - "
 					+ listEmprunteurs.get(i).getEmail() + " - " + listEmprunteurs.get(i).getUnite() + " U";
 		}
@@ -204,8 +209,8 @@ public class Gestion_Utilisateurs extends JFrame {
 				} else {
 					System.out.println(index);
 					dispose();
-					Modifier_Participant modifier_Participant = new Modifier_Participant(connect,
-							currentAdministrateur, listEmprunteurs.get(index));
+					Modifier_Participant modifier_Participant = new Modifier_Participant(connect, currentAdministrateur,
+							listEmprunteurs.get(index));
 					modifier_Participant.setVisible(true);
 					modifier_Participant.setResizable(false);
 				}

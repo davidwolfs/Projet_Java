@@ -146,8 +146,22 @@ public class EmprunteurDAO extends DAO<Emprunteur> {
 		return listEmprunteurs;
 	}
 	
-	public boolean alreadyExist(String text) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean alreadyExist(String email) {
+		boolean existe = false;
+		Emprunteur emprunteur;
+		try {
+			ResultSet result = this.connect
+					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
+					.executeQuery("SELECT * FROM Emprunteur WHERE Email = " + "\"" + email + "\"");
+			if (result.first()) {
+				emprunteur = new Emprunteur(result.getString("Nom"), result.getString("Prenom"),
+						result.getDate("DateNaiss"), email, result.getString("Password"));
+				existe = true;
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return existe;
 	}
 }
