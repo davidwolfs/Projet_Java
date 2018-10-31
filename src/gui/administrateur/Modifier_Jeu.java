@@ -70,24 +70,24 @@ public class Modifier_Jeu extends JFrame {
 		contentPane.add(lblAdapterTarif);
 		
 		textFieldNom = new JTextField();
-		textFieldNom.setBounds(251, 42, 131, 20);
+		textFieldNom.setBounds(251, 45, 131, 20);
 		textFieldNom.setText(jeuAModifier.getNom());
 		contentPane.add(textFieldNom);
 		textFieldNom.setColumns(10);
 		
 		JCheckBox chckbxDisponibilite = new JCheckBox("Disponible");
-		chckbxDisponibilite.setBounds(252, 78, 130, 20);
+		chckbxDisponibilite.setBounds(251, 88, 130, 20);
 		chckbxDisponibilite.setSelected(jeuAModifier.isDispo());
 		contentPane.add(chckbxDisponibilite);
 		
 		textFieldTarif = new JTextField();
-		textFieldTarif.setBounds(251, 114, 131, 20);
-		textFieldTarif.setText(jeuAModifier.getNom());
+		textFieldTarif.setBounds(251, 126, 131, 20);
+		textFieldTarif.setText(String.valueOf(jeuAModifier.getTarif()));
 		contentPane.add(textFieldTarif);
 		textFieldTarif.setColumns(10);
 		
 		JDateChooser dateChooserDateTarif = new JDateChooser();
-		dateChooserDateTarif.setBounds(251, 160, 131, 20);
+		dateChooserDateTarif.setBounds(251, 166, 131, 20);
 		dateChooserDateTarif.setDate(jeuAModifier.getDateTarif());
 		contentPane.add(dateChooserDateTarif);
 		
@@ -106,7 +106,7 @@ public class Modifier_Jeu extends JFrame {
 			
 			public boolean champsVide() {
 				boolean valid = true;
-				if (textFieldNom.getText().isEmpty() || chckbxDisponibilite.getText().isEmpty()
+				if (textFieldNom.getText().isEmpty()
 						|| textFieldTarif.getText().isEmpty() || ((JTextField) dateChooserDateTarif.getDateEditor().getUiComponent()).getText().isEmpty()
 						|| textFieldAdapterTarif.getText().isEmpty()) {
 					labelMsgErreur.setText("Veuillez remplir tous les champs.");
@@ -123,6 +123,7 @@ public class Modifier_Jeu extends JFrame {
 						labelMsgErreur.setText("Cet adresse e-mail existe déjà.");
 					
 					} else {*/
+					System.out.println(chckbxDisponibilite.getText().isEmpty());
 						jeuAModifier.setNom(textFieldNom.getText());
 						jeuAModifier.setDispo((chckbxDisponibilite.isSelected()));
 						jeuAModifier.setTarif((Double.parseDouble(textFieldTarif.getText())));

@@ -67,21 +67,21 @@ public class Ajouter_Jeu extends JFrame {
 		contentPane.add(lblAdapterTarif);
 		
 		textFieldNom = new JTextField();
-		textFieldNom.setBounds(251, 42, 131, 20);
+		textFieldNom.setBounds(250, 45, 131, 20);
 		contentPane.add(textFieldNom);
 		textFieldNom.setColumns(10);
 		
 		JCheckBox chckbxDisponibilite = new JCheckBox("Disponible");
-		chckbxDisponibilite.setBounds(252, 78, 130, 20);
+		chckbxDisponibilite.setBounds(251, 88, 130, 20);
 		contentPane.add(chckbxDisponibilite);
 		
 		textFieldTarif = new JTextField();
-		textFieldTarif.setBounds(251, 114, 131, 20);
+		textFieldTarif.setBounds(251, 126, 131, 20);
 		contentPane.add(textFieldTarif);
 		textFieldTarif.setColumns(10);
 		
 		JDateChooser dateChooserDateTarif = new JDateChooser();
-		dateChooserDateTarif.setBounds(251, 160, 131, 20);
+		dateChooserDateTarif.setBounds(251, 166, 131, 20);
 		contentPane.add(dateChooserDateTarif);
 		
 		textFieldAdapterTarif = new JTextField();

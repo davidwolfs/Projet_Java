@@ -4,6 +4,10 @@ public class Console {
 	private int id;
 	private String nom;
 
+	public Console() {
+
+	}
+
 	public Console(String nom) {
 		this.nom = nom;
 	}

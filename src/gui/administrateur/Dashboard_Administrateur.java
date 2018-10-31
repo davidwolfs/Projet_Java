@@ -52,6 +52,10 @@ public class Dashboard_Administrateur extends JFrame {
 		JButton btnGestionDesConsoles = new JButton("Gestion des consoles");
 		btnGestionDesConsoles.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				dispose();
+				Gestion_Consoles gestion_Consoles = new Gestion_Consoles(connect, currentAdministrateur);
+				gestion_Consoles.setVisible(true);
+				gestion_Consoles.setResizable(false);
 			}
 		});
 		btnGestionDesConsoles.setBounds(152, 73, 189, 28);
