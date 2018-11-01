@@ -3,6 +3,7 @@ package dao;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 
 import exo.Emprunteur;
 import exo.Reservation;
@@ -20,12 +21,15 @@ public class ReservationDAO extends DAO<Reservation>{
 		return false;
 	}
 
-	public boolean createReservation(Reservation reservation) {
+	public boolean createReservation(Reservation reservation, Emprunteur emprunteur) {
+		java.util.Date date = new java.util.Date();
+		date = reservation.getDateReservation();
+		
 		boolean statementResult;
 		try {
 			Statement statement = connect.createStatement();
 			String query = "INSERT INTO Reservation (DateReservation, IDEmprunteur) VALUES ('" +
-					reservation.getDateReservation() +  1 + "')" + ";";
+					new Timestamp(date.getTime()) + "','" +  emprunteur.getiD() + "')" + ";";
 			System.out.println(query);
 			statementResult = true;
 			statementResult = statement.execute(query);

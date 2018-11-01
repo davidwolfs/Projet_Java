@@ -110,11 +110,11 @@ public class Gestion_Utilisateurs extends JFrame {
 		contentPane.add(btnAjouterAdministrateur);
 
 		JLabel lblMsgErrorAdministrateur = new JLabel("");
-		lblMsgErrorAdministrateur.setBounds(214, 231, 351, 23);
+		lblMsgErrorAdministrateur.setBounds(302, 233, 287, 23);
 		contentPane.add(lblMsgErrorAdministrateur);
 
 		JLabel lblMsgErrorParticipant = new JLabel("");
-		lblMsgErrorParticipant.setBounds(214, 508, 305, 23);
+		lblMsgErrorParticipant.setBounds(302, 516, 241, 23);
 		contentPane.add(lblMsgErrorParticipant);
 
 		JButton btnModifierAdministrateur = new JButton("Modifier un administrateur");

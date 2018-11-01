@@ -5,6 +5,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import dao.JeuDAO;
 import exo.Jeu;
 import exo.Preteur;
 import gui.Main;
@@ -12,6 +13,8 @@ import gui.administrateur.Ajouter_Jeu;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -21,29 +24,14 @@ import javax.swing.JList;
 public class Dashboard_Preteur extends JFrame {
 
 	private JPanel contentPane;
-
-	/**
-	 * Launch the application.
-	 */
-	/*public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Dashboard_Preteur frame = new Dashboard_Preteur();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}*/
-
+	private Connection connect;
 	/**
 	 * Create the frame.
 	 */
-	public Dashboard_Preteur(Preteur preteur) {
+	public Dashboard_Preteur(Connection connect, Preteur preteur) {
+		this.connect=connect;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 593, 413);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -60,20 +48,40 @@ public class Dashboard_Preteur extends JFrame {
 				Main.creerConnexion();
 			}
 		});
-		btnDeconnexion.setBounds(10, 203, 118, 28);
+		btnDeconnexion.setBounds(10, 327, 118, 28);
 		contentPane.add(btnDeconnexion);
 		
-		List<Jeu> listJeu = new ArrayList<>();
-		Jeu jeu = new Jeu("GTA V", true, 50, new Date("26/10/2018"), "Tarif");
-		listJeu.add(jeu);
+		JeuDAO jeuDAO = new JeuDAO(connect);
+		List<Jeu> listJeu = jeuDAO.findAll();
+
+		// List<Vehicule> listVehicule = vehiculeDAO.listVehicule();
+		Object[] jeu = listJeu.toArray();
+
+		Object[] donnees = new Object[listJeu.size()];
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yy");
+
+		for (int i = 0; i < listJeu.size(); i++) {
+			String dispo = " ";
+			if(listJeu.get(i).isDispo())
+			{
+				dispo = "Disponible";
+			}
+			else
+			{
+				dispo = "Indisponible";
+			}
+			
+			System.out.println(listJeu.get(i).toString());
+			donnees[i] = listJeu.get(i).getNom() + " - "
+					+ dispo + " - "
+					+ listJeu.get(i).getTarif() + " - " 
+					+ simpleDateFormat.format(listJeu.get(i).getDateTarif()) + " - "
+					+ listJeu.get(i).getAdapterTarif();
+		}
 		
-		
-				//List<Vehicule> listVehicule = vehiculeDAO.listVehicule();
-		Object[] jeux = listJeu.toArray();
-		
-		JList list = new JList(jeux);
-		list.setBounds(10, 81, 414, 100);
-		contentPane.add(list);
+		JList listJeux = new JList(donnees);
+		listJeux.setBounds(10, 46, 564, 214);
+		contentPane.add(listJeux);
 		
 		JButton btnAjouterExemplaire = new JButton("Ajouter un exemplaire");
 		btnAjouterExemplaire.addActionListener(new ActionListener() {
@@ -83,7 +91,7 @@ public class Dashboard_Preteur extends JFrame {
 				dispose();*/
 			}
 		});
-		btnAjouterExemplaire.setBounds(168, 206, 149, 25);
+		btnAjouterExemplaire.setBounds(196, 329, 149, 25);
 		contentPane.add(btnAjouterExemplaire);
 	}
 }

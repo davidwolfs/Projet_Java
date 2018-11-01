@@ -19,14 +19,15 @@ public class PreteurDAO extends DAO<Preteur> {
 	@Override
 	public boolean create(Preteur preteur) {
 		java.util.Date date = new java.util.Date();
+		java.util.Date currentDate = new java.util.Date();
 		date = preteur.getDateNaiss();
 		System.out.println(new Timestamp(date.getTime()));
 		boolean statementResult;
 		try {
 			Statement statement = connect.createStatement();
-			String query = "INSERT INTO Preteur (Nom, Prenom, DateNaiss,  Email, Password) VALUES ('" + preteur.getNom()
+			String query = "INSERT INTO Preteur (Nom, Prenom, DateNaiss,  Email, Password, Date_en) VALUES ('" + preteur.getNom()
 					+ "','" + preteur.getPrenom() + "','" + new Timestamp(date.getTime()) + "','" + preteur.getEmail()
-					+ "','" + preteur.getPassword() + "')" + ";";
+					+ "','" + preteur.getPassword() + "','" + new Timestamp(currentDate.getTime()) + "')" + ";";
 			System.out.println(query);
 			statementResult = true;
 			statementResult = statement.execute(query);

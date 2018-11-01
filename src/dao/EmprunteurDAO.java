@@ -24,15 +24,17 @@ public class EmprunteurDAO extends DAO<Emprunteur> {
 	@Override
 	public boolean create(Emprunteur emprunteur) {
 		java.util.Date date = new java.util.Date();
+		java.util.Date currentDate = new java.util.Date();
 		date = emprunteur.getDateNaiss();
 		System.out.println(new Timestamp(date.getTime()));
 
 		boolean statementResult;
 		try {
 			Statement statement = connect.createStatement();
-			String query = "INSERT INTO Emprunteur (Nom, Prenom, DateNaiss,  Email, Password, Unite) VALUES ('"
+			String query = "INSERT INTO Emprunteur (Nom, Prenom, DateNaiss,  Email, Password, Unite, Date_en) VALUES ('"
 					+ emprunteur.getNom() + "','" + emprunteur.getPrenom() + "','" + new Timestamp(date.getTime())
-					+ "','" + emprunteur.getEmail() + "','" + emprunteur.getPassword() + "','" + emprunteur.getUnite()
+					+ "','" + emprunteur.getEmail() + "','" + emprunteur.getPassword() + "','" + emprunteur.getUnite() + "','" 
+					+ new Timestamp(currentDate.getTime())
 					+ "')" + ";";
 			System.out.println(query);
 			statementResult = true;
@@ -89,6 +91,20 @@ public class EmprunteurDAO extends DAO<Emprunteur> {
 		return null;
 	}
 
+	public Emprunteur findIdByEmprunteur(Emprunteur emprunteur){
+		try{
+			ResultSet result = this.connect.createStatement(
+					ResultSet.TYPE_SCROLL_INSENSITIVE,
+	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Emprunteur WHERE Email = " + "\"" + emprunteur.getEmail() + "\"");
+			if(result.first())
+				emprunteur = new Emprunteur(result.getInt("ID"), result.getString("Nom"), result.getString("Prenom"), result.getDate("DateNaiss"), result.getString("Email"), result.getString("Password"), result.getDouble("Solde"), result.getDate("Date_en"), result.getInt("Unite"), result.getInt("Cote"));
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		return emprunteur;
+	}
+	
 	public boolean findByEmailPassword(String email, String password) {
 		boolean existe = false;
 		Emprunteur emprunteur;
@@ -132,7 +148,7 @@ public class EmprunteurDAO extends DAO<Emprunteur> {
 		try{
 			ResultSet result = this.connect.createStatement(
 					ResultSet.TYPE_SCROLL_INSENSITIVE,
-	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Emprunteur");
+	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Emprunteur WHERE ID <> 19");
 			while(result.next())
 			{
 				emprunteur = new Emprunteur(result.getInt("ID"), result.getString("Nom"), result.getString("Prenom"),

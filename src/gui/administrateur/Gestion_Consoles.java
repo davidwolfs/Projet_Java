@@ -40,32 +40,9 @@ public class Gestion_Consoles extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		JLabel lblListeConsoles = new JLabel("Liste des consoles");
-		lblListeConsoles.setBounds(23, 30, 116, 14);
-		contentPane.add(lblListeConsoles);
+	
 
-		ConsoleDAO consoleDAO = new ConsoleDAO(connect);
-		List<Console> listConsole = consoleDAO.findAll();
-
-		// List<Vehicule> listVehicule = vehiculeDAO.listVehicule();
-		Object[] jeu = listConsole.toArray();
-
-		Object[] donnees = new Object[listConsole.size()];
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yy");
-
-		for (int i = 0; i < listConsole.size(); i++) {
-			System.out.println(listConsole.get(i).toString());
-			donnees[i] = listConsole.get(i).getNom();
-		}
-
-		JList listConsoles = new JList(donnees);
-		listConsoles.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		listConsoles.setBounds(10, 46, 578, 226);
-		contentPane.add(listConsoles);
-
-		JLabel lblMsgError = new JLabel("");
-		lblMsgError.setBounds(194, 401, 230, 23);
-		contentPane.add(lblMsgError);
+	
 
 		JButton btnDeconnexion = new JButton("D\u00E9connexion");
 		btnDeconnexion.addActionListener(new ActionListener() {
@@ -92,20 +69,15 @@ public class Gestion_Consoles extends JFrame {
 		btnRetour.setBounds(499, 401, 89, 23);
 		contentPane.add(btnRetour);
 
-		JButton btnAjouterConsole = new JButton("Ajouter une console");
-		btnAjouterConsole.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				dispose();
-				Ajouter_Console ajouter_Console = new Ajouter_Console(connect, currentAdministrateur);
-				ajouter_Console.setVisible(true);
-				ajouter_Console.setResizable(false);
-			}
-		});
-		btnAjouterConsole.setBounds(10, 315, 175, 23);
-		contentPane.add(btnAjouterConsole);
+	
 
-		JButton btnModifierConsole = new JButton("Modifier une console");
-		btnModifierConsole.addActionListener(new ActionListener() {
+	
+
+	
+		
+		JButton btnAjouterJeu = new JButton("Ajouter un jeu");
+		btnAjouterJeu.addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent e) {
 				int index = listConsoles.getSelectedIndex();
 
@@ -114,40 +86,16 @@ public class Gestion_Consoles extends JFrame {
 				} else {
 					System.out.println(index);
 					dispose();
-					Modifier_Console modifier_Console = new Modifier_Console(connect,
-							currentAdministrateur, listConsole.get(index));
-					modifier_Console.setVisible(true);
-					modifier_Console.setResizable(false);
+					dispose();
+					Ajouter_Jeu ajouter_Jeu = new Ajouter_Jeu(connect, currentAdministrateur);
+					ajouter_Jeu.setVisible(true);
+					ajouter_Jeu.setResizable(false);
 				}
+				
+			
 			}
 		});
-		btnModifierConsole.setBounds(218, 315, 175, 23);
-		contentPane.add(btnModifierConsole);
-
-		JButton btnSupprimerConsole = new JButton("Supprimer une console");
-		btnSupprimerConsole.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int index = listConsoles.getSelectedIndex();
-				System.out.println(index);
-				if (index == -1) {
-					lblMsgError.setText("Veuillez sélectionner une console.");
-				} else {
-					int input = JOptionPane.showConfirmDialog(null,
-							"Êtes-vous sûr de bien vouloir supprimer cette console ?");
-					if (input == 0) {
-						int id = listConsole.get(index).getId();
-						System.out.println(id);
-						consoleDAO.delete(listConsole.get(index));
-
-						dispose();
-						Gestion_Consoles gestion_Consoles = new Gestion_Consoles(connect, currentAdministrateur);
-						gestion_Consoles.setVisible(true);
-						gestion_Consoles.setResizable(false);
-					}
-				}
-			}
-		});
-		btnSupprimerConsole.setBounds(411, 315, 177, 23);
-		contentPane.add(btnSupprimerConsole);
+		btnAjouterJeu.setBounds(11, 354, 174, 23);
+		contentPane.add(btnAjouterJeu);
 	}
 }

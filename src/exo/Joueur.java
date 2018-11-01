@@ -12,14 +12,21 @@ public class Joueur extends Personne {
 		this.date_en = date_en;
 	}
 
+	public Joueur(int id, String nom, String prenom, Date dateNaiss, String email, String password, double solde,
+			Date date_en) {
+		super(id, nom, prenom, dateNaiss, email, password);
+		this.solde = solde;
+		this.date_en = date_en;
+	}
+
 	public Joueur(int id, String nom, String prenom, Date dateNaiss, String email, String password) {
 		super(id, nom, prenom, dateNaiss, email, password);
 	}
-	
+
 	public Joueur(String nom, String prenom, Date dateNaiss, String email, String password) {
 		super(nom, prenom, dateNaiss, email, password);
 	}
-	
+
 	public Joueur() {
 		super();
 	}
@@ -39,12 +46,11 @@ public class Joueur extends Personne {
 	public void setDate_en(Date date_en) {
 		this.date_en = date_en;
 	}
-	
-	public void rayerJoueur()
-	{
-		
+
+	public void rayerJoueur() {
+
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Joueur [solde=" + solde + ", date_en=" + date_en + "]";

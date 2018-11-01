@@ -17,6 +17,15 @@ public class Jeu {
 	private String adapterTarif;
 	private Console console;
 
+	public Jeu(int id, String nom, boolean dispo, double tarif, Date dateTarif, String adapterTarif, Console console) {
+		this.id = id;
+		this.nom = nom;
+		this.dispo = dispo;
+		this.tarif = tarif;
+		this.dateTarif = dateTarif;
+		this.adapterTarif = adapterTarif;
+		this.console=console;
+	}
 	public Jeu(int id, String nom, boolean dispo, double tarif, Date dateTarif, String adapterTarif) {
 		this.id = id;
 		this.nom = nom;

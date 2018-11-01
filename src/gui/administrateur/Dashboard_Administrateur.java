@@ -29,7 +29,7 @@ public class Dashboard_Administrateur extends JFrame {
 		this.currentAdministrateur=currentAdministrateur;
 		this.connect=connect;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 458, 335);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -46,7 +46,7 @@ public class Dashboard_Administrateur extends JFrame {
 				Main.creerConnexion();
 			}
 		});
-		btnDeconnexion.setBounds(10, 209, 117, 23);
+		btnDeconnexion.setBounds(10, 251, 117, 23);
 		contentPane.add(btnDeconnexion);
 		
 		JButton btnGestionDesConsoles = new JButton("Gestion des consoles");
@@ -84,5 +84,17 @@ public class Dashboard_Administrateur extends JFrame {
 		});
 		btnGestionDesUtilisateurs.setBounds(152, 168, 189, 28);
 		contentPane.add(btnGestionDesUtilisateurs);
+		
+		JButton btnGestionJeuxConsoles = new JButton("Gestion des jeux/consoles");
+		btnGestionJeuxConsoles.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				dispose();
+				Gestion_Jeux_Consoles gestion_Jeux_Consoles = new Gestion_Jeux_Consoles(connect, currentAdministrateur);
+				gestion_Jeux_Consoles.setVisible(true);
+				gestion_Jeux_Consoles.setResizable(false);
+			}
+		});
+		btnGestionJeuxConsoles.setBounds(154, 218, 187, 28);
+		contentPane.add(btnGestionJeuxConsoles);
 	}
 }

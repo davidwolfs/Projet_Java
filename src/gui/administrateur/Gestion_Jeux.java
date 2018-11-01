@@ -119,69 +119,14 @@ public class Gestion_Jeux extends JFrame {
 		btnRetour.setBounds(474, 342, 89, 23);
 		contentPane.add(btnRetour);
 
-		JButton btnAjouterJeu = new JButton("Ajouter");
-		btnAjouterJeu.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent e) {
-				dispose();
-				Ajouter_Jeu ajouter_Jeu = new Ajouter_Jeu(connect, currentAdministrateur);
-				ajouter_Jeu.setVisible(true);
-				ajouter_Jeu.setResizable(false);
-			}
-		});
-		btnAjouterJeu.setBounds(20, 287, 102, 23);
-		contentPane.add(btnAjouterJeu);
+		
 
 		JLabel lblMsgError = new JLabel("");
-		lblMsgError.setBounds(145, 361, 319, 30);
+		lblMsgError.setBounds(220, 361, 185, 30);
 		contentPane.add(lblMsgError);
 		
-		JButton btnModifierJeu = new JButton("Modifier");
-		btnModifierJeu.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int index = listJeux.getSelectedIndex();
-
-				if (index == -1) {
-					lblMsgError.setText("Veuillez sélectionner un jeu.");
-				} else {
-					System.out.println(index);
-					dispose();
-					Modifier_Jeu modifier_Jeu = new Modifier_Jeu(connect,
-							currentAdministrateur, listJeu.get(index));
-					modifier_Jeu.setVisible(true);
-					modifier_Jeu.setResizable(false);
-				}
-				
-			}
-		});
-		btnModifierJeu.setBounds(245, 287, 102, 23);
-		contentPane.add(btnModifierJeu);
+	
 		
-		JButton btnSupprimerJeu = new JButton("Supprimer");
-		btnSupprimerJeu.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int index = listJeux.getSelectedIndex();
-				System.out.println(index);
-				if (index == -1) {
-					lblMsgError.setText("Veuillez sélectionner un jeu.");
-				} else {
-					int input = JOptionPane.showConfirmDialog(null,
-							"Êtes-vous sûr de bien vouloir supprimer ce jeu ?");
-					if (input == 0) {
-						int id = listJeu.get(index).getId();
-						System.out.println(id);
-						jeuDAO.delete(listJeu.get(index));
-
-						dispose();
-						Gestion_Jeux gestion_Jeux = new Gestion_Jeux(connect,
-								currentAdministrateur);
-						gestion_Jeux.setVisible(true);
-						gestion_Jeux.setResizable(false);
-					}
-				}
-			}
-		});
-		btnSupprimerJeu.setBounds(472, 287, 102, 23);
-		contentPane.add(btnSupprimerJeu);
+	
 	}
 }

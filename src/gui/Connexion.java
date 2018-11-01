@@ -131,7 +131,7 @@ public class Connexion extends JFrame {
 						if (preteurDAO.findByEmailPassword(textFieldUser.getText(), passwordField.getText())) {
 							currentPreteur = preteurDAO.findPreteurByEmailPassword(textFieldUser.getText(),
 									passwordField.getText());
-							Dashboard_Preteur dashboard_preteur = new Dashboard_Preteur(currentPreteur);
+							Dashboard_Preteur dashboard_preteur = new Dashboard_Preteur(connect, currentPreteur);
 							dispose();
 							dashboard_preteur.setVisible(true);
 							dashboard_preteur.setResizable(false);
@@ -146,7 +146,7 @@ public class Connexion extends JFrame {
 						if (emprunteurDAO.findByEmailPassword(textFieldUser.getText(), passwordField.getText())) {
 							currentEmprunteur = emprunteurDAO.findEmprunteurByEmailPassword(textFieldUser.getText(),
 									passwordField.getText());
-							Dashboard_Emprunteur dashboard_emprunteur = new Dashboard_Emprunteur(currentEmprunteur);
+							Dashboard_Emprunteur dashboard_emprunteur = new Dashboard_Emprunteur(connect, currentEmprunteur);
 							dispose();
 							dashboard_emprunteur.setVisible(true);
 							dashboard_emprunteur.setResizable(false);

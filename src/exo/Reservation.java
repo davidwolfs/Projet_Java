@@ -23,14 +23,14 @@ public class Reservation {
 		this.dateReservation = dateReservation;
 	}
 
-	public void create(Reservation reservation) {
-		ReservationDAO reservationDAO = new ReservationDAO(connect);
-		reservationDAO.createReservation(reservation);
-	}
-
 	@Override
 	public String toString() {
-		return "Reservation [dateReservation=" + dateReservation + "]";
+		return "Reservation [dateReservation=" + dateReservation + ", connect=" + connect + ", jeu=" + jeu + "]";
 	}
+
+	/*
+	 * public void create(Reservation reservation) { ReservationDAO reservationDAO =
+	 * new ReservationDAO(connect); reservationDAO.createReservation(reservation); }
+	 */
 
 }
