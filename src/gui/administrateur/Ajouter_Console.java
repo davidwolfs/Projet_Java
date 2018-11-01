@@ -91,9 +91,9 @@ public class Ajouter_Console extends JFrame {
 		btnRetour.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
-				Gestion_Consoles gestion_Consoles = new Gestion_Consoles(connect, currentAdministrateur);
-				gestion_Consoles.setVisible(true);
-				gestion_Consoles.setResizable(false);
+				Gestion_Jeux_Consoles gestion_Jeux_Consoles = new Gestion_Jeux_Consoles(connect, currentAdministrateur);
+				gestion_Jeux_Consoles.setVisible(true);
+				gestion_Jeux_Consoles.setResizable(false);
 				
 			}
 		});

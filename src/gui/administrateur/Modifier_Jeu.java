@@ -133,9 +133,9 @@ public class Modifier_Jeu extends JFrame {
 						jeuDAO.update(jeuAModifier);
 
 						dispose();
-						Gestion_Jeux gestion_Jeux = new Gestion_Jeux(connect, currentAdministrateur);
-						gestion_Jeux.setVisible(true);
-						gestion_Jeux.setResizable(false);
+						Gestion_Jeux_Consoles gestion_Jeux_Consoles = new Gestion_Jeux_Consoles(connect, currentAdministrateur);
+						gestion_Jeux_Consoles.setVisible(true);
+						gestion_Jeux_Consoles.setResizable(false);
 					}
 				//}
 				
@@ -147,10 +147,10 @@ public class Modifier_Jeu extends JFrame {
 		JButton btnRetour = new JButton("Retour");
 		btnRetour.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Gestion_Jeux gestion_Consoles = new Gestion_Jeux(connect, currentAdministrateur);
-				gestion_Consoles.setVisible(true);
-				gestion_Consoles.setResizable(false);
 				dispose();
+				Gestion_Jeux_Consoles gestion_Jeux_Consoles = new Gestion_Jeux_Consoles(connect, currentAdministrateur);
+				gestion_Jeux_Consoles.setVisible(true);
+				gestion_Jeux_Consoles.setResizable(false);
 			}
 		});
 		btnRetour.setBounds(264, 329, 100, 23);

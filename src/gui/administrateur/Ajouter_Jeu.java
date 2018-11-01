@@ -120,9 +120,9 @@ public class Ajouter_Jeu extends JFrame {
 						jeuDAO.create(jeu);
 						
 						dispose();
-						Gestion_Jeux gestion_Jeux = new Gestion_Jeux(connect, currentAdministrateur);
-						gestion_Jeux.setVisible(true);
-						gestion_Jeux.setResizable(false);
+						Gestion_Jeux_Consoles gestion_Jeux_Consoles = new Gestion_Jeux_Consoles(connect, currentAdministrateur);
+						gestion_Jeux_Consoles.setVisible(true);
+						gestion_Jeux_Consoles.setResizable(false);
 					//}
 				}
 				

@@ -169,10 +169,18 @@ public class Gestion_Jeux_Consoles extends JFrame {
 		btnAjouterJeu.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				dispose();
-				Ajouter_Jeu ajouter_Jeu = new Ajouter_Jeu(connect, currentAdministrateur);
-				ajouter_Jeu.setVisible(true);
-				ajouter_Jeu.setResizable(false);
+				int index = listConsoles.getSelectedIndex();
+				System.out.println(index);
+				if (index == -1) {
+					lblMsgErrorConsole.setText("Veuillez sélectionner une console.");
+				}
+				else
+				{
+					dispose();
+					Ajouter_Jeu ajouter_Jeu = new Ajouter_Jeu(connect, currentAdministrateur);
+					ajouter_Jeu.setVisible(true);
+					ajouter_Jeu.setResizable(false);
+				}
 			}
 		});
 		btnAjouterJeu.setBounds(12, 493, 175, 23);
