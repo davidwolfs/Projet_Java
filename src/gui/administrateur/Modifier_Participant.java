@@ -40,14 +40,16 @@ public class Modifier_Participant extends JFrame {
 	private JPasswordField passwordField;
 	private Administrateur currentAdministrateur;
 	private Emprunteur emprunteurAModifier;
+	private Preteur preteurAModifier;
 	/**
 	 * Create the frame.
 	 */
-	public Modifier_Participant(Connection connect, Administrateur currentAdministrateur, Emprunteur emprunteurAModifier) {
+	public Modifier_Participant(Connection connect, Administrateur currentAdministrateur, Emprunteur emprunteurAModifier, Preteur preteurAModifier) {
 		setTitle("Projet Jeux Video");
 		this.connect = connect;
 		this.currentAdministrateur=currentAdministrateur;
 		this.emprunteurAModifier=emprunteurAModifier;
+		this.preteurAModifier=preteurAModifier;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 436, 454);
 		contentPane = new JPanel();
@@ -162,17 +164,26 @@ public class Modifier_Participant extends JFrame {
 				 */
 				if (champsVide()) {
 					EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
-					if (emprunteurDAO.alreadyExist(textFieldEmail.getText())) {
+					PreteurDAO preteurDAO = new PreteurDAO(connect);
+					emprunteurAModifier.setNom(textFieldNom.getText());
+					emprunteurAModifier.setPrenom(textFieldPrenom.getText());
+					emprunteurAModifier.setDateNaiss(dateChooserDateNaiss.getDate());
+					emprunteurAModifier.setEmail(textFieldEmail.getText());
+					emprunteurAModifier.setPassword(passwordField.getText());
+					
+					preteurAModifier.setNom(textFieldNom.getText());
+					preteurAModifier.setPrenom(textFieldPrenom.getText());
+					preteurAModifier.setDateNaiss(dateChooserDateNaiss.getDate());
+					preteurAModifier.setEmail(textFieldEmail.getText());
+					preteurAModifier.setPassword(passwordField.getText());
+					if (emprunteurDAO.alreadyExist(emprunteurAModifier)) {
 						labelMsgErreur.setText("Cet adresse e-mail existe déjà.");
 					
 					} else {
-						emprunteurAModifier.setNom(textFieldNom.getText());
-						emprunteurAModifier.setPrenom(textFieldPrenom.getText());
-						emprunteurAModifier.setDateNaiss(dateChooserDateNaiss.getDate());
-						emprunteurAModifier.setEmail(textFieldEmail.getText());
-						emprunteurAModifier.setPassword(passwordField.getText());
+					
 						
 						emprunteurDAO.update(emprunteurAModifier);
+						preteurDAO.update(preteurAModifier);
 						
 						dispose();
 						Gestion_Utilisateurs gestion_Utilisateurs = new Gestion_Utilisateurs(connect, currentAdministrateur);

@@ -158,8 +158,9 @@ public class Ajouter_Administrateur extends JFrame {
 					AdministrateurDAO administrateurDAO = new AdministrateurDAO(connect);
 					Administrateur administrateur = new Administrateur(textFieldNom.getText(), textFieldPrenom.getText(),
 							dateChooserDateNaiss.getDate(), textFieldEmail.getText(), passwordField.getText());
+					administrateur.setiD(-1);
 					System.out.println("DATE DAO : " + dateChooserDateNaiss.getDate());
-					if (administrateurDAO.alreadyExist(textFieldEmail.getText())) {
+					if (administrateurDAO.alreadyExist(administrateur)) {
 						labelMsgErreur.setText("Cet adresse e-mail existe déjà.");
 					} else {
 						administrateurDAO.create(administrateur);

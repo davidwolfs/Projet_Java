@@ -160,13 +160,15 @@ public class Ajouter_Participant extends JFrame {
 					Preteur preteur = new Preteur(textFieldNom.getText(), textFieldPrenom.getText(),
 							dateChooserDateNaiss.getDate(), textFieldEmail.getText(), passwordField.getText());
 					System.out.println("DATE DAO : " + dateChooserDateNaiss.getDate());
+					preteur.setiD(-1);
 					EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
 					Emprunteur emprunteur = new Emprunteur(textFieldNom.getText(), textFieldPrenom.getText(),
 							dateChooserDateNaiss.getDate(), textFieldEmail.getText(), passwordField.getText());
+					emprunteur.setiD(-1);
 					System.out.println("DATE DAO : " + dateChooserDateNaiss.getDate());
-					if (preteurDAO.alreadyExist(textFieldEmail.getText())) {
+					if (preteurDAO.alreadyExist(preteur)) {
 						labelMsgErreur.setText("Cet adresse e-mail existe déjà.");
-					} else if (emprunteurDAO.alreadyExist(textFieldEmail.getText())) {
+					} else if (emprunteurDAO.alreadyExist(emprunteur)) {
 						labelMsgErreur.setText("Cet adresse e-mail existe déjà.");
 					} else {
 						preteurDAO.create(preteur);

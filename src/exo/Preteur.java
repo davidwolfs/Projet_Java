@@ -16,6 +16,10 @@ public class Preteur extends Joueur {
 		this.listExemplaire = listExemplaire;
 	}
 
+	public Preteur(int id, String nom, String prenom, Date dateNaiss, String email, String password) {
+		super(id, nom, prenom, dateNaiss, email, password);
+	}
+	
 	public Preteur(String nom, String prenom, Date dateNaiss, String email, String password) {
 		super(nom, prenom, dateNaiss, email, password);
 	}

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import exo.Administrateur;
+import exo.Console;
 import exo.Jeu;
 
 public class JeuDAO extends DAO<Jeu>{
@@ -26,7 +27,25 @@ public class JeuDAO extends DAO<Jeu>{
 		boolean statementResult;
 		try {
 			Statement statement = connect.createStatement();
-			String query = "INSERT INTO Jeu (Nom, Dispo, Tarif, DateTarif, AdapterTarif, IDReservation) VALUES ('" + jeu.getNom() + "','" + jeu.isDispo() + "','" + jeu.getTarif() + "','" + new Timestamp(date.getTime()) + "','" + jeu.getAdapterTarif() + "','" + 5 + "')" + ";";
+			String query = "INSERT INTO Jeu (Nom, Dispo, Tarif, DateTarif, AdapterTarif) VALUES ('" + jeu.getNom() + "','" + jeu.isDispo() + "','" + jeu.getTarif() + "','" + new Timestamp(date.getTime()) + "','" + jeu.getAdapterTarif() + "')" + ";";
+			System.out.println(query);
+			statementResult = true;
+			statementResult = statement.execute(query);
+		} catch (SQLException e) {
+			statementResult = false;
+			e.printStackTrace();
+			System.out.println(e);
+		}
+		System.out.println(statementResult);
+		return statementResult;
+	}
+	
+	public boolean create_Ligne_Jeu(Jeu jeu) {
+		System.out.println("LIGNE JEU : " + jeu);
+		boolean statementResult;
+		try {
+			Statement statement = connect.createStatement();
+			String query = "INSERT INTO Ligne_Jeu (Id_Jeu, Id_Console) VALUES ('" + jeu.getId() + "','" + jeu.getConsole().getId() + "')" + ";";
 			System.out.println(query);
 			statementResult = true;
 			statementResult = statement.execute(query);
@@ -71,6 +90,12 @@ public class JeuDAO extends DAO<Jeu>{
 			System.out.println(query);
 			statementResult = true;
 			statementResult = statement.execute(query);
+			
+			statement = connect.createStatement();
+			query = "UPDATE Ligne_Jeu SET ID_Console = " + jeu.getConsole().getId() + " WHERE ID_Jeu = " + jeu.getId();
+			System.out.println(query);
+			statementResult = true;
+			statementResult = statement.execute(query);
 		} catch (SQLException e) {
 			statementResult = false;
 			e.printStackTrace();
@@ -86,17 +111,22 @@ public class JeuDAO extends DAO<Jeu>{
 		return null;
 	}
 	
+	//TODO 
 	public List<Jeu> findAll(){
 		List<Jeu> listJeux = new ArrayList<>();
 		Jeu jeu = new Jeu();
 		try{
 			ResultSet result = this.connect.createStatement(
 					ResultSet.TYPE_SCROLL_INSENSITIVE,
-	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Jeu");
+	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Jeu INNER JOIN Ligne_Jeu ON Jeu.ID = Ligne_Jeu.ID_Jeu INNER JOIN Console ON Ligne_Jeu.ID_Console = Console.ID");
+			int i=0;
 			while(result.next())
 			{
-				jeu = new Jeu(result.getInt("ID"), result.getString("Nom"), result.getBoolean("Dispo"),
-						result.getInt("Tarif"), result.getDate("DateTarif"), result.getString("AdapterTarif"));
+				Console console = new Console();
+				console.setId(result.getInt("ID_Console"));
+				console.setNom(result.getString("Console.NOM"));
+				jeu = new Jeu(result.getInt("ID"), result.getString("Jeu.NOM"), result.getBoolean("Dispo"),
+						result.getInt("Tarif"), result.getDate("DateTarif"), result.getString("AdapterTarif"), console);
 				listJeux.add(jeu);
 			}
 		}
@@ -146,4 +176,43 @@ public class JeuDAO extends DAO<Jeu>{
 		return listJeux;
 	}
 
+	public int findLastIdJeu(){
+		int lastID=0;
+		try{
+			ResultSet result = this.connect.createStatement(
+					ResultSet.TYPE_SCROLL_INSENSITIVE,
+	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Jeu ORDER BY ID DESC");
+			if(result.first())
+			{
+				lastID = result.getInt("ID");
+			}
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		return lastID;
+	}
+	
+	public boolean alreadyExist(Jeu jeu)
+	{
+		boolean existe = false;
+		try{
+			String sql = "SELECT * FROM Console INNER JOIN (Jeu INNER JOIN Ligne_Jeu ON Jeu.ID = Ligne_Jeu.ID_Jeu) ON Console.ID = Ligne_Jeu.ID_Console WHERE Jeu.Nom = " + "'" + jeu.getNom() + "'" + " AND Console.Nom = " + "'" + jeu.getConsole().getNom() + "'";
+			if(jeu.getId()>0) {
+				sql = sql + " AND Jeu.ID != " + jeu.getId();
+			}
+			System.out.println(sql);
+			ResultSet result = this.connect.createStatement(
+					ResultSet.TYPE_SCROLL_INSENSITIVE,
+	ResultSet.CONCUR_READ_ONLY).executeQuery(sql);
+			if(result.first())
+			{
+				existe = true;
+			}
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		return existe;
+	}
 }

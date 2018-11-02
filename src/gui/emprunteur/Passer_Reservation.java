@@ -10,7 +10,6 @@ import javax.swing.border.EmptyBorder;
 import exo.Emprunteur;
 import exo.Jeu;
 import exo.Reservation;
-import gui.administrateur.Gestion_Jeux;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;

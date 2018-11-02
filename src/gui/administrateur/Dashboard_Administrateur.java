@@ -49,30 +49,6 @@ public class Dashboard_Administrateur extends JFrame {
 		btnDeconnexion.setBounds(10, 251, 117, 23);
 		contentPane.add(btnDeconnexion);
 		
-		JButton btnGestionDesConsoles = new JButton("Gestion des consoles");
-		btnGestionDesConsoles.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				dispose();
-				Gestion_Consoles gestion_Consoles = new Gestion_Consoles(connect, currentAdministrateur);
-				gestion_Consoles.setVisible(true);
-				gestion_Consoles.setResizable(false);
-			}
-		});
-		btnGestionDesConsoles.setBounds(152, 73, 189, 28);
-		contentPane.add(btnGestionDesConsoles);
-		
-		JButton btnGestionDesJeux = new JButton("Gestion des jeux");
-		btnGestionDesJeux.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Gestion_Jeux gestion_Jeux = new Gestion_Jeux(connect, currentAdministrateur);
-				gestion_Jeux.setVisible(true);
-				gestion_Jeux.setResizable(false);
-				dispose();
-			}
-		});
-		btnGestionDesJeux.setBounds(152, 122, 189, 28);
-		contentPane.add(btnGestionDesJeux);
-		
 		JButton btnGestionDesUtilisateurs = new JButton("Gestion des utilisateurs");
 		btnGestionDesUtilisateurs.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -82,7 +58,7 @@ public class Dashboard_Administrateur extends JFrame {
 				gestion_Utilisateurs.setResizable(false);
 			}
 		});
-		btnGestionDesUtilisateurs.setBounds(152, 168, 189, 28);
+		btnGestionDesUtilisateurs.setBounds(152, 88, 189, 28);
 		contentPane.add(btnGestionDesUtilisateurs);
 		
 		JButton btnGestionJeuxConsoles = new JButton("Gestion des jeux/consoles");
@@ -94,7 +70,7 @@ public class Dashboard_Administrateur extends JFrame {
 				gestion_Jeux_Consoles.setResizable(false);
 			}
 		});
-		btnGestionJeuxConsoles.setBounds(154, 218, 187, 28);
+		btnGestionJeuxConsoles.setBounds(152, 156, 187, 28);
 		contentPane.add(btnGestionJeuxConsoles);
 	}
 }

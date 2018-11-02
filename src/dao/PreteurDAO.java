@@ -41,21 +41,58 @@ public class PreteurDAO extends DAO<Preteur> {
 	}
 
 	@Override
-	public boolean delete(Preteur obj) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean delete(Preteur preteur) {
+		boolean statementResult;
+		try {
+			Statement statement = connect.createStatement();
+			String query = "DELETE FROM Preteur WHERE ID = " + preteur.getiD() + ";";
+			System.out.println(query);
+			statementResult = true;
+			statementResult = statement.execute(query);
+		} catch (SQLException e) {
+			statementResult = false;
+			e.printStackTrace();
+			System.out.println(e);
+		}
+		System.out.println(statementResult);
+		return statementResult;
 	}
 
 	@Override
-	public boolean update(Preteur obj) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean update(Preteur preteur) {
+		System.out.println("Mon objet depuis la méthode update : " + preteur);
+		boolean statementResult;
+		try {
+			Statement statement = connect.createStatement();
+			String query = "UPDATE Preteur SET Nom = " + "'" + preteur.getNom() +  "', " + "Prenom = " + "'" + preteur.getPrenom() + "', " +  "DateNaiss = " + "'" + new Timestamp(preteur.getDateNaiss().getTime()) + "', " + "Email = " + "'" + preteur.getEmail() + "', " + "Password = " + "'" + preteur.getPassword() + "'" + " WHERE ID = " + preteur.getiD() + ";";
+			System.out.println(query);
+			statementResult = true;
+			statementResult = statement.execute(query);
+		} catch (SQLException e) {
+			statementResult = false;
+			e.printStackTrace();
+			System.out.println(e);
+		}
+		System.out.println(statementResult);
+		return statementResult;
 	}
 
 	@Override
 	public Preteur find(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		Preteur preteur = null;
+		try {
+			ResultSet result = this.connect
+					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
+					.executeQuery("SELECT * FROM Preteur WHERE ID = " + id);
+			if (result.first()) {
+				preteur = new Preteur(result.getInt("ID"), result.getString("Nom"), result.getString("Prenom"), result.getDate("DateNaiss"),
+						result.getString("Email"), result.getString("Password"));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return preteur;
 	}
 
 	public boolean findByEmailPassword(String email, String password) {
@@ -95,16 +132,18 @@ public class PreteurDAO extends DAO<Preteur> {
 		return preteur;
 	}
 
-	public boolean alreadyExist(String email) {
+	public boolean alreadyExist(Preteur preteur) {
 		boolean existe = false;
-		Preteur preteur;
 		try {
+			String sql = "SELECT * FROM Preteur WHERE Email = " + "\"" + preteur.getEmail() + "\"";
+			if(preteur.getiD()>0) {
+				sql = sql + " AND Preteur.ID != " + preteur.getiD();
+			}
+			System.out.println(sql);
 			ResultSet result = this.connect
 					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
-					.executeQuery("SELECT * FROM Preteur WHERE Email = " + "\"" + email + "\"");
+					.executeQuery(sql);
 			if (result.first()) {
-				preteur = new Preteur(result.getString("Nom"), result.getString("Prenom"),
-						result.getDate("DateNaiss"), email, result.getString("Password"));
 				existe = true;
 			}
 

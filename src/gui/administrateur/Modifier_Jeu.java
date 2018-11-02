@@ -7,22 +7,28 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JButton;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.JCheckBox;
 import com.toedter.calendar.JDateChooser;
 
 import dao.AdministrateurDAO;
+import dao.ConsoleDAO;
 import dao.EmprunteurDAO;
 import dao.JeuDAO;
 import dao.PreteurDAO;
 import exo.Administrateur;
+import exo.Console;
 import exo.Emprunteur;
 import exo.Jeu;
 import exo.Preteur;
 
 import java.awt.event.ActionListener;
 import java.sql.Connection;
+import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.awt.event.ActionEvent;
@@ -43,7 +49,7 @@ public class Modifier_Jeu extends JFrame {
 		this.jeuAModifier=jeuAModifier;
 		setTitle("Modifier un jeu");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 430, 439);
+		setBounds(100, 100, 455, 554);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -97,6 +103,39 @@ public class Modifier_Jeu extends JFrame {
 		contentPane.add(textFieldAdapterTarif);
 		textFieldAdapterTarif.setColumns(10);
 		
+		JLabel lblListeConsoles = new JLabel("Console");
+		lblListeConsoles.setBounds(69, 257, 77, 14);
+		contentPane.add(lblListeConsoles);
+		ConsoleDAO consoleDAO = new ConsoleDAO(connect);
+		List<Console> listConsole = consoleDAO.findAll();
+
+		// List<Vehicule> listVehicule = vehiculeDAO.listVehicule();
+		Object[] console = listConsole.toArray();
+
+		Object[] donnees = new Object[listConsole.size()];
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yy");
+
+		for (int i = 0; i < listConsole.size(); i++) {
+			System.out.println(listConsole.get(i).toString());
+			donnees[i] = listConsole.get(i).getNom();
+		}
+
+		JList listConsoles = new JList(donnees);
+		listConsoles.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		listConsoles.setBounds(251, 256, 131, 199);
+		int index = -1;
+		for(int i = 0; i < listConsole.size();i++)
+		{
+			if(jeuAModifier.getConsole().getId() == listConsole.get(i).getId())
+			{
+				index = i;
+			}
+		}
+		System.out.println("Index : " + index);
+		listConsoles.setSelectedIndex(index);
+		contentPane.add(listConsoles);
+		
+		
 		JLabel labelMsgErreur = new JLabel("");
 		labelMsgErreur.setBounds(69, 360, 313, 29);
 		contentPane.add(labelMsgErreur);
@@ -119,16 +158,19 @@ public class Modifier_Jeu extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (champsVide()) {
 					JeuDAO jeuDAO = new JeuDAO(connect);
-					/*if (jeuDAO.alreadyExist(textFieldEmail.getText())) {
-						labelMsgErreur.setText("Cet adresse e-mail existe déjà.");
+					jeuAModifier.setNom(textFieldNom.getText());
+					jeuAModifier.setDispo((chckbxDisponibilite.isSelected()));
+					jeuAModifier.setTarif((Double.parseDouble(textFieldTarif.getText())));
+					jeuAModifier.setDateTarif((dateChooserDateTarif.getDate()));
+					jeuAModifier.setAdapterTarif((textFieldAdapterTarif.getText()));
+					System.out.println("index selected : " + listConsole.get(listConsoles.getSelectedIndex()).toString());
+					jeuAModifier.setConsole(listConsole.get(listConsoles.getSelectedIndex()));
+					if (jeuDAO.alreadyExist(jeuAModifier)) {
+						labelMsgErreur.setText("Ce jeu existe déjà pour cette console.");
 					
-					} else {*/
+					} else {
 					System.out.println(chckbxDisponibilite.getText().isEmpty());
-						jeuAModifier.setNom(textFieldNom.getText());
-						jeuAModifier.setDispo((chckbxDisponibilite.isSelected()));
-						jeuAModifier.setTarif((Double.parseDouble(textFieldTarif.getText())));
-						jeuAModifier.setDateTarif((dateChooserDateTarif.getDate()));
-						jeuAModifier.setAdapterTarif((textFieldAdapterTarif.getText()));
+						
 						
 						jeuDAO.update(jeuAModifier);
 
@@ -137,11 +179,11 @@ public class Modifier_Jeu extends JFrame {
 						gestion_Jeux_Consoles.setVisible(true);
 						gestion_Jeux_Consoles.setResizable(false);
 					}
-				//}
+				}
 				
 			}
 		});
-		btnModifier.setBounds(69, 329, 89, 23);
+		btnModifier.setBounds(69, 473, 89, 23);
 		contentPane.add(btnModifier);
 		
 		JButton btnRetour = new JButton("Retour");
@@ -153,7 +195,7 @@ public class Modifier_Jeu extends JFrame {
 				gestion_Jeux_Consoles.setResizable(false);
 			}
 		});
-		btnRetour.setBounds(264, 329, 100, 23);
+		btnRetour.setBounds(251, 473, 100, 23);
 		contentPane.add(btnRetour);
 	}
 }

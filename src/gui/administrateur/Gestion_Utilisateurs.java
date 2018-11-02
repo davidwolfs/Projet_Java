@@ -14,6 +14,7 @@ import javax.swing.border.EmptyBorder;
 
 import dao.AdministrateurDAO;
 import dao.EmprunteurDAO;
+import dao.PreteurDAO;
 import exo.Administrateur;
 import exo.Emprunteur;
 import exo.Jeu;
@@ -172,6 +173,8 @@ public class Gestion_Utilisateurs extends JFrame {
 
 		EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
 		List<Emprunteur> listEmprunteurs = emprunteurDAO.findAll();
+		
+		PreteurDAO preteurDAO = new PreteurDAO(connect);
 
 		Object[] donnees2 = new Object[listEmprunteurs.size()];
 
@@ -210,7 +213,7 @@ public class Gestion_Utilisateurs extends JFrame {
 					System.out.println(index);
 					dispose();
 					Modifier_Participant modifier_Participant = new Modifier_Participant(connect, currentAdministrateur,
-							listEmprunteurs.get(index));
+							listEmprunteurs.get(index), preteurDAO.find(listEmprunteurs.get(index).getiD()));
 					modifier_Participant.setVisible(true);
 					modifier_Participant.setResizable(false);
 				}
@@ -233,7 +236,8 @@ public class Gestion_Utilisateurs extends JFrame {
 						int id = listEmprunteurs.get(index).getiD();
 						System.out.println(id);
 						emprunteurDAO.delete(listEmprunteurs.get(index));
-
+						preteurDAO.delete(preteurDAO.find(id));
+					
 						dispose();
 						Gestion_Utilisateurs gestion_Utilisateurs = new Gestion_Utilisateurs(connect,
 								currentAdministrateur);

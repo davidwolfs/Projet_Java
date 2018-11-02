@@ -162,16 +162,18 @@ public class EmprunteurDAO extends DAO<Emprunteur> {
 		return listEmprunteurs;
 	}
 	
-	public boolean alreadyExist(String email) {
+	public boolean alreadyExist(Emprunteur emprunteur) {
 		boolean existe = false;
-		Emprunteur emprunteur;
 		try {
+			String sql = "SELECT * FROM Emprunteur WHERE Email = " + "\"" + emprunteur.getEmail() + "\"";
+			if(emprunteur.getiD()>0) {
+				sql = sql + " AND Emprunteur.ID != " + emprunteur.getiD();
+			}
+			System.out.println(sql);
 			ResultSet result = this.connect
 					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
-					.executeQuery("SELECT * FROM Emprunteur WHERE Email = " + "\"" + email + "\"");
+					.executeQuery(sql);
 			if (result.first()) {
-				emprunteur = new Emprunteur(result.getString("Nom"), result.getString("Prenom"),
-						result.getDate("DateNaiss"), email, result.getString("Password"));
 				existe = true;
 			}
 

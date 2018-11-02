@@ -153,16 +153,18 @@ public class AdministrateurDAO extends DAO<Administrateur> {
 		return listAdministrateurs;
 	}
 
-	public boolean alreadyExist(String email) {
+	public boolean alreadyExist(Administrateur administrateur) {
 		boolean existe = false;
-		Administrateur administrateur;
 		try {
+			String sql = "SELECT * FROM Administrateur WHERE Email = " + "\"" + administrateur.getEmail() + "\"";
+			if(administrateur.getiD()>0) {
+				sql = sql + " AND Administrateur.ID != " + administrateur.getiD();
+			}
+			System.out.println(sql);
 			ResultSet result = this.connect
 					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
-					.executeQuery("SELECT * FROM Administrateur WHERE Email = " + "\"" + email + "\"");
+					.executeQuery(sql);
 			if (result.first()) {
-				administrateur = new Administrateur(result.getString("Nom"), result.getString("Prenom"),
-						result.getDate("DateNaiss"), email, result.getString("Password"));
 				existe = true;
 			}
 

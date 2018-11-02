@@ -24,8 +24,9 @@ public class Jeu {
 		this.tarif = tarif;
 		this.dateTarif = dateTarif;
 		this.adapterTarif = adapterTarif;
-		this.console=console;
+		this.console = console;
 	}
+
 	public Jeu(int id, String nom, boolean dispo, double tarif, Date dateTarif, String adapterTarif) {
 		this.id = id;
 		this.nom = nom;
@@ -33,6 +34,15 @@ public class Jeu {
 		this.tarif = tarif;
 		this.dateTarif = dateTarif;
 		this.adapterTarif = adapterTarif;
+	}
+
+	public Jeu(String nom, boolean dispo, double tarif, Date dateTarif, String adapterTarif, Console console) {
+		this.nom = nom;
+		this.dispo = dispo;
+		this.tarif = tarif;
+		this.dateTarif = dateTarif;
+		this.adapterTarif = adapterTarif;
+		this.console = console;
 	}
 
 	public Jeu(String nom, boolean dispo, double tarif, Date dateTarif, String adapterTarif) {
@@ -93,6 +103,14 @@ public class Jeu {
 
 	public void setAdapterTarif(String adapterTarif) {
 		this.adapterTarif = adapterTarif;
+	}
+
+	public Console getConsole() {
+		return console;
+	}
+
+	public void setConsole(Console console) {
+		this.console = console;
 	}
 
 	@Override

@@ -162,15 +162,16 @@ public class Modifier_Administrateur extends JFrame {
 				 */
 				if (champsVide()) {
 					AdministrateurDAO administrateurDAO = new AdministrateurDAO(connect);
-					if (administrateurDAO.alreadyExist(textFieldEmail.getText())) {
+					adminAModifier.setNom(textFieldNom.getText());
+					adminAModifier.setPrenom(textFieldPrenom.getText());
+					adminAModifier.setDateNaiss(dateChooserDateNaiss.getDate());
+					adminAModifier.setEmail(textFieldEmail.getText());
+					adminAModifier.setPassword(passwordField.getText());
+					if (administrateurDAO.alreadyExist(adminAModifier)) {
 						labelMsgErreur.setText("Cet adresse e-mail existe déjà.");
 					
 					} else {
-						adminAModifier.setNom(textFieldNom.getText());
-						adminAModifier.setPrenom(textFieldPrenom.getText());
-						adminAModifier.setDateNaiss(dateChooserDateNaiss.getDate());
-						adminAModifier.setEmail(textFieldEmail.getText());
-						adminAModifier.setPassword(passwordField.getText());
+						
 						
 						administrateurDAO.update(adminAModifier);
 
