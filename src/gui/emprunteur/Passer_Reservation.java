@@ -79,7 +79,8 @@ public class Passer_Reservation extends JFrame {
 					+ dispo + " - "
 					+ listJeu.get(i).getTarif() + " - " 
 					+ simpleDateFormat.format(listJeu.get(i).getDateTarif()) + " - "
-					+ listJeu.get(i).getAdapterTarif();
+					+ listJeu.get(i).getAdapterTarif() + " - "
+					+ listJeu.get(i).getConsole().getNom();
 		}
 		
 		JList listJeux = new JList(donnees);
@@ -110,25 +111,28 @@ public class Passer_Reservation extends JFrame {
 				if (index == -1) {
 					lblMsgError.setText("Veuillez sélectionner un jeu.");
 				} 
+				else
+				{
 					//if (input == 0) {
-						int id = listJeu.get(index).getId();
-						System.out.println(id);
-						jeuDAO.delete(listJeu.get(index));
+					int id = listJeu.get(index).getId();
+					System.out.println(id);
+					jeuDAO.delete(listJeu.get(index));
 
-						dispose();
-						Passer_Reservation passer_Reservation = new Passer_Reservation(connect,
-								currentEmprunteur);
-						passer_Reservation.setVisible(true);
-						passer_Reservation.setResizable(false);
+					dispose();
+					Passer_Reservation passer_Reservation = new Passer_Reservation(connect,
+							currentEmprunteur);
+					passer_Reservation.setVisible(true);
+					passer_Reservation.setResizable(false);
 					//}
 					ReservationDAO reservationDAO = new ReservationDAO(connect);
-					Jeu jeu = new Jeu("GTA V", true, 50, dateChooserDateReservation.getDate(), "Tarif");
+					Jeu jeu = new Jeu(listJeu.get(index).getId(), listJeu.get(index).getNom(), listJeu.get(index).isDispo(), listJeu.get(index).getTarif(), listJeu.get(index).getDateTarif(), listJeu.get(index).getAdapterTarif(), listJeu.get(index).getConsole());
 					Reservation reservation = new Reservation(dateChooserDateReservation.getDate(), jeu);
 					System.out.println(reservation);
 					EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
 					Emprunteur emprunteur = emprunteurDAO.findIdByEmprunteur(currentEmprunteur);
 					reservationDAO.createReservation(reservation, emprunteur);
 				}
+			}
 		});
 		btnReservation.setBounds(24, 409, 89, 23);
 		contentPane.add(btnReservation);

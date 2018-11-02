@@ -119,7 +119,6 @@ public class JeuDAO extends DAO<Jeu>{
 			ResultSet result = this.connect.createStatement(
 					ResultSet.TYPE_SCROLL_INSENSITIVE,
 	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Jeu INNER JOIN Ligne_Jeu ON Jeu.ID = Ligne_Jeu.ID_Jeu INNER JOIN Console ON Ligne_Jeu.ID_Console = Console.ID");
-			int i=0;
 			while(result.next())
 			{
 				Console console = new Console();
@@ -142,11 +141,14 @@ public class JeuDAO extends DAO<Jeu>{
 		try{
 			ResultSet result = this.connect.createStatement(
 					ResultSet.TYPE_SCROLL_INSENSITIVE,
-	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Jeu WHERE Dispo = TRUE");
+	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Jeu INNER JOIN Ligne_Jeu ON Jeu.ID = Ligne_Jeu.ID_Jeu INNER JOIN Console ON Ligne_Jeu.ID_Console = Console.ID WHERE Dispo = TRUE");
 			while(result.next())
 			{
-				jeu = new Jeu(result.getInt("ID"), result.getString("Nom"), result.getBoolean("Dispo"),
-						result.getInt("Tarif"), result.getDate("DateTarif"), result.getString("AdapterTarif"));
+				Console console = new Console();
+				console.setId(result.getInt("ID_Console"));
+				console.setNom(result.getString("Console.NOM"));
+				jeu = new Jeu(result.getInt("ID"), result.getString("Jeu.Nom"), result.getBoolean("Dispo"),
+						result.getInt("Tarif"), result.getDate("DateTarif"), result.getString("AdapterTarif"), console);
 				listJeux.add(jeu);
 			}
 		}
