@@ -20,6 +20,13 @@ public class Pret {
 		this.preteur = preteur;
 
 	}
+	
+	public Pret(Date dateDebut, Date dateFin, Emprunteur emprunteur) {
+		this.dateDebut = dateDebut;
+		this.dateFin = dateFin;
+		this.emprunteur = emprunteur;
+
+	}
 
 	public Date getDateDebut() {
 		return dateDebut;

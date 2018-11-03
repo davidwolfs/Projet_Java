@@ -91,7 +91,7 @@ public class Dashboard_Preteur extends JFrame {
 				dispose();*/
 			}
 		});
-		btnAjouterExemplaire.setBounds(196, 329, 149, 25);
+		btnAjouterExemplaire.setBounds(196, 329, 195, 26);
 		contentPane.add(btnAjouterExemplaire);
 	}
 }

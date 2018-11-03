@@ -6,13 +6,28 @@ import java.util.Date;
 import dao.ReservationDAO;
 
 public class Reservation {
+	private int id;
 	private Date dateReservation;
 	private Connection connect;
 	private Jeu jeu;
 
+	public Reservation(int id, Date dateReservation, Jeu jeu) {
+		this.id = id;
+		this.dateReservation = dateReservation;
+		this.jeu = jeu;
+	}
+
 	public Reservation(Date dateReservation, Jeu jeu) {
 		this.dateReservation = dateReservation;
 		this.jeu = jeu;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public Date getDateReservation() {
@@ -21,6 +36,14 @@ public class Reservation {
 
 	public void setDateReservation(Date dateReservation) {
 		this.dateReservation = dateReservation;
+	}
+
+	public Jeu getJeu() {
+		return jeu;
+	}
+
+	public void setJeu(Jeu jeu) {
+		this.jeu = jeu;
 	}
 
 	@Override

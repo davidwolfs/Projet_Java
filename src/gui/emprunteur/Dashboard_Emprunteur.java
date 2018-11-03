@@ -22,37 +22,22 @@ public class Dashboard_Emprunteur extends JFrame {
 	private JPanel contentPane;
 	private Emprunteur currentEmprunteur;
 	private Connection connect;
-	
-	/**
-	 * Launch the application.
-	 */
-	/*public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Dashboard_Emprunteur frame = new Dashboard_Emprunteur();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}*/
 
 	/**
 	 * Create the frame.
 	 */
 	public Dashboard_Emprunteur(Connection connect, Emprunteur currentEmprunteur) {
-		this.connect=connect;
-		this.currentEmprunteur=currentEmprunteur;
+		this.connect = connect;
+		this.currentEmprunteur = currentEmprunteur;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
-		JLabel lblBienvenue = new JLabel("Bienvenue " + currentEmprunteur.getPrenom() + " " + currentEmprunteur.getNom() + ", vous êtes connecté en tant que : Emprunteur");
+
+		JLabel lblBienvenue = new JLabel("Bienvenue " + currentEmprunteur.getPrenom() + " " + currentEmprunteur.getNom()
+				+ ", vous êtes connecté en tant que : Emprunteur");
 		lblBienvenue.setBounds(10, 26, 414, 24);
 		contentPane.add(lblBienvenue);
 		System.out.println(currentEmprunteur.getUnite());
@@ -65,9 +50,9 @@ public class Dashboard_Emprunteur extends JFrame {
 		});
 		btnDeconnexion.setBounds(10, 208, 110, 24);
 		contentPane.add(btnDeconnexion);
-		
-		JButton btnNewButton = new JButton("Passer une r\u00E9servation");
-		btnNewButton.addActionListener(new ActionListener() {
+
+		JButton btnPasserReservation = new JButton("Passer une r\u00E9servation");
+		btnPasserReservation.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 				Passer_Reservation passerReservation = new Passer_Reservation(connect, currentEmprunteur);
@@ -75,7 +60,19 @@ public class Dashboard_Emprunteur extends JFrame {
 				passerReservation.setResizable(false);
 			}
 		});
-		btnNewButton.setBounds(130, 75, 171, 24);
-		contentPane.add(btnNewButton);
+		btnPasserReservation.setBounds(130, 75, 171, 24);
+		contentPane.add(btnPasserReservation);
+		
+		JButton btnVoirReservations = new JButton("Voir mes r\u00E9servations");
+		btnVoirReservations.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				dispose();
+				Voir_Reservation voir_Reservation = new Voir_Reservation(connect, currentEmprunteur);
+				voir_Reservation.setVisible(true);
+				voir_Reservation.setResizable(false);
+			}
+		});
+		btnVoirReservations.setBounds(130, 138, 171, 24);
+		contentPane.add(btnVoirReservations);
 	}
 }

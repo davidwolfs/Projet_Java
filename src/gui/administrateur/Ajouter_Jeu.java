@@ -49,7 +49,7 @@ public class Ajouter_Jeu extends JFrame {
 		this.connect = connect;
 		setTitle("Ajouter un jeu");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 467, 550);
+		setBounds(100, 100, 467, 600);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -118,12 +118,12 @@ public class Ajouter_Jeu extends JFrame {
 
 		JList listConsoles = new JList(donnees);
 		listConsoles.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		listConsoles.setBounds(250, 240, 131, 180);
+		listConsoles.setBounds(250, 273, 131, 180);
 		contentPane.add(listConsoles);
 		
 		
 		JLabel labelMsgErreur = new JLabel("");
-		labelMsgErreur.setBounds(69, 360, 313, 29);
+		labelMsgErreur.setBounds(69, 459, 313, 29);
 		contentPane.add(labelMsgErreur);
 
 		JButton btnAjouter = new JButton("Ajouter");
@@ -171,7 +171,7 @@ public class Ajouter_Jeu extends JFrame {
 
 			}
 		});
-		btnAjouter.setBounds(69, 448, 89, 23);
+		btnAjouter.setBounds(69, 510, 89, 23);
 		contentPane.add(btnAjouter);
 
 		JButton btnRetour = new JButton("Retour");
@@ -183,7 +183,7 @@ public class Ajouter_Jeu extends JFrame {
 				dispose();
 			}
 		});
-		btnRetour.setBounds(270, 448, 100, 23);
+		btnRetour.setBounds(266, 510, 100, 23);
 		contentPane.add(btnRetour);
 	}
 }
