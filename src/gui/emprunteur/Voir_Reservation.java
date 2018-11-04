@@ -56,8 +56,8 @@ public class Voir_Reservation extends JFrame {
 
 		for (int i = 0; i < listReservation.size(); i++) {
 			System.out.println(listReservation.get(i).toString());
-			donnees[i] = "Réservation effectuée le : " + simpleDateFormat.format(listReservation.get(i).getDateReservation()) + " - " + listReservation.get(i).getJeu().getNom() + " - " + listReservation.get(i).getJeu().isDispo() + " - " + listReservation.get(i).getJeu().getTarif() + " - "
-					+ simpleDateFormat.format(listReservation.get(i).getJeu().getDateTarif()) + " - " + listReservation.get(i).getJeu().getAdapterTarif()
+			donnees[i] = "Réservation effectuée le : " + simpleDateFormat.format(listReservation.get(i).getDateReservation()) + " - " + listReservation.get(i).getJeu().getNom() + " - " + listReservation.get(i).getJeu().isDispo() + " - " + listReservation.get(i).getJeu().getTarif() 
+					+ " - " + listReservation.get(i).getJeu().getAdapterTarif()
 					+ " - " + listReservation.get(i).getJeu().getConsole().getNom();
 		}
 

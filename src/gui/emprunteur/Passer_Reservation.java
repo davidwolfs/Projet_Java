@@ -28,6 +28,7 @@ import com.toedter.calendar.JDateChooser;
 
 import dao.EmprunteurDAO;
 import dao.JeuDAO;
+import dao.PretDAO;
 import dao.ReservationDAO;
 
 import javax.swing.JList;
@@ -165,6 +166,8 @@ public class Passer_Reservation extends JFrame {
 					Emprunteur emprunteur = emprunteurDAO.findIdByEmprunteur(currentEmprunteur);
 					reservationDAO.createReservation(reservation, emprunteur);
 					reservationDAO.create_Ligne_Reservation(reservation, jeu);
+					PretDAO pretDAO = new PretDAO(connect);
+					pretDAO.create_Pret(pret, emprunteur);
 					// }
 				}
 			}
