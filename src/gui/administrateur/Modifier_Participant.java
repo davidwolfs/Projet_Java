@@ -41,6 +41,7 @@ public class Modifier_Participant extends JFrame {
 	private Administrateur currentAdministrateur;
 	private Emprunteur emprunteurAModifier;
 	private Preteur preteurAModifier;
+	
 	/**
 	 * Create the frame.
 	 */

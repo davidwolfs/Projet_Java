@@ -91,6 +91,18 @@ public class Dashboard_Preteur extends JFrame {
 		});
 		btnVoirReservations.setBounds(200, 265, 182, 28);
 		contentPane.add(btnVoirReservations);
+		
+		JButton btnCoterEmprunteurs = new JButton("C\u00F4ter les emprunteurs");
+		btnCoterEmprunteurs.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				dispose();
+				Coter_Emprunteurs coter_Emprunteurs = new Coter_Emprunteurs(connect, currentPreteur);
+				coter_Emprunteurs.setVisible(true);
+				coter_Emprunteurs.setResizable(false);
+			}
+		});
+		btnCoterEmprunteurs.setBounds(199, 330, 183, 28);
+		contentPane.add(btnCoterEmprunteurs);
 	}
 }
 
