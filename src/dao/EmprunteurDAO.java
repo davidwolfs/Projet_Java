@@ -133,7 +133,7 @@ public class EmprunteurDAO extends DAO<Emprunteur> {
 					.executeQuery("SELECT * FROM Emprunteur WHERE Email = " + "\"" + email + "\" AND Password = " + "\""
 							+ password + "\"");
 			if (result.first()) {
-				emprunteur = new Emprunteur(result.getString("Nom"), result.getString("Prenom"),
+				emprunteur = new Emprunteur(result.getInt("ID"), result.getString("Nom"), result.getString("Prenom"),
 						result.getDate("DateNaiss"), email, password);
 			}
 		} catch (SQLException e) {

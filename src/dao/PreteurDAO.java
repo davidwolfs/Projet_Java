@@ -123,7 +123,7 @@ public class PreteurDAO extends DAO<Preteur> {
 					.executeQuery("SELECT * FROM Preteur WHERE Email = " + "\"" + email + "\" AND Password = " + "\""
 							+ password + "\"");
 			if (result.first()) {
-				preteur = new Preteur(result.getString("Nom"), result.getString("Prenom"), result.getDate("DateNaiss"),
+				preteur = new Preteur(result.getInt("ID"), result.getString("Nom"), result.getString("Prenom"), result.getDate("DateNaiss"),
 						email, password);
 			}
 		} catch (SQLException e) {

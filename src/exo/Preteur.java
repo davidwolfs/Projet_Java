@@ -10,9 +10,9 @@ import java.util.Set;
 import dao.PreteurDAO;
 
 public class Preteur extends Joueur {
-	private Set<Exemplaire> listExemplaire = new HashSet<>();
+	private List<Exemplaire> listExemplaire = new ArrayList<>();
 
-	public Preteur(Set<Exemplaire> listExemplaire) {
+	public Preteur(List<Exemplaire> listExemplaire) {
 		this.listExemplaire = listExemplaire;
 	}
 
@@ -28,11 +28,11 @@ public class Preteur extends Joueur {
 
 	}
 
-	public Set<Exemplaire> getListExemplaire() {
+	public List<Exemplaire> getListExemplaire() {
 		return listExemplaire;
 	}
 
-	public void setListExamplaire(Set<Exemplaire> listExemplaire) {
+	public void setListExamplaire(List<Exemplaire> listExemplaire) {
 		this.listExemplaire = listExemplaire;
 	}
 
@@ -48,5 +48,7 @@ public class Preteur extends Joueur {
 	public String toString() {
 		return "Preteur [listExemplaire=" + listExemplaire + "]";
 	}
+
+	
 
 }

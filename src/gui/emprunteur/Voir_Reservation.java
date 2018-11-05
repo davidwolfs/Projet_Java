@@ -42,11 +42,11 @@ public class Voir_Reservation extends JFrame {
 		contentPane.setLayout(null);
 		
 		JLabel lblListeReservations = new JLabel("Liste de mes r\u00E9servations");
-		lblListeReservations.setBounds(20, 24, 153, 14);
+		lblListeReservations.setBounds(10, 24, 153, 14);
 		contentPane.add(lblListeReservations);
 		
 		ReservationDAO reservationDAO = new ReservationDAO(connect);
-		List<Reservation> listReservation = reservationDAO.findAll();
+		List<Reservation> listReservation = reservationDAO.findAll(currentEmprunteur);
 
 		// List<Vehicule> listVehicule = vehiculeDAO.listVehicule();
 		Object[] reservation = listReservation.toArray();

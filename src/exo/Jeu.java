@@ -115,7 +115,7 @@ public class Jeu {
 
 	@Override
 	public String toString() {
-		return "Jeu [nom=" + nom + ", dispo=" + dispo + ", tarif=" + tarif + ", dateTarif=" + dateTarif
+		return "Jeu [id=" + id + ", nom=" + nom + ", dispo=" + dispo + ", tarif=" + tarif + ", dateTarif=" + dateTarif
 				+ ", adapterTarif=" + adapterTarif + ", console=" + console + "]";
 	}
 

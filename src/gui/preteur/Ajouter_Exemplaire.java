@@ -170,26 +170,27 @@ public class Ajouter_Exemplaire extends JFrame {
 		
 		
 		JLabel labelMsgErreur = new JLabel("");
-		labelMsgErreur.setBounds(69, 360, 313, 29);
+		labelMsgErreur.setBounds(69, 532, 313, 29);
 		contentPane.add(labelMsgErreur);
 		
 		JButton btnValider = new JButton("Valider");
 		btnValider.addActionListener(new ActionListener() {
 			
-			/*public boolean champsVide() {
+			public boolean champsVide() {
 				boolean valid = true;
-				if (textFieldNom.getText().isEmpty()
-						|| textFieldTarif.getText().isEmpty() || ((JTextField) dateChooserDateTarif.getDateEditor().getUiComponent()).getText().isEmpty()
-						|| textFieldAdapterTarif.getText().isEmpty()) {
-					labelMsgErreur.setText("Veuillez remplir tous les champs.");
+				
+				if((int)spinnerNombreExemplaires.getValue() <= 0)
+				{
+					labelMsgErreur.setText("Veuillez entrez un nombre supérieur à 0.");
 					valid = false;
 				}
 
 				return valid;
-			}*/
+			}
 			
 			public void actionPerformed(ActionEvent e) {
-				//if (champsVide()) {
+				if (champsVide()) {
+					System.out.println(spinnerNombreExemplaires.getValue());
 					JeuDAO jeuDAO = new JeuDAO(connect);
 					ExemplaireDAO exemplaireDAO = new ExemplaireDAO(connect);
 					jeuAModifier.setNom(lblNom2.getText());
@@ -206,7 +207,7 @@ public class Ajouter_Exemplaire extends JFrame {
 					{
 						exemplaire= new Exemplaire(jeuAModifier);
 						currentPreteur.addExemplaire(exemplaire);
-						exemplaireDAO.create(exemplaire);
+						exemplaireDAO.create_Exemplaire(exemplaire, currentPreteur);
 					}
 					
 					
@@ -216,14 +217,14 @@ public class Ajouter_Exemplaire extends JFrame {
 					} else {
 						System.out.println("Nombre d'exemplaires : " + currentPreteur.getListExemplaire().size());
 						System.out.println(currentPreteur.getListExemplaire());
-						/*dispose();
-						Dashboard_Preteur dashboard_Preteur = new Dashboard_Preteur(connect, currentPreteur);
-						dashboard_Preteur.setVisible(true);
-						dashboard_Preteur.setResizable(false);*/
+						dispose();
+						Liste_Jeux liste_Jeux = new Liste_Jeux(connect, currentPreteur);
+						liste_Jeux.setVisible(true);
+						liste_Jeux.setResizable(false);
 					}
 				}
 				
-			//}
+			}
 		});
 		
 		

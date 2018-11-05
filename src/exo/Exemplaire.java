@@ -3,6 +3,10 @@ package exo;
 public class Exemplaire {
 	private Jeu jeu;
 
+	public Exemplaire() {
+		
+	}
+	
 	public Exemplaire(Jeu jeu) {
 		this.jeu = jeu;
 	}

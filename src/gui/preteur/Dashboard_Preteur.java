@@ -56,65 +56,29 @@ public class Dashboard_Preteur extends JFrame {
 		btnDeconnexion.setBounds(10, 327, 118, 28);
 		contentPane.add(btnDeconnexion);
 		
-		JLabel lblMsgErrorJeux = new JLabel("");
-		lblMsgErrorJeux.setBounds(156, 334, 214, 21);
-		contentPane.add(lblMsgErrorJeux);
-		
-		JeuDAO jeuDAO = new JeuDAO(connect);
-		List<Jeu> listJeu = jeuDAO.findAll();
-
-		// List<Vehicule> listVehicule = vehiculeDAO.listVehicule();
-		Object[] jeu = listJeu.toArray();
-
-		Object[] donnees = new Object[listJeu.size()];
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yy");
-
-		for (int i = 0; i < listJeu.size(); i++) {
-			String dispo = " ";
-			if(listJeu.get(i).isDispo())
-			{
-				dispo = "Disponible";
-			}
-			else
-			{
-				dispo = "Indisponible";
-			}
-			
-			System.out.println(listJeu.get(i).toString());
-			donnees[i] = listJeu.get(i).getNom() + " - "
-					+ dispo + " - "
-					+ listJeu.get(i).getTarif() + " - " 
-					+ simpleDateFormat.format(listJeu.get(i).getDateTarif()) + " - "
-					+ listJeu.get(i).getAdapterTarif();
-		}
-		
-		JList listJeux = new JList(donnees);
-		listJeux.setBounds(10, 46, 564, 214);
-		contentPane.add(listJeux);
-		
-		JButton btnAjouterExemplaire = new JButton("Ajouter un exemplaire");
-		btnAjouterExemplaire.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				int index = listJeux.getSelectedIndex();
-
-				if (index == -1) {
-					lblMsgErrorJeux.setText("Veuillez sélectionner un jeu.");
-				} else {
-					System.out.println(index);
-					dispose();
-					Ajouter_Exemplaire ajouter_Exemplaire = new Ajouter_Exemplaire(connect, currentPreteur, listJeu.get(index));
-					ajouter_Exemplaire.setVisible(true);
-					ajouter_Exemplaire.setResizable(false);
-				}
-				
+		JButton btnListeJeux = new JButton("Voir la liste des jeux");
+		btnListeJeux.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				Liste_Jeux Liste_Jeux = new Liste_Jeux(connect, currentPreteur);
+				Liste_Jeux.setVisible(true);
+				Liste_Jeux.setResizable(false);
 			}
 		});
-		btnAjouterExemplaire.setBounds(392, 328, 175, 27);
-		contentPane.add(btnAjouterExemplaire);
+		btnListeJeux.setBounds(202, 109, 180, 28);
+		contentPane.add(btnListeJeux);
 		
-		JTextPane textPane = new JTextPane();
-		textPane.setBounds(478, 327, 6, 20);
-		contentPane.add(textPane);
+		JButton btnListeJeuxAPreter = new JButton("Voir les jeux a pr\u00EAter");
+		btnListeJeuxAPreter.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				Liste_Jeux_A_Preter liste_Jeux_A_Preter = new Liste_Jeux_A_Preter(connect, currentPreteur);
+				liste_Jeux_A_Preter.setVisible(true);
+				liste_Jeux_A_Preter.setResizable(false);
+			}
+		});
+		btnListeJeuxAPreter.setBounds(199, 188, 183, 28);
+		contentPane.add(btnListeJeuxAPreter);
 	}
 }
 

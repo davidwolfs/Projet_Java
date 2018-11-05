@@ -83,13 +83,13 @@ public class ReservationDAO extends DAO<Reservation>{
 		return null;
 	}
 	
-	public List<Reservation> findAll(){
+	public List<Reservation> findAll(Emprunteur currentEmprunteur){
 		List<Reservation> listReservation = new ArrayList<>();
 		Reservation reservation;
 		try{
 			ResultSet result = this.connect.createStatement(
 					ResultSet.TYPE_SCROLL_INSENSITIVE,
-	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT ID_Console, ID_Reservation, DateReservation, Console.Nom AS NOMCONSOLE, Ligne_Jeu.ID_Jeu, Jeu.Nom AS NOMJEU, Dispo, Tarif, DateTarif, AdapterTarif, DateDebut, DateFin, Confirmer_Pret FROM (Emprunteur INNER JOIN (Reservation INNER JOIN ((Jeu INNER JOIN (Console INNER JOIN Ligne_Jeu ON Console.ID = Ligne_Jeu.ID_Console) ON Jeu.ID = Ligne_Jeu.ID_Jeu) INNER JOIN Ligne_Reservation ON Jeu.ID = Ligne_Reservation.ID_Jeu) ON Reservation.ID = Ligne_Reservation.ID_Reservation) ON Emprunteur.ID = Reservation.IDEmprunteur) INNER JOIN Pret ON (Console.ID = Pret.ID) AND (Emprunteur.ID = Pret.IDEmprunteur)");
+	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT ID_Console, ID_Reservation, DateReservation, Console.Nom AS NOMCONSOLE, Ligne_Jeu.ID_Jeu, Jeu.Nom AS NOMJEU, Dispo, Tarif, DateTarif, AdapterTarif, DateDebut, DateFin, Confirmer_Pret FROM (Emprunteur INNER JOIN (Reservation INNER JOIN ((Jeu INNER JOIN (Console INNER JOIN Ligne_Jeu ON Console.ID = Ligne_Jeu.ID_Console) ON Jeu.ID = Ligne_Jeu.ID_Jeu) INNER JOIN Ligne_Reservation ON Jeu.ID = Ligne_Reservation.ID_Jeu) ON Reservation.ID = Ligne_Reservation.ID_Reservation) ON Emprunteur.ID = Reservation.IDEmprunteur) INNER JOIN Pret ON (Console.ID = Pret.ID) AND (Emprunteur.ID = Pret.IDEmprunteur) WHERE IDEmprunteur = " + currentEmprunteur.getiD());
 			while(result.next())
 			{
 				Jeu jeu = new Jeu();

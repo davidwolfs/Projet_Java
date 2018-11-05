@@ -3,11 +3,16 @@ package dao;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
+import exo.Console;
 import exo.Exemplaire;
 import exo.Jeu;
+import exo.Preteur;
 
 public class ExemplaireDAO extends DAO<Exemplaire>{
 
@@ -22,6 +27,24 @@ public class ExemplaireDAO extends DAO<Exemplaire>{
 		return false;
 	}
 
+	public boolean create_Exemplaire(Exemplaire exemplaire, Preteur currentPreteur)
+	{
+		boolean statementResult;
+		try {
+			Statement statement = connect.createStatement();
+			String query = "INSERT INTO Exemplaire (IDJeu, IDPreteur) VALUES ('" + exemplaire.getJeu().getId() + "','" + currentPreteur.getiD() + "')" + ";";
+			System.out.println(query);
+			statementResult = true;
+			statementResult = statement.execute(query);
+		} catch (SQLException e) {
+			statementResult = false;
+			e.printStackTrace();
+			System.out.println(e);
+		}
+		System.out.println(statementResult);
+		return statementResult;
+	}
+	
 	@Override
 	public boolean delete(Exemplaire obj) {
 		// TODO Auto-generated method stub
@@ -40,23 +63,37 @@ public class ExemplaireDAO extends DAO<Exemplaire>{
 		return null;
 	}
 
-	public List<Jeu> findAll(){
-		List<Jeu> listJeux = new ArrayList<>();
-		Jeu jeu = new Jeu();
+	public List<Exemplaire> findAll(Preteur currentPreteur){
+		List<Exemplaire> listExemplaire = new ArrayList<>();
+		Jeu jeu; 
+		Console console;
+		Exemplaire exemplaire;
 		try{
 			ResultSet result = this.connect.createStatement(
 					ResultSet.TYPE_SCROLL_INSENSITIVE,
-	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Jeu");
+	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT Console.ID AS IDCONSOLE, Console.Nom AS NOMCONSOLE, Jeu.ID AS IDJEU, Jeu.Nom AS NOMJEU, Dispo, Tarif, DateTarif, AdapterTarif, Exemplaire.ID, IDJeu, IDPreteur, Ligne_Jeu.ID_Jeu, ID_Jeu, ID_Console FROM Console INNER JOIN ((Jeu INNER JOIN Exemplaire ON Jeu.ID = Exemplaire.IDJeu) INNER JOIN Ligne_Jeu ON Jeu.ID = Ligne_Jeu.ID_Jeu) ON Console.ID = Ligne_Jeu.ID_Console WHERE IDPreteur = " + currentPreteur.getiD());
 			while(result.next())
 			{
-				jeu = new Jeu(result.getInt("ID"), result.getString("Nom"), result.getBoolean("Dispo"),
-						result.getInt("Tarif"), result.getDate("DateTarif"), result.getString("AdapterTarif"));
-				listJeux.add(jeu);
+				console = new Console();
+				jeu = new Jeu();
+				exemplaire = new Exemplaire();
+				console.setId(result.getInt("IDCONSOLE"));
+				console.setNom(result.getString("NOMCONSOLE"));
+				jeu.setId(result.getInt("IDJEU"));
+				jeu.setNom(result.getString("NOMJEU"));
+				jeu.setDispo(result.getBoolean("Dispo"));
+				jeu.setTarif(result.getDouble("Tarif"));
+				jeu.setDateTarif(result.getDate("DateTarif"));
+				jeu.setAdapterTarif(result.getString("AdapterTarif"));
+				jeu.setConsole(console);
+				exemplaire.setJeu(jeu);
+				listExemplaire.add(exemplaire);
 			}
+			currentPreteur.setListExamplaire(listExemplaire);
 		}
 		catch(SQLException e){
 			e.printStackTrace();
 		}
-		return listJeux;
+		return listExemplaire;
 	}
 }
