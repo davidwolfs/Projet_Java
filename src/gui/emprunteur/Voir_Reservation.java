@@ -46,7 +46,7 @@ public class Voir_Reservation extends JFrame {
 		contentPane.add(lblListeReservations);
 		
 		ReservationDAO reservationDAO = new ReservationDAO(connect);
-		List<Reservation> listReservation = reservationDAO.findAll(currentEmprunteur);
+		List<Reservation> listReservation = reservationDAO.findAllReservationByEmprunteur(currentEmprunteur);
 
 		// List<Vehicule> listVehicule = vehiculeDAO.listVehicule();
 		Object[] reservation = listReservation.toArray();

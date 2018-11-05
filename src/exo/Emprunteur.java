@@ -19,12 +19,18 @@ public class Emprunteur extends Joueur {
 		super(id, nom, prenom, dateNaiss, email, password);
 		this.unite = 10;
 	}
-	
+
 	public Emprunteur(String nom, String prenom, Date dateNaiss, String email, String password) {
 		super(nom, prenom, dateNaiss, email, password);
 		this.unite = 10;
 	}
 
+	public Emprunteur(int id, String nom, String prenom, Date dateNaiss, String email, String password, int unite, Reservation reservation) {
+		super(id, nom, prenom, dateNaiss, email, password);
+		this.unite = unite;
+		this.reservation = reservation;
+	}
+	
 	public Emprunteur(int id, String nom, String prenom, Date dateNaiss, String email, String password, int unite) {
 		super(id, nom, prenom, dateNaiss, email, password);
 		this.unite = unite;
@@ -62,6 +68,15 @@ public class Emprunteur extends Joueur {
 		this.cote = cote;
 	}
 
+	
+	public Reservation getReservation() {
+		return reservation;
+	}
+
+	public void setReservation(Reservation reservation) {
+		this.reservation = reservation;
+	}
+
 	public void soustraireUnite(int unite) {
 		this.unite -= unite;
 	}
@@ -72,7 +87,9 @@ public class Emprunteur extends Joueur {
 
 	@Override
 	public String toString() {
-		return "Emprunteur [unite=" + unite + ", cote=" + cote + "]";
+		return "Emprunteur [unite=" + unite + ", cote=" + cote + ", reservation=" + reservation + ", iD=" + iD
+				+ ", nom=" + nom + ", prenom=" + prenom + ", dateNaiss=" + dateNaiss + ", email=" + email
+				+ ", password=" + password + "]";
 	}
 
 }

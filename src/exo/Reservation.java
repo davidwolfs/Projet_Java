@@ -11,6 +11,10 @@ public class Reservation {
 	private Connection connect;
 	private Jeu jeu;
 
+	public Reservation() {
+	
+	}
+	
 	public Reservation(int id, Date dateReservation, Jeu jeu) {
 		this.id = id;
 		this.dateReservation = dateReservation;

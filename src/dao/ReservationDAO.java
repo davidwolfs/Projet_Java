@@ -83,7 +83,7 @@ public class ReservationDAO extends DAO<Reservation>{
 		return null;
 	}
 	
-	public List<Reservation> findAll(Emprunteur currentEmprunteur){
+	public List<Reservation> findAllReservationByEmprunteur(Emprunteur currentEmprunteur){
 		List<Reservation> listReservation = new ArrayList<>();
 		Reservation reservation;
 		try{

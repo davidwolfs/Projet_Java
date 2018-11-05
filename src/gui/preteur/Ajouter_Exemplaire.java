@@ -35,6 +35,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.awt.event.ActionEvent;
 import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 
 public class Ajouter_Exemplaire extends JFrame {
 
@@ -165,7 +166,8 @@ public class Ajouter_Exemplaire extends JFrame {
 		contentPane.add(lblNombreExemplaires);
 		
 		JSpinner spinnerNombreExemplaires = new JSpinner();
-		spinnerNombreExemplaires.setBounds(251, 499, 29, 20);
+		spinnerNombreExemplaires.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
+		spinnerNombreExemplaires.setBounds(251, 499, 40, 20);
 		contentPane.add(spinnerNombreExemplaires);
 		
 		

@@ -79,6 +79,18 @@ public class Dashboard_Preteur extends JFrame {
 		});
 		btnListeJeuxAPreter.setBounds(199, 188, 183, 28);
 		contentPane.add(btnListeJeuxAPreter);
+		
+		JButton btnVoirReservations = new JButton("Voir les r\u00E9servations");
+		btnVoirReservations.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				dispose();
+				Liste_Reservations liste_Reservations = new Liste_Reservations(connect, currentPreteur);
+				liste_Reservations.setVisible(true);
+				liste_Reservations.setResizable(false);
+			}
+		});
+		btnVoirReservations.setBounds(200, 265, 182, 28);
+		contentPane.add(btnVoirReservations);
 	}
 }
 
