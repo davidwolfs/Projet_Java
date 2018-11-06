@@ -8,6 +8,7 @@ import dao.EmprunteurDAO;
 public class Emprunteur extends Joueur {
 	private int unite;
 	private int cote;
+	private int nbrCote = 0;
 	private Reservation reservation;
 
 	public Emprunteur(int cote) {
@@ -34,6 +35,13 @@ public class Emprunteur extends Joueur {
 	public Emprunteur(int id, String nom, String prenom, Date dateNaiss, String email, String password, int unite) {
 		super(id, nom, prenom, dateNaiss, email, password);
 		this.unite = unite;
+	}
+	
+	public Emprunteur(int id, String nom, String prenom, Date dateNaiss, String email, String password, int unite, int cote, int nbrCote) {
+		super(id, nom, prenom, dateNaiss, email, password);
+		this.unite = unite;
+		this.cote=cote;
+		this.nbrCote=nbrCote;
 	}
 
 	public Emprunteur(int id, String nom, String prenom, Date dateNaiss, String email, String password, double solde,
@@ -77,6 +85,18 @@ public class Emprunteur extends Joueur {
 		this.reservation = reservation;
 	}
 
+	public int getNbrCote() {
+		return nbrCote;
+	}
+
+	public void setNbrCote(int nbrCote) {
+		this.nbrCote = nbrCote;
+	}
+	
+	public void incrementerNbrCote() {
+		this.nbrCote++;
+	}
+
 	public void soustraireUnite(int unite) {
 		this.unite -= unite;
 	}
@@ -85,6 +105,24 @@ public class Emprunteur extends Joueur {
 		this.cote += cote;
 	}
 
+	public double CalculerMoyenneCote()
+	{
+		double moyenneCote = 0.0;
+		
+		// On déclenche une exception si on a une division par zéro
+		try
+		{
+			moyenneCote = (double)(cote / nbrCote);
+			System.out.println(moyenneCote);
+		}
+		catch(ArithmeticException ex)
+		{
+			ex.getMessage();
+		}
+		
+		return moyenneCote;
+	}
+	
 	@Override
 	public String toString() {
 		return "Emprunteur [unite=" + unite + ", cote=" + cote + ", reservation=" + reservation + ", iD=" + iD

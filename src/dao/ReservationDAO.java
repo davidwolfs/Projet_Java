@@ -108,7 +108,7 @@ public class ReservationDAO extends DAO<Reservation>{
 				pret.setDateDebut(result.getDate("DateDebut"));
 				pret.setDateFin(result.getDate("DateFin"));
 				pret.setConfirmer_pret(result.getBoolean("Confirmer_Pret"));
-				reservation = new Reservation(result.getInt("ID_Reservation"), result.getDate("DateReservation"), jeu);
+				reservation = new Reservation(result.getInt("ID"), result.getDate("DateReservation"), jeu);
 				listReservation.add(reservation);
 			}
 		}

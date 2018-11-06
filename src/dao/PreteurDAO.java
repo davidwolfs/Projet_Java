@@ -5,6 +5,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 import exo.Emprunteur;
 import exo.Preteur;
@@ -77,6 +79,24 @@ public class PreteurDAO extends DAO<Preteur> {
 		return statementResult;
 	}
 
+	public boolean updateCote_NombreCote(Preteur preteur) {
+		System.out.println("Mon objet depuis la méthode update : " + preteur);
+		boolean statementResult;
+		try {
+			Statement statement = connect.createStatement();
+			String query = "UPDATE Preteur SET Cote = Cote + " + preteur.getCote()  + "," + " NombreCote = NombreCote + 1" + " WHERE ID = " + preteur.getiD() + ";";
+			System.out.println(query);
+			statementResult = true;
+			statementResult = statement.execute(query);
+		} catch (SQLException e) {
+			statementResult = false;
+			e.printStackTrace();
+			System.out.println(e);
+		}
+		System.out.println(statementResult);
+		return statementResult;
+	}
+	
 	@Override
 	public Preteur find(int id) {
 		Preteur preteur = null;
@@ -130,6 +150,25 @@ public class PreteurDAO extends DAO<Preteur> {
 			e.printStackTrace();
 		}
 		return preteur;
+	}
+	
+	public List<Preteur> findAllExceptcurrentPreteur(Preteur preteur){
+		List<Preteur> listPreteurs = new ArrayList<>();
+		try{
+			ResultSet result = this.connect.createStatement(
+					ResultSet.TYPE_SCROLL_INSENSITIVE,
+	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Preteur WHERE ID <> " + preteur.getiD());
+			while(result.next())
+			{
+				preteur = new Preteur(result.getInt("ID"), result.getString("Nom"), result.getString("Prenom"),
+						result.getDate("DateNaiss"), result.getString("Email"), result.getString("Password"), result.getInt("Cote"), result.getInt("NombreCote"));
+				listPreteurs.add(preteur);
+			}
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		return listPreteurs;
 	}
 
 	public boolean alreadyExist(Preteur preteur) {

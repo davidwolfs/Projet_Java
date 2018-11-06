@@ -40,7 +40,7 @@ public class PretDAO extends DAO<Pret>{
 		try {
 			Statement statement = connect.createStatement();
 			String query = "INSERT INTO Pret (DateDebut, DateFin, Confirmer_Pret, IDEmprunteur, IDPreteur, IDExemplaire) VALUES ('" +
-					new Timestamp(dateDebut.getTime()) + "','" +  new Timestamp(dateFin.getTime()) + "','" + "FALSE" + "','" + emprunteur.getiD() + "','" + emprunteur.getiD() + "','" + 1 + "')" + ";";
+					new Timestamp(dateDebut.getTime()) + "','" +  new Timestamp(dateFin.getTime()) + "','" + "FALSE" + "','" + emprunteur.getiD() + "','" + emprunteur.getiD() + "','" + 607 + "')" + ";";
 			System.out.println(query);
 			statementResult = true;
 			statementResult = statement.execute(query);

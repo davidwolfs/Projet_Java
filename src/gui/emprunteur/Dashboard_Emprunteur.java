@@ -10,6 +10,7 @@ import javax.swing.border.EmptyBorder;
 import exo.Administrateur;
 import exo.Emprunteur;
 import gui.Main;
+import gui.preteur.Coter_Emprunteurs;
 
 import javax.swing.JLabel;
 import javax.swing.JButton;
@@ -30,7 +31,7 @@ public class Dashboard_Emprunteur extends JFrame {
 		this.connect = connect;
 		this.currentEmprunteur = currentEmprunteur;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 470, 324);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -48,7 +49,7 @@ public class Dashboard_Emprunteur extends JFrame {
 				Main.creerConnexion();
 			}
 		});
-		btnDeconnexion.setBounds(10, 208, 110, 24);
+		btnDeconnexion.setBounds(10, 239, 110, 24);
 		contentPane.add(btnDeconnexion);
 
 		JButton btnPasserReservation = new JButton("Passer une r\u00E9servation");
@@ -74,5 +75,17 @@ public class Dashboard_Emprunteur extends JFrame {
 		});
 		btnVoirReservations.setBounds(130, 138, 171, 24);
 		contentPane.add(btnVoirReservations);
+		
+		JButton btnCoterEmprunteurs = new JButton("C\u00F4ter les pr\u00EAteurs");
+		btnCoterEmprunteurs.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				dispose();
+				Coter_Preteurs coter_Preteurs = new Coter_Preteurs(connect, currentEmprunteur);
+				coter_Preteurs.setVisible(true);
+				coter_Preteurs.setResizable(false);
+			}
+		});
+		btnCoterEmprunteurs.setBounds(132, 198, 169, 24);
+		contentPane.add(btnCoterEmprunteurs);
 	}
 }

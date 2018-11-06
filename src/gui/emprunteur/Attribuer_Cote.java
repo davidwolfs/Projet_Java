@@ -1,4 +1,4 @@
-package gui.preteur;
+package gui.emprunteur;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import dao.EmprunteurDAO;
+import dao.PreteurDAO;
 import exo.Emprunteur;
 import exo.Preteur;
 
@@ -26,16 +27,16 @@ public class Attribuer_Cote extends JFrame {
 
 	private JPanel contentPane;
 	private Connection connect;
-	private Preteur currentPreteur;
-	private Emprunteur emprunteurACoter;
+	private Emprunteur currentEmprunteur;
+	private Preteur preteurACoter;
 	
 	/**
 	 * Create the frame.
 	 */
-	public Attribuer_Cote(Connection connect, Preteur currentPreteur, Emprunteur emprunteurACoter) {
+	public Attribuer_Cote(Connection connect, Emprunteur currentEmprunteur, Preteur preteurACoter) {
 		this.connect=connect;
-		this.currentPreteur=currentPreteur;
-		this.emprunteurACoter=emprunteurACoter;
+		this.currentEmprunteur=currentEmprunteur;
+		this.preteurACoter=preteurACoter;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 621, 300);
 		contentPane = new JPanel();
@@ -65,13 +66,13 @@ public class Attribuer_Cote extends JFrame {
 					lblMsgErrorEmprunteur.setText("Veuillez indiquer une cote de 0 à 5.");
 				} else {
 					System.out.println(cote);
-					System.out.println(emprunteurACoter);
-					emprunteurACoter.setCote(cote);
-					emprunteurACoter.incrementerNbrCote();
-					EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
-					emprunteurDAO.updateCote_NombreCote(emprunteurACoter);
+					System.out.println(preteurACoter);
+					preteurACoter.setCote(cote);
+					preteurACoter.incrementerNbrCote();
+					PreteurDAO preteurDAO = new PreteurDAO(connect);
+					preteurDAO.updateCote_NombreCote(preteurACoter);
 					dispose();
-					Coter_Emprunteurs coter_Emprunteurs = new Coter_Emprunteurs(connect, currentPreteur);
+					Coter_Preteurs coter_Emprunteurs = new Coter_Preteurs(connect, currentEmprunteur);
 					coter_Emprunteurs.setVisible(true);
 					coter_Emprunteurs.setResizable(false);
 				}
@@ -84,9 +85,9 @@ public class Attribuer_Cote extends JFrame {
 		btnRetour.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				dispose();
-				Coter_Emprunteurs Coter_Emprunteurs = new Coter_Emprunteurs(connect, currentPreteur);
-				Coter_Emprunteurs.setVisible(true);
-				Coter_Emprunteurs.setResizable(false);
+				Coter_Preteurs coter_Emprunteurs = new Coter_Preteurs(connect, currentEmprunteur);
+				coter_Emprunteurs.setVisible(true);
+				coter_Emprunteurs.setResizable(false);
 			}
 		});
 		btnRetour.setBounds(506, 216, 89, 23);
@@ -96,9 +97,9 @@ public class Attribuer_Cote extends JFrame {
 		lblNoteAttribuee.setBounds(10, 30, 129, 14);
 		contentPane.add(lblNoteAttribuee);
 		
-		JLabel lblNomPrenomEmprunteur = new JLabel("");
-		lblNomPrenomEmprunteur.setBounds(372, 24, 223, 26);
-		lblNomPrenomEmprunteur.setText(emprunteurACoter.getPrenom() + " " + emprunteurACoter.getNom());
-		contentPane.add(lblNomPrenomEmprunteur);
+		JLabel lblNomPrenomPreteur = new JLabel("");
+		lblNomPrenomPreteur.setBounds(372, 24, 223, 26);
+		lblNomPrenomPreteur.setText(preteurACoter.getPrenom() + " " + preteurACoter.getNom());
+		contentPane.add(lblNomPrenomPreteur);
 	}
 }

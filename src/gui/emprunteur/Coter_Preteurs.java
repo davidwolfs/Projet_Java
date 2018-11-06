@@ -1,4 +1,4 @@
-package gui.preteur;
+package gui.emprunteur;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -22,18 +22,18 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class Coter_Emprunteurs extends JFrame {
+public class Coter_Preteurs extends JFrame {
 
 	private JPanel contentPane;
 	private Connection connect;
-	private Preteur currentPreteur;
+	private Emprunteur currentEmprunteur;
 
 	/**
 	 * Create the frame.
 	 */
-	public Coter_Emprunteurs(Connection connect, Preteur currentPreteur) {
+	public Coter_Preteurs(Connection connect, Emprunteur currentEmprunteur) {
 		this.connect=connect;
-		this.currentPreteur=currentPreteur;
+		this.currentEmprunteur=currentEmprunteur;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 797, 526);
 		contentPane = new JPanel();
@@ -41,36 +41,36 @@ public class Coter_Emprunteurs extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblListeEmprunteurs = new JLabel("Liste des emprunteurs");
-		lblListeEmprunteurs.setBounds(10, 25, 137, 14);
-		contentPane.add(lblListeEmprunteurs);
+		JLabel lblListePreteurs = new JLabel("Liste des pr\u00EAteurs");
+		lblListePreteurs.setBounds(10, 25, 137, 14);
+		contentPane.add(lblListePreteurs);
 
-		EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
-		
-		
-		Emprunteur emprunteur = new Emprunteur();
-		emprunteur.setiD(currentPreteur.getiD());
-		emprunteur.setNom(currentPreteur.getNom());
-		emprunteur.setPrenom(currentPreteur.getPrenom());
-		emprunteur.setDateNaiss(currentPreteur.getDateNaiss());
-		emprunteur.setEmail(currentPreteur.getEmail());
-		emprunteur.setPassword(currentPreteur.getPassword());
-		
-		List<Emprunteur> listEmprunteurs = emprunteurDAO.findAllExceptcurrentEmprunteur(emprunteur);
-		
 		PreteurDAO preteurDAO = new PreteurDAO(connect);
 		
-		Object[] donnees2 = new Object[listEmprunteurs.size()];
+		
+		Preteur preteur = new Preteur();
+		preteur.setiD(currentEmprunteur.getiD());
+		preteur.setNom(currentEmprunteur.getNom());
+		preteur.setPrenom(currentEmprunteur.getPrenom());
+		preteur.setDateNaiss(currentEmprunteur.getDateNaiss());
+		preteur.setEmail(currentEmprunteur.getEmail());
+		preteur.setPassword(currentEmprunteur.getPassword());
+		
+		List<Preteur> listPreteurs = preteurDAO.findAllExceptcurrentPreteur(preteur);
+		
+		EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
+
+		Object[] donnees2 = new Object[listPreteurs.size()];
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yy");
 		
-		for (int i = 0; i < listEmprunteurs.size(); i++) {
-			System.out.println(listEmprunteurs.get(i).toString());
-			donnees2[i] = listEmprunteurs.get(i).getNom() + " "
-					+ listEmprunteurs.get(i).getPrenom() + " - "
-					+ simpleDateFormat.format(listEmprunteurs.get(i).getDateNaiss()) + " - "
-					+ listEmprunteurs.get(i).getEmail() + " - " + listEmprunteurs.get(i).getUnite() + " U" + " - " + " - "
-					+ "Cote : " + listEmprunteurs.get(i).CalculerMoyenneCote() + " - "
-					+ listEmprunteurs.get(i).getNbrCote() + " avis.";
+		for (int i = 0; i < listPreteurs.size(); i++) {
+			System.out.println(listPreteurs.get(i).toString());
+			donnees2[i] = listPreteurs.get(i).getNom() + " "
+					+ listPreteurs.get(i).getPrenom() + " - "
+					+ simpleDateFormat.format(listPreteurs.get(i).getDateNaiss()) + " - "
+					+ listPreteurs.get(i).getEmail() + " - " + " - "
+					+ "Cote : " + listPreteurs.get(i).CalculerMoyenneCote() + " - "
+					+ listPreteurs.get(i).getNbrCote() + " avis.";
 		}
 
 		JList listEmprunteur = new JList(donnees2);
@@ -81,9 +81,9 @@ public class Coter_Emprunteurs extends JFrame {
 		btnRetour.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
-				Dashboard_Preteur dashboard_Preteur = new Dashboard_Preteur(connect, currentPreteur);
-				dashboard_Preteur.setVisible(true);
-				dashboard_Preteur.setResizable(false);
+				Dashboard_Emprunteur dashboard_Emprunteur = new Dashboard_Emprunteur(connect, currentEmprunteur);
+				dashboard_Emprunteur.setVisible(true);
+				dashboard_Emprunteur.setResizable(false);
 			}
 		});
 		btnRetour.setBounds(680, 447, 89, 23);
@@ -99,11 +99,12 @@ public class Coter_Emprunteurs extends JFrame {
 				int index = listEmprunteur.getSelectedIndex();
 
 				if (index == -1) {
-					lblMsgErrorEmprunteur.setText("Veuillez sélectionner un emprunteur.");
-				} else {
+					lblMsgErrorEmprunteur.setText("Veuillez sélectionner un prêteur.");
+				}
+				else {
 					System.out.println(index);
 					dispose();
-					Attribuer_Cote attribuer_Cote = new Attribuer_Cote(connect, currentPreteur, listEmprunteurs.get(index));
+					Attribuer_Cote attribuer_Cote = new Attribuer_Cote(connect, currentEmprunteur, listPreteurs.get(index));
 					attribuer_Cote.setVisible(true);
 					attribuer_Cote.setResizable(false);
 				}

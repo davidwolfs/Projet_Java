@@ -85,12 +85,12 @@ public class EmprunteurDAO extends DAO<Emprunteur> {
 		return statementResult;
 	}
 	
-	public boolean updateCote(Emprunteur emprunteur) {
+	public boolean updateCote_NombreCote(Emprunteur emprunteur) {
 		System.out.println("Mon objet depuis la méthode update : " + emprunteur);
 		boolean statementResult;
 		try {
 			Statement statement = connect.createStatement();
-			String query = "UPDATE Emprunteur SET Cote = " + "'" + emprunteur.getCote()  + "'" + " WHERE ID = " + emprunteur.getiD() + ";";
+			String query = "UPDATE Emprunteur SET Cote = Cote + " + "'" + emprunteur.getCote()  + "'," + " NombreCote = NombreCote + 1" + " WHERE ID = " + emprunteur.getiD() + ";";
 			System.out.println(query);
 			statementResult = true;
 			statementResult = statement.execute(query);
@@ -180,7 +180,6 @@ public class EmprunteurDAO extends DAO<Emprunteur> {
 		return listEmprunteurs;
 	}
 	
-	//TODO
 	public List<Emprunteur> findAllExceptcurrentEmprunteur(Emprunteur emprunteur){
 		List<Emprunteur> listEmprunteurs = new ArrayList<>();
 		try{
@@ -190,7 +189,7 @@ public class EmprunteurDAO extends DAO<Emprunteur> {
 			while(result.next())
 			{
 				emprunteur = new Emprunteur(result.getInt("ID"), result.getString("Nom"), result.getString("Prenom"),
-						result.getDate("DateNaiss"), result.getString("Email"), result.getString("Password"), result.getInt("Unite"));
+						result.getDate("DateNaiss"), result.getString("Email"), result.getString("Password"), result.getInt("Unite"), result.getInt("Cote"), result.getInt("NombreCote"));
 				listEmprunteurs.add(emprunteur);
 			}
 		}
