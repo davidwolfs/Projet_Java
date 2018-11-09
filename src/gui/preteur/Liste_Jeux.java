@@ -19,6 +19,7 @@ import javax.swing.border.EmptyBorder;
 import dao.JeuDAO;
 import exo.Jeu;
 import exo.Preteur;
+import javax.swing.JScrollPane;
 
 public class Liste_Jeux extends JFrame {
 
@@ -72,9 +73,12 @@ public class Liste_Jeux extends JFrame {
 					+ listJeu.get(i).getConsole().getNom();
 		}
 		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 46, 564, 214);
+		contentPane.add(scrollPane);
+		
 		JList listJeux = new JList(donnees);
-		listJeux.setBounds(10, 46, 564, 214);
-		contentPane.add(listJeux);
+		scrollPane.setViewportView(listJeux);
 		
 		JButton btnAjouterExemplaire = new JButton("Ajouter un exemplaire");
 		btnAjouterExemplaire.addActionListener(new ActionListener() {

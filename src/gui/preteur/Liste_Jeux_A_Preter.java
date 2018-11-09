@@ -22,6 +22,7 @@ import exo.Preteur;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 
 public class Liste_Jeux_A_Preter extends JFrame {
 
@@ -116,9 +117,6 @@ public class Liste_Jeux_A_Preter extends JFrame {
 					+ listExemplaire.get(i).getJeu().getConsole().getNom();
 			
 		}
-		JList listJeux = new JList(donnees);
-		listJeux.setBounds(10, 46, 564, 214);
-		contentPane.add(listJeux);
 		
 
 		JButton btnRetour = new JButton("Retour");
@@ -132,5 +130,11 @@ public class Liste_Jeux_A_Preter extends JFrame {
 		});
 		btnRetour.setBounds(466, 392, 89, 23);
 		contentPane.add(btnRetour);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 46, 564, 214);
+		contentPane.add(scrollPane);
+		JList listJeux = new JList(donnees);
+		scrollPane.setViewportView(listJeux);
 	}
 }

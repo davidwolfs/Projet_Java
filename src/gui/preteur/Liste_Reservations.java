@@ -25,6 +25,7 @@ import exo.Reservation;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.SwingConstants;
+import javax.swing.JScrollPane;
 
 public class Liste_Reservations extends JFrame {
 
@@ -85,10 +86,6 @@ public class Liste_Reservations extends JFrame {
 					+ listPret.get(i).getExemplaire().getJeu().getConsole().getNom();*/
 		}
 		
-		JList listPrets = new JList(donnees);
-		listPrets.setBounds(10, 46, 751, 214);
-		contentPane.add(listPrets);
-		
 		JButton btnRetour = new JButton("Retour");
 		btnRetour.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -100,6 +97,13 @@ public class Liste_Reservations extends JFrame {
 		});
 		btnRetour.setBounds(672, 392, 89, 23);
 		contentPane.add(btnRetour);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 50, 751, 214);
+		contentPane.add(scrollPane);
+		
+		JList listPrets = new JList(donnees);
+		scrollPane.setViewportView(listPrets);
 		
 		JLabel lblMsgError = new JLabel("");
 		lblMsgError.setBounds(263, 392, 241, 23);
@@ -127,5 +131,6 @@ public class Liste_Reservations extends JFrame {
 		});
 		btnConfirmer.setBounds(10, 392, 99, 23);
 		contentPane.add(btnConfirmer);
+	
 	}
 }

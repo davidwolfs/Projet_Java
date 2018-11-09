@@ -21,6 +21,7 @@ import javax.swing.JList;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JScrollPane;
 
 public class Coter_Emprunteurs extends JFrame {
 
@@ -72,10 +73,6 @@ public class Coter_Emprunteurs extends JFrame {
 					+ "Cote : " + listEmprunteurs.get(i).CalculerMoyenneCote() + " - "
 					+ listEmprunteurs.get(i).getNbrCote() + " avis.";
 		}
-
-		JList listEmprunteur = new JList(donnees2);
-		listEmprunteur.setBounds(10, 50, 764, 334);
-		contentPane.add(listEmprunteur);
 		
 		JButton btnRetour = new JButton("Retour");
 		btnRetour.addActionListener(new ActionListener() {
@@ -93,6 +90,13 @@ public class Coter_Emprunteurs extends JFrame {
 		lblMsgErrorEmprunteur.setBounds(252, 451, 252, 19);
 		contentPane.add(lblMsgErrorEmprunteur);
 		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 50, 764, 334);
+		contentPane.add(scrollPane);
+		
+				JList listEmprunteur = new JList(donnees2);
+				scrollPane.setViewportView(listEmprunteur);
+				
 		JButton btnCoter = new JButton("C\u00F4ter");
 		btnCoter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -112,8 +116,5 @@ public class Coter_Emprunteurs extends JFrame {
 		});
 		btnCoter.setBounds(10, 447, 89, 23);
 		contentPane.add(btnCoter);
-		
-	
-		
 	}
 }
