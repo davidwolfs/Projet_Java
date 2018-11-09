@@ -30,6 +30,7 @@ import javax.swing.JTable;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.ListSelectionModel;
+import javax.swing.JScrollPane;
 
 public class Gestion_Utilisateurs extends JFrame {
 
@@ -66,11 +67,6 @@ public class Gestion_Utilisateurs extends JFrame {
 					+ simpleDateFormat.format(listAdministrateur.get(i).getDateNaiss()) + " - "
 					+ listAdministrateur.get(i).getEmail();
 		}
-
-		JList listAdministrateurs = new JList(donnees);
-		listAdministrateurs.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		listAdministrateurs.setBounds(10, 36, 764, 150);
-		contentPane.add(listAdministrateurs);
 
 		JButton btnDeconnexion = new JButton("D\u00E9connexion");
 		btnDeconnexion.addActionListener(new ActionListener() {
@@ -118,6 +114,14 @@ public class Gestion_Utilisateurs extends JFrame {
 		lblMsgErrorParticipant.setBounds(302, 516, 241, 23);
 		contentPane.add(lblMsgErrorParticipant);
 
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 36, 764, 150);
+		contentPane.add(scrollPane);
+		
+				JList listAdministrateurs = new JList(donnees);
+				scrollPane.setViewportView(listAdministrateurs);
+				listAdministrateurs.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+				
 		JButton btnModifierAdministrateur = new JButton("Modifier un administrateur");
 		btnModifierAdministrateur.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -186,10 +190,6 @@ public class Gestion_Utilisateurs extends JFrame {
 					+ listEmprunteurs.get(i).getEmail() + " - " + listEmprunteurs.get(i).getUnite() + " U";
 		}
 
-		JList listEmprunteur = new JList(donnees2);
-		listEmprunteur.setBounds(10, 296, 764, 150);
-		contentPane.add(listEmprunteur);
-
 		JButton btnAjouterParticipant = new JButton("Ajouter un participant");
 		btnAjouterParticipant.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -202,6 +202,13 @@ public class Gestion_Utilisateurs extends JFrame {
 		btnAjouterParticipant.setBounds(10, 474, 200, 23);
 		contentPane.add(btnAjouterParticipant);
 
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(10, 296, 764, 150);
+		contentPane.add(scrollPane_1);
+		
+				JList listEmprunteur = new JList(donnees2);
+				scrollPane_1.setViewportView(listEmprunteur);
+				
 		JButton btnModifierParticipant = new JButton("Modifier un participant");
 		btnModifierParticipant.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

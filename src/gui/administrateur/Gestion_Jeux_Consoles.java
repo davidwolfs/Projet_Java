@@ -25,6 +25,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 
 public class Gestion_Jeux_Consoles extends JFrame {
 
@@ -63,11 +64,6 @@ public class Gestion_Jeux_Consoles extends JFrame {
 			donnees[i] = listConsole.get(i).getNom();
 		}
 
-		JList listConsoles = new JList(donnees);
-		listConsoles.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		listConsoles.setBounds(10, 46, 764, 150);
-		contentPane.add(listConsoles);
-
 		JLabel lblMsgErrorConsole = new JLabel("");
 		lblMsgErrorConsole.setBounds(282, 266, 230, 23);
 		contentPane.add(lblMsgErrorConsole);
@@ -84,6 +80,14 @@ public class Gestion_Jeux_Consoles extends JFrame {
 		btnAjouterConsole.setBounds(12, 232, 175, 23);
 		contentPane.add(btnAjouterConsole);
 
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 46, 764, 150);
+		contentPane.add(scrollPane);
+		
+				JList listConsoles = new JList(donnees);
+				scrollPane.setViewportView(listConsoles);
+				listConsoles.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+				
 		JButton btnModifierConsole = new JButton("Modifier une console");
 		btnModifierConsole.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -158,11 +162,6 @@ public class Gestion_Jeux_Consoles extends JFrame {
 					+ " - " + listJeu.get(i).getConsole().getNom();
 		}
 
-		JList listJeux = new JList(donnees2);
-		listJeux.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		listJeux.setBounds(10, 313, 764, 150);
-		contentPane.add(listJeux);
-
 		JLabel lblMsgErrorJeux = new JLabel("");
 		lblMsgErrorJeux.setBounds(282, 527, 230, 23);
 		contentPane.add(lblMsgErrorJeux);
@@ -182,6 +181,15 @@ public class Gestion_Jeux_Consoles extends JFrame {
 		btnAjouterJeu.setBounds(12, 493, 175, 23);
 		contentPane.add(btnAjouterJeu);
 
+
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(10, 313, 764, 150);
+		contentPane.add(scrollPane_1);
+		
+				JList listJeux = new JList(donnees2);
+				scrollPane_1.setViewportView(listJeux);
+				listJeux.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+				
 		JButton btnModifierJeu = new JButton("Modifier un jeu");
 		btnModifierJeu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
