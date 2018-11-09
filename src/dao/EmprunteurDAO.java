@@ -105,8 +105,19 @@ public class EmprunteurDAO extends DAO<Emprunteur> {
 
 	@Override
 	public Emprunteur find(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		Emprunteur emprunteur = new Emprunteur();
+		try{
+			ResultSet result = this.connect.createStatement(
+					ResultSet.TYPE_SCROLL_INSENSITIVE,
+	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Emprunteur WHERE ID = " + id);
+			if(result.first())
+				emprunteur = new Emprunteur(result.getInt("ID"), result.getString("Nom"), result.getString("Prenom"), result.getDate("DateNaiss"), result.getString("Email"), result.getString("Password"), result.getDouble("Solde"), result.getDate("Date_en"), result.getInt("Unite"), result.getInt("Cote"));
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		return emprunteur;
+		
 	}
 
 	public Emprunteur findIdByEmprunteur(Emprunteur emprunteur){
@@ -219,4 +230,100 @@ public class EmprunteurDAO extends DAO<Emprunteur> {
 		}
 		return existe;
 	}
+	
+	public List<Emprunteur> getEmprunteurSortByUnite() {
+		List<Emprunteur> listEmprunteur = new ArrayList<>();
+ 		Emprunteur emprunteur = new Emprunteur();
+		try {
+			ResultSet result = this.connect
+					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
+					.executeQuery("SELECT * FROM Emprunteur ORDER BY UNITE DESC");
+			while (result.next()) {
+				emprunteur = new Emprunteur(result.getInt("ID"), result.getString("Nom"), result.getString("Prenom"),
+						result.getDate("DateNaiss"),  result.getString("Email"), result.getString("Password"));
+				listEmprunteur.add(emprunteur);
+				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return listEmprunteur;
+	}
+	
+	public List<Emprunteur> getEmprunteurSortByDateRes() {
+		List<Emprunteur> listEmprunteur = new ArrayList<>();
+ 		Emprunteur emprunteur = new Emprunteur();
+		try {
+			ResultSet result = this.connect
+					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
+					.executeQuery("SELECT * FROM Emprunteur INNER JOIN Reservation ON Emprunteur.ID = Reservation.IDEmprunteur ORDER BY DateReservation");
+			while (result.next()) {
+				emprunteur = new Emprunteur(result.getInt("ID"), result.getString("Nom"), result.getString("Prenom"),
+						result.getDate("DateNaiss"),  result.getString("Email"), result.getString("Password"));
+				listEmprunteur.add(emprunteur);
+				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return listEmprunteur;
+	}
+	
+	public List<Emprunteur> getEmprunteurSortByDate_en() {
+		List<Emprunteur> listEmprunteur = new ArrayList<>();
+ 		Emprunteur emprunteur = new Emprunteur();
+		try {
+			ResultSet result = this.connect
+					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
+					.executeQuery("SELECT * FROM Emprunteur ORDER BY Date_en");
+			while (result.next()) {
+				emprunteur = new Emprunteur(result.getInt("ID"), result.getString("Nom"), result.getString("Prenom"),
+						result.getDate("DateNaiss"),  result.getString("Email"), result.getString("Password"));
+				listEmprunteur.add(emprunteur);
+				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return listEmprunteur;
+	}
+	
+	public List<Emprunteur> getEmprunteurSortByDateNaiss() {
+		List<Emprunteur> listEmprunteur = new ArrayList<>();
+ 		Emprunteur emprunteur = new Emprunteur();
+		try {
+			ResultSet result = this.connect
+					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
+					.executeQuery("SELECT * FROM Emprunteur ORDER BY DateNaiss");
+			while (result.next()) {
+				emprunteur = new Emprunteur(result.getInt("ID"), result.getString("Nom"), result.getString("Prenom"),
+						result.getDate("DateNaiss"),  result.getString("Email"), result.getString("Password"));
+				listEmprunteur.add(emprunteur);
+				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return listEmprunteur;
+	}
+	
+	public List<Emprunteur> getEmprunteurSortRandomly() {
+		List<Emprunteur> listEmprunteur = new ArrayList<>();
+ 		Emprunteur emprunteur = new Emprunteur();
+		try {
+			ResultSet result = this.connect
+					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
+					.executeQuery("SELECT * FROM Emprunteur ORDER BY rnd(ID)");
+			while (result.next()) {
+				emprunteur = new Emprunteur(result.getInt("ID"), result.getString("Nom"), result.getString("Prenom"),
+						result.getDate("DateNaiss"),  result.getString("Email"), result.getString("Password"));
+				listEmprunteur.add(emprunteur);
+				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return listEmprunteur;
+	}
+	
 }

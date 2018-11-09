@@ -89,10 +89,10 @@ public class ReservationDAO extends DAO<Reservation>{
 		try{
 			ResultSet result = this.connect.createStatement(
 					ResultSet.TYPE_SCROLL_INSENSITIVE,
-	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT ID_Console, ID_Reservation, DateReservation, Console.Nom AS NOMCONSOLE, Ligne_Jeu.ID_Jeu, Jeu.Nom AS NOMJEU, Dispo, Tarif, DateTarif, AdapterTarif, DateDebut, DateFin, Confirmer_Pret FROM (Emprunteur INNER JOIN (Reservation INNER JOIN ((Jeu INNER JOIN (Console INNER JOIN Ligne_Jeu ON Console.ID = Ligne_Jeu.ID_Console) ON Jeu.ID = Ligne_Jeu.ID_Jeu) INNER JOIN Ligne_Reservation ON Jeu.ID = Ligne_Reservation.ID_Jeu) ON Reservation.ID = Ligne_Reservation.ID_Reservation) ON Emprunteur.ID = Reservation.IDEmprunteur) INNER JOIN Pret ON (Console.ID = Pret.ID) AND (Emprunteur.ID = Pret.IDEmprunteur) WHERE IDEmprunteur = " + currentEmprunteur.getiD());
+	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT ID_Reservation, DateReservation FROM (Emprunteur INNER JOIN Reservation ON Emprunteur.ID = Reservation.IDEmprunteur) INNER JOIN Ligne_Reservation ON Reservation.ID = Ligne_Reservation.ID_Reservation WHERE Emprunteur.ID = 3");
 			while(result.next())
 			{
-				Jeu jeu = new Jeu();
+				/*Jeu jeu = new Jeu();
 				Console console = new Console();
 				Pret pret = new Pret();
 				console.setId(result.getInt("ID_Console"));
@@ -107,8 +107,8 @@ public class ReservationDAO extends DAO<Reservation>{
 				jeu.setConsole(console);
 				pret.setDateDebut(result.getDate("DateDebut"));
 				pret.setDateFin(result.getDate("DateFin"));
-				pret.setConfirmer_pret(result.getBoolean("Confirmer_Pret"));
-				reservation = new Reservation(result.getInt("ID"), result.getDate("DateReservation"), jeu);
+				pret.setConfirmer_pret(result.getBoolean("Confirmer_Pret"));*/
+				reservation = new Reservation(result.getInt("ID_Reservation"), result.getDate("DateReservation"));
 				listReservation.add(reservation);
 			}
 		}

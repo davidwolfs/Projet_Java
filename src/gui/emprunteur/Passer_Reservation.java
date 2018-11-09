@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import exo.Emprunteur;
+import exo.Exemplaire;
 import exo.Jeu;
 import exo.Pret;
 import exo.Reservation;
@@ -27,6 +28,7 @@ import java.awt.event.ActionEvent;
 import com.toedter.calendar.JDateChooser;
 
 import dao.EmprunteurDAO;
+import dao.ExemplaireDAO;
 import dao.JeuDAO;
 import dao.PretDAO;
 import dao.ReservationDAO;
@@ -61,6 +63,8 @@ public class Passer_Reservation extends JFrame {
 
 		JeuDAO jeuDAO = new JeuDAO(connect);
 		List<Jeu> listJeu = jeuDAO.findAllAvailable();
+		ExemplaireDAO exemplaireDAO = new ExemplaireDAO(connect);
+		//int nombreExemplaireJeu = exemplaireDAO.getNombreExemplaireJeu(jeu);
 
 		// List<Vehicule> listVehicule = vehiculeDAO.listVehicule();
 		Object[] jeu = listJeu.toArray();
@@ -141,8 +145,8 @@ public class Passer_Reservation extends JFrame {
 				if (index == -1) {
 					lblMsgError.setText("Veuillez sélectionner un jeu.");
 				} else if (champsVide()) {
-					// if (input == 0) {
 					int id = listJeu.get(index).getId();
+					System.out.println("JEU SELECTIONNE : " + listJeu.get(index));
 					System.out.println(id);
 					dispose();
 					Passer_Reservation passer_Reservation = new Passer_Reservation(connect, currentEmprunteur);
@@ -155,20 +159,37 @@ public class Passer_Reservation extends JFrame {
 							listJeu.get(index).getDateTarif(), listJeu.get(index).getAdapterTarif(),
 							listJeu.get(index).getConsole());
 					java.util.Date date = new java.util.Date();
-					Reservation reservation = new Reservation(new Timestamp(date.getTime()), jeu);
-					reservation.setId(-1);
-					int lastId = reservationDAO.findLastIdReservation();
-					reservation.setId(lastId);
-					Pret pret = new Pret(dateChooserDateDebut.getDate(), dateChooserDateFin.getDate(), currentEmprunteur);
-					System.out.println(pret);
-					System.out.println(reservation);
-					EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
-					Emprunteur emprunteur = emprunteurDAO.findIdByEmprunteur(currentEmprunteur);
-					reservationDAO.createReservation(reservation, emprunteur);
-					reservationDAO.create_Ligne_Reservation(reservation, jeu);
-					PretDAO pretDAO = new PretDAO(connect);
-					pretDAO.create_Pret(pret, emprunteur);
-					// }
+					Exemplaire exemplaire = new Exemplaire(jeu);
+					ExemplaireDAO exemplaireDAO = new ExemplaireDAO(connect);
+					exemplaire = exemplaireDAO.findExemplaireByIdJeu(jeu);
+					if(exemplaireDAO.isLastExemplaire(listJeu.get(index)))
+					{
+						System.out.println("C EST LE LAST EXEMPLAIRE");
+						
+					}
+					else
+					{
+						
+						// if (input == 0) {
+						exemplaireDAO.update(exemplaire);
+					}
+						exemplaire.setJeu(jeu);
+						System.out.println(exemplaire.getId());
+						Reservation reservation = new Reservation(new Timestamp(date.getTime()), jeu);
+						reservation.setId(-1);
+						int lastId = reservationDAO.findLastIdReservation();
+						reservation.setId(lastId);
+						Pret pret = new Pret(dateChooserDateDebut.getDate(), dateChooserDateFin.getDate(), currentEmprunteur);
+						System.out.println(pret);
+						System.out.println("ID RESERVATION : " + reservation.getId());
+						EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
+						Emprunteur emprunteur = emprunteurDAO.findIdByEmprunteur(currentEmprunteur);
+						reservationDAO.createReservation(reservation, emprunteur);
+						reservationDAO.create_Ligne_Reservation(reservation, jeu);
+						PretDAO pretDAO = new PretDAO(connect);
+						pretDAO.create_Pret(pret, emprunteur, exemplaire);
+						// }
+					//}
 				}
 			}
 		});

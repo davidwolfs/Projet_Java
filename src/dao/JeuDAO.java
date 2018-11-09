@@ -105,6 +105,42 @@ public class JeuDAO extends DAO<Jeu>{
 		return statementResult;
 	}
 
+	public boolean update_Dispo(Jeu jeu) {
+		System.out.println("Mon objet depuis la méthode update : " + jeu);
+		boolean statementResult;
+		try {
+			Statement statement = connect.createStatement();
+			String query = "UPDATE Jeu SET Dispo = TRUE" +  " WHERE ID = " + jeu.getId() + ";";
+			System.out.println(query);
+			statementResult = true;
+			statementResult = statement.execute(query);
+		} catch (SQLException e) {
+			statementResult = false;
+			e.printStackTrace();
+			System.out.println(e);
+		}
+		System.out.println(statementResult);
+		return statementResult;
+	}
+	
+	public boolean update_Dispo_False(Jeu jeu) {
+		System.out.println("Mon objet depuis la méthode update : " + jeu);
+		boolean statementResult;
+		try {
+			Statement statement = connect.createStatement();
+			String query = "UPDATE Jeu SET Dispo = FALSE" +  " WHERE ID = " + jeu.getId() + ";";
+			System.out.println(query);
+			statementResult = true;
+			statementResult = statement.execute(query);
+		} catch (SQLException e) {
+			statementResult = false;
+			e.printStackTrace();
+			System.out.println(e);
+		}
+		System.out.println(statementResult);
+		return statementResult;
+	}
+	
 	@Override
 	public Jeu find(int id) {
 		// TODO Auto-generated method stub

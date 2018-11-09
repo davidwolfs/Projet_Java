@@ -1,8 +1,14 @@
 package gui;
 
 import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.List;
 
+import dao.EmprunteurDAO;
+import dao.PretDAO;
 import driver.DriverACCESS;
+import exo.Emprunteur;
+import exo.Pret;
 
 public class Main {
 	private static Connection connect = DriverACCESS.getInstance();
@@ -15,6 +21,16 @@ public class Main {
 
 	public static void main(String[] args) {
 		creerConnexion();
+		
+	/*	PretDAO pretDAO = new PretDAO(connect);
+		EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
+		
+		for(Pret pret : pretDAO.findAll())
+		{
+			System.out.println(pret);
+			pret.setEmprunteur(emprunteurDAO.find(pret.getEmprunteur()));
+			System.out.println(pret.getEmprunteur());
+		}*/
 	}
 
 }

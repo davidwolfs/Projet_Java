@@ -16,6 +16,7 @@ import javax.swing.border.EmptyBorder;
 import dao.JeuDAO;
 import dao.PretDAO;
 import dao.ReservationDAO;
+import exo.Emprunteur;
 import exo.Jeu;
 import exo.Pret;
 import exo.Preteur;
@@ -23,6 +24,7 @@ import exo.Reservation;
 
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.SwingConstants;
 
 public class Liste_Reservations extends JFrame {
 
@@ -45,8 +47,11 @@ public class Liste_Reservations extends JFrame {
 		lblListePrets.setBounds(10, 11, 124, 14);
 		contentPane.add(lblListePrets);
 		
+		Emprunteur emprunteur = new Emprunteur();
+		emprunteur.setiD(currentPreteur.getiD());
+		
 		PretDAO pretDAO = new PretDAO(connect);
-		List<Pret> listPret = pretDAO.findAll();
+		List<Pret> listPret = pretDAO.findAll(emprunteur);
 
 		// List<Vehicule> listVehicule = vehiculeDAO.listVehicule();
 		Object[] pret = listPret.toArray();
@@ -55,28 +60,29 @@ public class Liste_Reservations extends JFrame {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yy");
 
 		for (int i = 0; i < listPret.size(); i++) {
-			String dispo = " ";
-			if(listPret.get(i).getExemplaire().getJeu().isDispo())
+			String confirmer_pret = " ";
+			if(listPret.get(i).isConfirmer_pret())
 			{
-				dispo = "Disponible";
+				confirmer_pret = "Confirmé";
 			}
 			else
 			{
-				dispo = "Indisponible";
+				confirmer_pret = "Non confirmé";
 			}
 			
 			donnees[i] = listPret.get(i).getEmprunteur().getNom() + " - " 
 					+ listPret.get(i).getEmprunteur().getPrenom() + " - "
 					+ listPret.get(i).getEmprunteur().getDateNaiss() + " - "
 					+ listPret.get(i).getEmprunteur().getEmail() + " - "
-					+ listPret.get(i).getEmprunteur().getPassword() + " - " + " - "
+					//+ listPret.get(i).getEmprunteur().getPassword() + " - " + " - "
 					+ "Du " + listPret.get(i).getDateDebut() + " au " + listPret.get(i).getDateFin() + " - " + " - "
-					+ listPret.get(i).getExemplaire().getJeu().getNom() +  " - "
-					+ dispo + " - "
-					+ listPret.get(i).getExemplaire().getJeu().getTarif() + " - " 
+					+ confirmer_pret;
+				//	+ listPret.get(i).getExemplaire().getJeu().getNom() +  " - "
+				//	+ dispo + " - "
+				/*	+ listPret.get(i).getExemplaire().getJeu().getTarif() + " - " 
 					+ simpleDateFormat.format(listPret.get(i).getExemplaire().getJeu().getDateTarif()) + " - "
 					+ listPret.get(i).getExemplaire().getJeu().getAdapterTarif() + " - " 
-					+ listPret.get(i).getExemplaire().getJeu().getConsole().getNom();
+					+ listPret.get(i).getExemplaire().getJeu().getConsole().getNom();*/
 		}
 		
 		JList listPrets = new JList(donnees);
@@ -95,7 +101,30 @@ public class Liste_Reservations extends JFrame {
 		btnRetour.setBounds(672, 392, 89, 23);
 		contentPane.add(btnRetour);
 		
+		JLabel lblMsgError = new JLabel("");
+		lblMsgError.setBounds(263, 392, 241, 23);
+		contentPane.add(lblMsgError);
 		JButton btnConfirmer = new JButton("Confirmer");
+		btnConfirmer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				int index = listPrets.getSelectedIndex();
+				System.out.println(index);
+				if (index == -1) {
+					lblMsgError.setText("Veuillez sélectionner un prêt.");
+				} else {
+					System.out.println(index);
+					dispose();
+					listPret.get(index).setConfirmer_pret(true);
+					System.out.println(listPret.get(index));
+					PretDAO pretDAO = new PretDAO(connect);
+					pretDAO.update_Confirmation(listPret.get(index));
+					System.out.println(listPret.get(index).isConfirmer_pret());
+					Liste_Reservations liste_Reservations = new Liste_Reservations(connect, currentPreteur);
+					liste_Reservations.setVisible(true);
+					liste_Reservations.setResizable(false);
+				}
+			}
+		});
 		btnConfirmer.setBounds(10, 392, 99, 23);
 		contentPane.add(btnConfirmer);
 	}

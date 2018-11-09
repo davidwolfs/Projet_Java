@@ -21,6 +21,12 @@ public class Reservation {
 		this.jeu = jeu;
 	}
 
+	public Reservation(int id, Date dateReservation) {
+		this.id = id;
+		this.dateReservation = dateReservation;
+	}
+
+	
 	public Reservation(Date dateReservation, Jeu jeu) {
 		this.dateReservation = dateReservation;
 		this.jeu = jeu;

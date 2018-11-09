@@ -42,8 +42,8 @@ public class Liste_Jeux_A_Preter extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblJeuxAPreter = new JLabel("Liste des jeux a pr\u00EAter");
-		lblJeuxAPreter.setBounds(10, 28, 154, 14);
+		JLabel lblJeuxAPreter = new JLabel("Liste des exemplaires de jeux a pr\u00EAter");
+		lblJeuxAPreter.setBounds(10, 28, 243, 14);
 		contentPane.add(lblJeuxAPreter);
 		
 		JeuDAO jeuDAO = new JeuDAO(connect);
@@ -70,7 +70,7 @@ public class Liste_Jeux_A_Preter extends JFrame {
 		int nbrExemplaires = 1;
 		for (int i = 0; i < listExemplaire.size(); i++) 
 		{
-				if(i<listExemplaire.size()-1)
+				/*if(i<listExemplaire.size()-1)
 				{
 					/*System.out.println(listExemplaire.get(i).getJeu().getId());
 					System.out.println(listExemplaire.get(i+1).getJeu().getId());
@@ -82,7 +82,7 @@ public class Liste_Jeux_A_Preter extends JFrame {
 					System.out.println(listExemplaire.get(i).getJeu().getConsole().getNom());
 					System.out.println(listExemplaire.get(i+1).getJeu().getConsole().getNom());*/
 					
-					if(listExemplaire.get(i).getJeu().getNom().equals(listExemplaire.get(i+1).getJeu().getNom()) && listExemplaire.get(i).getJeu().getConsole().getNom().equals(listExemplaire.get(i+1).getJeu().getConsole().getNom()))
+					/*if(listExemplaire.get(i).getJeu().getNom().equals(listExemplaire.get(i+1).getJeu().getNom()) && listExemplaire.get(i).getJeu().getConsole().getNom().equals(listExemplaire.get(i+1).getJeu().getConsole().getNom()))
 					{
 						listExemplaire.remove(listExemplaire.get(i));
 						System.out.println("EQUALS");
@@ -94,7 +94,7 @@ public class Liste_Jeux_A_Preter extends JFrame {
 						System.out.println("NOT EQUALS");
 					}
 	
-				}
+				}*/
 		System.out.println("Nombre d'exemplaires : " + nbrExemplaires);
 		
 			String dispo = " ";

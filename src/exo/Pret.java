@@ -3,6 +3,7 @@ package exo;
 import java.util.Date;
 
 public class Pret {
+	private int id;
 	private Date dateDebut;
 	private Date dateFin;
 	private boolean confirmer_pret;
@@ -14,6 +15,18 @@ public class Pret {
 
 	}
 
+	public Pret(int id, Date dateDebut, Date dateFin, boolean confirmer_pret, Exemplaire exemplaire,
+			Emprunteur emprunteur, Preteur preteur) {
+		this.id = id;
+		this.dateDebut = dateDebut;
+		this.dateFin = dateFin;
+		this.confirmer_pret = confirmer_pret;
+		this.exemplaire = exemplaire;
+		this.emprunteur = emprunteur;
+		this.preteur = preteur;
+
+	}
+
 	public Pret(Date dateDebut, Date dateFin, boolean confirmer_pret, Exemplaire exemplaire, Emprunteur emprunteur,
 			Preteur preteur) {
 		this.dateDebut = dateDebut;
@@ -22,6 +35,14 @@ public class Pret {
 		this.exemplaire = exemplaire;
 		this.emprunteur = emprunteur;
 		this.preteur = preteur;
+
+	}
+
+	public Pret(int id, Date dateDebut, Date dateFin, Emprunteur emprunteur) {
+		this.id = id;
+		this.dateDebut = dateDebut;
+		this.dateFin = dateFin;
+		this.emprunteur = emprunteur;
 
 	}
 
@@ -78,6 +99,14 @@ public class Pret {
 
 	public void setPreteur(Preteur preteur) {
 		this.preteur = preteur;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public boolean ConfirmationEmprunteurDebut() {

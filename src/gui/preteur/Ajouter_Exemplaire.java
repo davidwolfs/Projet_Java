@@ -211,7 +211,8 @@ public class Ajouter_Exemplaire extends JFrame {
 						currentPreteur.addExemplaire(exemplaire);
 						exemplaireDAO.create_Exemplaire(exemplaire, currentPreteur);
 					}
-					
+					jeuAModifier.setDispo(true);
+					jeuDAO.update_Dispo(jeuAModifier);
 					
 					if (jeuDAO.alreadyExist(jeuAModifier)) {
 						labelMsgErreur.setText("Ce jeu existe déjà pour cette console.");

@@ -52,9 +52,21 @@ public class ExemplaireDAO extends DAO<Exemplaire>{
 	}
 
 	@Override
-	public boolean update(Exemplaire obj) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean update(Exemplaire exemplaire) {
+		boolean statementResult;
+		try {
+			Statement statement = connect.createStatement();
+			String query = "UPDATE Exemplaire SET Reserve = True" + " WHERE ID = " + exemplaire.getId() + ";";
+			System.out.println(query);
+			statementResult = true;
+			statementResult = statement.execute(query);
+		} catch (SQLException e) {
+			statementResult = false;
+			e.printStackTrace();
+			System.out.println(e);
+		}
+		System.out.println(statementResult);
+		return statementResult;
 	}
 
 	@Override
@@ -71,7 +83,7 @@ public class ExemplaireDAO extends DAO<Exemplaire>{
 		try{
 			ResultSet result = this.connect.createStatement(
 					ResultSet.TYPE_SCROLL_INSENSITIVE,
-	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT Console.ID AS IDCONSOLE, Console.Nom AS NOMCONSOLE, Jeu.ID AS IDJEU, Jeu.Nom AS NOMJEU, Dispo, Tarif, DateTarif, AdapterTarif, Exemplaire.ID, IDJeu, IDPreteur, Ligne_Jeu.ID_Jeu, ID_Jeu, ID_Console FROM Console INNER JOIN ((Jeu INNER JOIN Exemplaire ON Jeu.ID = Exemplaire.IDJeu) INNER JOIN Ligne_Jeu ON Jeu.ID = Ligne_Jeu.ID_Jeu) ON Console.ID = Ligne_Jeu.ID_Console WHERE IDPreteur = " + currentPreteur.getiD());
+	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT Console.ID AS IDCONSOLE, Console.Nom AS NOMCONSOLE, Jeu.ID AS IDJEU, Jeu.Nom AS NOMJEU, Dispo, Tarif, DateTarif, AdapterTarif, Exemplaire.ID, IDJeu, IDPreteur, Ligne_Jeu.ID_Jeu, ID_Jeu, ID_Console FROM Console INNER JOIN ((Jeu INNER JOIN Exemplaire ON Jeu.ID = Exemplaire.IDJeu) INNER JOIN Ligne_Jeu ON Jeu.ID = Ligne_Jeu.ID_Jeu) ON Console.ID = Ligne_Jeu.ID_Console WHERE IDPreteur = " + currentPreteur.getiD() + " AND Reserve = False");
 			while(result.next())
 			{
 				console = new Console();
@@ -95,5 +107,59 @@ public class ExemplaireDAO extends DAO<Exemplaire>{
 			e.printStackTrace();
 		}
 		return listExemplaire;
+	}
+	
+	public Exemplaire findExemplaireByIdJeu(Jeu jeu){
+		Exemplaire exemplaire = new Exemplaire();
+		try{
+			ResultSet result = this.connect.createStatement(
+					ResultSet.TYPE_SCROLL_INSENSITIVE,
+	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Exemplaire WHERE IDJeu = " + jeu.getId() + " AND Reserve = False");
+			while(result.next())
+			{
+				exemplaire = new Exemplaire();
+				exemplaire.setId(result.getInt("ID"));
+			}
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		return exemplaire;
+	}
+	
+	public boolean isLastExemplaire(Jeu jeu){
+		boolean isLastExemplaire = false;
+		try{
+			ResultSet result = this.connect.createStatement(
+					ResultSet.TYPE_SCROLL_INSENSITIVE,
+	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT COUNT(*)  FROM Exemplaire WHERE IDJeu = " + jeu.getId() + " AND Reserve = False GROUP BY IDJeu HAVING COUNT(*) = 1");
+			if(result.first())
+			{
+				isLastExemplaire = true;
+			}
+			
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		return isLastExemplaire;
+	}
+	
+	public int getNombreExemplaireJeu(Jeu jeu){
+		int nombreExemplaireJeu = 0;
+		try{
+			ResultSet result = this.connect.createStatement(
+					ResultSet.TYPE_SCROLL_INSENSITIVE,
+	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT COUNT(*) AS NombreExemplaireJeu FROM Exemplaire WHERE IDJeu = " + jeu.getId());
+			if(result.first())
+			{
+				nombreExemplaireJeu = result.getInt("NombreExemplaireJeu");
+			}
+			
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		return nombreExemplaireJeu;
 	}
 }
