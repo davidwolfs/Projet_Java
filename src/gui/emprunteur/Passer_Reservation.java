@@ -35,6 +35,7 @@ import dao.ReservationDAO;
 
 import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 
 public class Passer_Reservation extends JFrame {
 
@@ -86,10 +87,6 @@ public class Passer_Reservation extends JFrame {
 					+ " - " + listJeu.get(i).getConsole().getNom();
 		}
 
-		JList listJeux = new JList(donnees);
-		listJeux.setBounds(10, 46, 564, 214);
-		contentPane.add(listJeux);
-
 		JLabel lblDateDebut = new JLabel("Date d\u00E9but");
 		lblDateDebut.setBounds(24, 319, 139, 19);
 		contentPane.add(lblDateDebut);
@@ -114,6 +111,13 @@ public class Passer_Reservation extends JFrame {
 		lblMsgError.setBounds(198, 413, 282, 19);
 		contentPane.add(lblMsgError);
 
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 46, 564, 214);
+		contentPane.add(scrollPane);
+		
+				JList listJeux = new JList(donnees);
+				scrollPane.setViewportView(listJeux);
+				
 		btnReservation = new JButton("R\u00E9server");
 		btnReservation.addActionListener(new ActionListener() {
 			public boolean champsVide() {

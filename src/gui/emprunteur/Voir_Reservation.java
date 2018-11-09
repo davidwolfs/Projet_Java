@@ -21,6 +21,7 @@ import javax.swing.JList;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JScrollPane;
 
 public class Voir_Reservation extends JFrame {
 
@@ -60,10 +61,6 @@ public class Voir_Reservation extends JFrame {
 					+ " - " + listReservation.get(i).getJeu().getAdapterTarif()
 					+ " - " + listReservation.get(i).getJeu().getConsole().getNom()*/;
 		}
-
-		JList listReservations = new JList(donnees);
-		listReservations.setBounds(10, 46, 564, 214);
-		contentPane.add(listReservations);
 		
 		JButton btnRetour = new JButton("Retour");
 		btnRetour.addActionListener(new ActionListener() {
@@ -76,5 +73,12 @@ public class Voir_Reservation extends JFrame {
 		});
 		btnRetour.setBounds(490, 409, 89, 23);
 		contentPane.add(btnRetour);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 46, 564, 214);
+		contentPane.add(scrollPane);
+		
+				JList listReservations = new JList(donnees);
+				scrollPane.setViewportView(listReservations);
 	}
 }
