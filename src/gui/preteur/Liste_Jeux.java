@@ -20,6 +20,7 @@ import dao.JeuDAO;
 import exo.Jeu;
 import exo.Preteur;
 import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
 
 public class Liste_Jeux extends JFrame {
 
@@ -78,6 +79,7 @@ public class Liste_Jeux extends JFrame {
 		contentPane.add(scrollPane);
 		
 		JList listJeux = new JList(donnees);
+		listJeux.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane.setViewportView(listJeux);
 		
 		JButton btnAjouterExemplaire = new JButton("Ajouter un exemplaire");

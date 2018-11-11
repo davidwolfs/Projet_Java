@@ -11,9 +11,11 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import dao.JeuDAO;
+import dao.PretDAO;
 import dao.ReservationDAO;
 import exo.Emprunteur;
 import exo.Jeu;
+import exo.Pret;
 import exo.Reservation;
 
 import javax.swing.JLabel;
@@ -36,7 +38,7 @@ public class Voir_Reservation extends JFrame {
 		this.connect=connect;
 		this.currentEmprunteur=currentEmprunteur;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 598, 487);
+		setBounds(100, 100, 700, 533);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -46,20 +48,22 @@ public class Voir_Reservation extends JFrame {
 		lblListeReservations.setBounds(10, 24, 153, 14);
 		contentPane.add(lblListeReservations);
 		
-		ReservationDAO reservationDAO = new ReservationDAO(connect);
-		List<Reservation> listReservation = reservationDAO.findAllReservationByEmprunteur(currentEmprunteur);
+		PretDAO pretDAO = new PretDAO(connect);
+		List<Pret> listPret = pretDAO.findAllPretByEmprunteur(currentEmprunteur);
 
 		// List<Vehicule> listVehicule = vehiculeDAO.listVehicule();
-		Object[] reservation = listReservation.toArray();
+		Object[] reservation = listPret.toArray();
 
-		Object[] donnees = new Object[listReservation.size()];
+		Object[] donnees = new Object[listPret.size()];
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yy");
 
-		for (int i = 0; i < listReservation.size(); i++) {
-			System.out.println(listReservation.get(i).toString());
-			donnees[i] = "Réservation effectuée le : " + simpleDateFormat.format(listReservation.get(i).getDateReservation()) + " - " /*+ listReservation.get(i).getJeu().getNom() + " - " + listReservation.get(i).getJeu().isDispo() + " - " + listReservation.get(i).getJeu().getTarif() 
-					+ " - " + listReservation.get(i).getJeu().getAdapterTarif()
-					+ " - " + listReservation.get(i).getJeu().getConsole().getNom()*/;
+		for (int i = 0; i < listPret.size(); i++) {
+			System.out.println(listPret.get(i).toString());
+			donnees[i] = "Date de réservation : " + simpleDateFormat.format(listPret.get(i).getEmprunteur().getReservation().getDateReservation()) + " - " + " - " + "Jeu : " +  listPret.get(i).getEmprunteur().getReservation().getJeu().getNom() /*listReservation.get(i).getJeu().isDispo() + " - " + listReservation.get(i).getJeu().getTarif() 
+					+ " - " + listReservation.get(i).getJeu().getAdapterTarif();*/
+					+ " - " + "Console : " + listPret.get(i).getEmprunteur().getReservation().getJeu().getConsole().getNom()
+					+ " - " + " - " + "Réservation : " +  "du " + listPret.get(i).getDateDebut() + " au " + listPret.get(i).getDateDebut(); 
+					
 		}
 		
 		JButton btnRetour = new JButton("Retour");
@@ -71,11 +75,11 @@ public class Voir_Reservation extends JFrame {
 				dashboard_Emprunteur.setResizable(false);
 			}
 		});
-		btnRetour.setBounds(490, 409, 89, 23);
+		btnRetour.setBounds(586, 460, 89, 23);
 		contentPane.add(btnRetour);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 46, 564, 214);
+		scrollPane.setBounds(10, 46, 665, 400);
 		contentPane.add(scrollPane);
 		
 				JList listReservations = new JList(donnees);

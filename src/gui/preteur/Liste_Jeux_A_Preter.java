@@ -23,6 +23,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
 
 public class Liste_Jeux_A_Preter extends JFrame {
 
@@ -55,10 +56,10 @@ public class Liste_Jeux_A_Preter extends JFrame {
 		List<Exemplaire> listExemplaire = currentPreteur.getListExemplaire();
 
 		
-		for(int i=0;i<currentPreteur.getListExemplaire().size();i++)
+		/*for(int i=0;i<currentPreteur.getListExemplaire().size();i++)
 		{
 			JOptionPane.showMessageDialog(null, listExemplaire.get(i).getJeu().getNom() + " " + listExemplaire.get(i).getJeu().getConsole().getNom());
-		}
+		}*/
 		
 		// List<Vehicule> listVehicule = vehiculeDAO.listVehicule();
 		Object[] exemplaire = listExemplaire.toArray();
@@ -109,7 +110,7 @@ public class Liste_Jeux_A_Preter extends JFrame {
 			}
 			
 			System.out.println(listExemplaire.get(i).toString());
-			donnees[i] = nbrExemplaires + " - " + listExemplaire.get(i).getJeu().getNom() + " - "
+			donnees[i] = /*nbrExemplaires + " - " +*/ listExemplaire.get(i).getJeu().getNom() + " - "
 					+ dispo + " - "
 					+ listExemplaire.get(i).getJeu().getTarif() + " - " 
 					+ simpleDateFormat.format(listExemplaire.get(i).getJeu().getDateTarif()) + " - "
@@ -128,13 +129,14 @@ public class Liste_Jeux_A_Preter extends JFrame {
 				dashboard_Preteur.setResizable(false);
 			}
 		});
-		btnRetour.setBounds(466, 392, 89, 23);
+		btnRetour.setBounds(466, 428, 89, 23);
 		contentPane.add(btnRetour);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 46, 564, 214);
+		scrollPane.setBounds(10, 46, 564, 350);
 		contentPane.add(scrollPane);
 		JList listJeux = new JList(donnees);
+		listJeux.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane.setViewportView(listJeux);
 	}
 }

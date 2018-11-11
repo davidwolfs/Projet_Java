@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import dao.EmprunteurDAO;
 import exo.Administrateur;
 import exo.Emprunteur;
 import gui.Main;
@@ -87,5 +88,27 @@ public class Dashboard_Emprunteur extends JFrame {
 		});
 		btnCoterEmprunteurs.setBounds(132, 198, 169, 24);
 		contentPane.add(btnCoterEmprunteurs);
+		
+		JLabel lblUnite = new JLabel("Unit\u00E9 : ");
+		lblUnite.setBounds(132, 244, 118, 14);
+		contentPane.add(lblUnite);
+		
+		JLabel lblNombreUnite = new JLabel("");
+		lblNombreUnite.setBounds(255, 244, 46, 14);
+		EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
+		Emprunteur emprunteur;
+		emprunteur = emprunteurDAO.findEmprunteurById(currentEmprunteur);
+		lblNombreUnite.setText(String.valueOf(emprunteur.getUnite()));
+		contentPane.add(lblNombreUnite);
+		
+		JLabel lblMsgError = new JLabel("");
+		lblMsgError.setBounds(10, 271, 434, 14);
+		contentPane.add(lblMsgError);
+		
+		if(currentEmprunteur.getUnite() <= 0)
+		{
+			btnPasserReservation.setEnabled(false);
+			lblMsgError.setText("Vous n'avez plus d'unité. Veuillez vous connecter en tant que prêteur.");
+		}
 	}
 }

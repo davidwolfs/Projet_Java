@@ -22,6 +22,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
 
 public class Coter_Emprunteurs extends JFrame {
 
@@ -95,6 +96,7 @@ public class Coter_Emprunteurs extends JFrame {
 		contentPane.add(scrollPane);
 		
 				JList listEmprunteur = new JList(donnees2);
+				listEmprunteur.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 				scrollPane.setViewportView(listEmprunteur);
 				
 		JButton btnCoter = new JButton("C\u00F4ter");

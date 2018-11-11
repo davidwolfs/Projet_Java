@@ -83,41 +83,6 @@ public class ReservationDAO extends DAO<Reservation>{
 		return null;
 	}
 	
-	public List<Reservation> findAllReservationByEmprunteur(Emprunteur currentEmprunteur){
-		List<Reservation> listReservation = new ArrayList<>();
-		Reservation reservation;
-		try{
-			ResultSet result = this.connect.createStatement(
-					ResultSet.TYPE_SCROLL_INSENSITIVE,
-	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT ID_Reservation, DateReservation FROM (Emprunteur INNER JOIN Reservation ON Emprunteur.ID = Reservation.IDEmprunteur) INNER JOIN Ligne_Reservation ON Reservation.ID = Ligne_Reservation.ID_Reservation WHERE Emprunteur.ID = 3");
-			while(result.next())
-			{
-				/*Jeu jeu = new Jeu();
-				Console console = new Console();
-				Pret pret = new Pret();
-				console.setId(result.getInt("ID_Console"));
-				console.setNom(result.getString("NOMCONSOLE"));
-				jeu.setId(result.getInt("ID_Jeu"));
-				jeu.setNom(result.getString("NOMJEU"));
-				System.out.println("NOM DU JEU  : " + jeu.getNom());
-				jeu.setDispo(result.getBoolean("Dispo"));
-				jeu.setTarif(result.getDouble("Tarif"));
-				jeu.setDateTarif(result.getDate("DateTarif"));
-				jeu.setAdapterTarif(result.getString("AdapterTarif"));
-				jeu.setConsole(console);
-				pret.setDateDebut(result.getDate("DateDebut"));
-				pret.setDateFin(result.getDate("DateFin"));
-				pret.setConfirmer_pret(result.getBoolean("Confirmer_Pret"));*/
-				reservation = new Reservation(result.getInt("ID_Reservation"), result.getDate("DateReservation"));
-				listReservation.add(reservation);
-			}
-		}
-		catch(SQLException e){
-			e.printStackTrace();
-		}
-		return listReservation;
-	}
-	
 	public int findLastIdReservation(){
 		int lastID=0;
 		try{

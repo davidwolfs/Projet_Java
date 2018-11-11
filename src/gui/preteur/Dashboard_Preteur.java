@@ -5,7 +5,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import dao.EmprunteurDAO;
 import dao.JeuDAO;
+import exo.Emprunteur;
 import exo.Jeu;
 import exo.Preteur;
 import gui.Main;
@@ -21,6 +23,7 @@ import java.util.Date;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JTextPane;
 
 public class Dashboard_Preteur extends JFrame {
@@ -65,7 +68,7 @@ public class Dashboard_Preteur extends JFrame {
 				Liste_Jeux.setResizable(false);
 			}
 		});
-		btnListeJeux.setBounds(202, 109, 180, 28);
+		btnListeJeux.setBounds(199, 76, 180, 28);
 		contentPane.add(btnListeJeux);
 		
 		JButton btnListeJeuxAPreter = new JButton("Voir les jeux a pr\u00EAter");
@@ -77,7 +80,7 @@ public class Dashboard_Preteur extends JFrame {
 				liste_Jeux_A_Preter.setResizable(false);
 			}
 		});
-		btnListeJeuxAPreter.setBounds(199, 188, 183, 28);
+		btnListeJeuxAPreter.setBounds(199, 138, 183, 28);
 		contentPane.add(btnListeJeuxAPreter);
 		
 		JButton btnVoirReservations = new JButton("Voir les r\u00E9servations");
@@ -89,7 +92,7 @@ public class Dashboard_Preteur extends JFrame {
 				liste_Reservations.setResizable(false);
 			}
 		});
-		btnVoirReservations.setBounds(200, 265, 182, 28);
+		btnVoirReservations.setBounds(199, 204, 182, 28);
 		contentPane.add(btnVoirReservations);
 		
 		JButton btnCoterEmprunteurs = new JButton("C\u00F4ter les emprunteurs");
@@ -101,8 +104,21 @@ public class Dashboard_Preteur extends JFrame {
 				coter_Emprunteurs.setResizable(false);
 			}
 		});
-		btnCoterEmprunteurs.setBounds(199, 330, 183, 28);
+		btnCoterEmprunteurs.setBounds(199, 264, 183, 28);
 		contentPane.add(btnCoterEmprunteurs);
+		
+		JLabel lblUnite = new JLabel("Unit\u00E9 :");
+		lblUnite.setBounds(200, 334, 123, 14);
+		contentPane.add(lblUnite);
+		
+		JLabel lblNombreUnite = new JLabel("");
+		lblNombreUnite.setBounds(333, 334, 46, 14);
+		Emprunteur emprunteur = new Emprunteur();
+		emprunteur.setiD(currentPreteur.getiD());
+		EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
+		emprunteur = emprunteurDAO.findEmprunteurById(emprunteur);
+		lblNombreUnite.setText(String.valueOf(emprunteur.getUnite()));
+		contentPane.add(lblNombreUnite);
 	}
 }
 

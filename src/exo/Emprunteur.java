@@ -56,8 +56,10 @@ public class Emprunteur extends Joueur {
 		this.unite = unite;
 	}
 
+	
 	public Emprunteur() {
 		super();
+		this.unite = 10;
 	}
 
 	public int getUnite() {
@@ -97,6 +99,11 @@ public class Emprunteur extends Joueur {
 		this.nbrCote++;
 	}
 
+	public void ajouterUnite(int unite) {
+		
+		this.unite += unite;
+	}
+	
 	public void soustraireUnite(int unite) {
 		this.unite -= unite;
 	}

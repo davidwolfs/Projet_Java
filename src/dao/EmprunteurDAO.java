@@ -102,6 +102,24 @@ public class EmprunteurDAO extends DAO<Emprunteur> {
 		System.out.println(statementResult);
 		return statementResult;
 	}
+	
+	public boolean updateUnite(Emprunteur emprunteur) {
+		System.out.println("Mon objet depuis la méthode update : " + emprunteur.getiD() + " " + emprunteur.getNom() + " " + emprunteur.getPrenom());
+		boolean statementResult;
+		try {
+			Statement statement = connect.createStatement();
+			String query = "UPDATE Emprunteur SET Unite = " + emprunteur.getUnite() + " WHERE ID = " + emprunteur.getiD() + ";";
+			System.out.println(query);
+			statementResult = true;
+			statementResult = statement.execute(query);
+		} catch (SQLException e) {
+			statementResult = false;
+			e.printStackTrace();
+			System.out.println(e);
+		}
+		System.out.println(statementResult);
+		return statementResult;
+	}
 
 	@Override
 	public Emprunteur find(int id) {
@@ -143,7 +161,7 @@ public class EmprunteurDAO extends DAO<Emprunteur> {
 					.executeQuery("SELECT * FROM Emprunteur WHERE Email = " + "\"" + email + "\" AND Password = " + "\""
 							+ password + "\"");
 			if (result.first()) {
-				emprunteur = new Emprunteur(result.getString("Nom"), result.getString("Prenom"),
+				emprunteur = new Emprunteur(result.getInt("ID"), result.getString("Nom"), result.getString("Prenom"),
 						result.getDate("DateNaiss"), email, password);
 				existe = true;
 			}
@@ -153,7 +171,22 @@ public class EmprunteurDAO extends DAO<Emprunteur> {
 		}
 		return existe;
 	}
-
+	
+	public Emprunteur findEmprunteurById(Emprunteur emprunteur) {
+		try {
+			ResultSet result = this.connect
+					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
+					.executeQuery("SELECT * FROM Emprunteur WHERE ID = " + emprunteur.getiD());
+			if (result.first()) {
+				emprunteur = new Emprunteur(result.getInt("ID"), result.getString("Nom"), result.getString("Prenom"),
+						result.getDate("DateNaiss"), result.getString("Email"), result.getString("Password"), result.getInt("Unite"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return emprunteur;
+	}
+	
 	public Emprunteur findEmprunteurByEmailPassword(String email, String password) {
 		Emprunteur emprunteur = new Emprunteur();
 		try {
@@ -163,7 +196,7 @@ public class EmprunteurDAO extends DAO<Emprunteur> {
 							+ password + "\"");
 			if (result.first()) {
 				emprunteur = new Emprunteur(result.getInt("ID"), result.getString("Nom"), result.getString("Prenom"),
-						result.getDate("DateNaiss"), email, password);
+						result.getDate("DateNaiss"), email, password, result.getInt("Unite"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -237,10 +270,10 @@ public class EmprunteurDAO extends DAO<Emprunteur> {
 		try {
 			ResultSet result = this.connect
 					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
-					.executeQuery("SELECT * FROM Emprunteur ORDER BY UNITE DESC");
+					.executeQuery("SELECT Emprunteur.ID AS IDEMPRUNTEUR, Emprunteur.Nom AS NOMEMPRUNTEUR, Emprunteur.Prenom AS PRENOMEMPRUNTEUR, Emprunteur.DateNaiss AS DATENAISSEMPRUNTEUR, Emprunteur.Email AS EMAILEMPRUNTEUR, Emprunteur.Password AS PASSWORDEMPRUNTEUR, Emprunteur.Unite AS UNITEEMPRUNTEUR FROM (Pret AS A INNER JOIN Pret AS B ON A.IDExemplaire = B.IDExemplaire) INNER JOIN Emprunteur ON A.IDEmprunteur = Emprunteur.ID WHERE A.ID<>B.ID AND A.IDEmprunteur<>B.IDEmprunteur AND B.Confirmer_Pret=False ORDER BY Emprunteur.Unite DESC");
 			while (result.next()) {
-				emprunteur = new Emprunteur(result.getInt("ID"), result.getString("Nom"), result.getString("Prenom"),
-						result.getDate("DateNaiss"),  result.getString("Email"), result.getString("Password"));
+				emprunteur = new Emprunteur(result.getInt("IDEMPRUNTEUR"), result.getString("NOMEMPRUNTEUR"), result.getString("PRENOMEMPRUNTEUR"),
+						result.getDate("DATENAISSEMPRUNTEUR"),  result.getString("EMAILEMPRUNTEUR"), result.getString("PASSWORDEMPRUNTEUR"), result.getInt("UNITEEMPRUNTEUR"));
 				listEmprunteur.add(emprunteur);
 				
 			}

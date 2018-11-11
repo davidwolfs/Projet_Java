@@ -143,8 +143,25 @@ public class JeuDAO extends DAO<Jeu>{
 	
 	@Override
 	public Jeu find(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		Jeu jeu = new Jeu();
+		Console console = new Console();
+		try{
+			ResultSet result = this.connect.createStatement(
+					ResultSet.TYPE_SCROLL_INSENSITIVE,
+	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT Jeu.ID AS IDJEU, Jeu.Nom AS NOMJEU, Dispo, Tarif, DateTarif, AdapterTarif, Console.ID AS IDCONSOLE, Console.Nom AS NOMCONSOLE FROM Console INNER JOIN (Jeu INNER JOIN Ligne_Jeu ON Jeu.ID = Ligne_Jeu.ID_Jeu) ON Console.ID = Ligne_Jeu.ID_Console WHERE Jeu.ID = " + id);
+			if(result.first())
+			{
+				console = new Console();
+				console.setId(result.getInt("IDCONSOLE"));
+				console.setNom(result.getString("NOMCONSOLE"));
+				jeu = new Jeu(result.getInt("IDJEU"), result.getString("NOMJEU"), result.getBoolean("Dispo"),
+						result.getInt("Tarif"), result.getDate("DateTarif"), result.getString("AdapterTarif"), console);
+			}
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		return jeu;
 	}
 	
 	//TODO 

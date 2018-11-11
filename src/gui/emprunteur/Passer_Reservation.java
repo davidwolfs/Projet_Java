@@ -6,6 +6,8 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import exo.Emprunteur;
 import exo.Exemplaire;
@@ -108,15 +110,15 @@ public class Passer_Reservation extends JFrame {
 		contentPane.add(list);
 
 		JLabel lblMsgError = new JLabel("");
-		lblMsgError.setBounds(198, 413, 282, 19);
+		lblMsgError.setBounds(135, 413, 345, 19);
 		contentPane.add(lblMsgError);
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 46, 564, 214);
 		contentPane.add(scrollPane);
 		
-				JList listJeux = new JList(donnees);
-				scrollPane.setViewportView(listJeux);
+		JList listJeux = new JList(donnees);
+		scrollPane.setViewportView(listJeux);
 				
 		btnReservation = new JButton("R\u00E9server");
 		btnReservation.addActionListener(new ActionListener() {
@@ -137,6 +139,25 @@ public class Passer_Reservation extends JFrame {
 
 				else if (!(matcher.matches())) {
 					lblMsgError.setText("Format de date attendu \"dd-MMM-yyyy\".");
+					valid = false;
+				}
+				java.util.Date dateDebut = new java.util.Date();
+				java.util.Date dateFin = new java.util.Date();
+				dateDebut = dateChooserDateDebut.getDate();
+				dateFin = dateChooserDateFin.getDate();
+				
+				dateDebut = new Timestamp(dateDebut.getTime());
+				dateFin = new Timestamp(dateFin.getTime());
+				System.out.println(dateDebut);
+				System.out.println(dateFin);
+				
+				
+				int res = dateDebut.compareTo(dateFin);
+				
+				System.out.println("RES  : " + res);
+				if(res == 1)
+				{
+					lblMsgError.setText("La date de fin doit être ultérieure à la date de début.");
 					valid = false;
 				}
 
@@ -200,6 +221,25 @@ public class Passer_Reservation extends JFrame {
 		btnReservation.setBounds(24, 409, 89, 23);
 		contentPane.add(btnReservation);
 
+		listJeux.addListSelectionListener(new ListSelectionListener()
+		{
+
+			@Override
+			public void valueChanged(ListSelectionEvent arg0) {
+				int index = listJeux.getSelectedIndex();
+				if(currentEmprunteur.getUnite() < listJeu.get(index).getTarif())
+				{
+					lblMsgError.setText("Vous n'avez pas assez d'unité pour réserver ce jeu.");
+					btnReservation.setEnabled(false);
+				}
+				else
+				{
+					lblMsgError.setText("");
+					btnReservation.setEnabled(true);
+				}
+			}
+		});
+		
 		JButton btnRetour = new JButton("Retour");
 		btnRetour.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
