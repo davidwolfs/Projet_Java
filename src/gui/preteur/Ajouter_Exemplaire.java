@@ -77,10 +77,6 @@ public class Ajouter_Exemplaire extends JFrame {
 		lblDateTarif.setBounds(69, 166, 89, 14);
 		contentPane.add(lblDateTarif);
 		
-		JLabel lblAdapterTarif = new JLabel("AdapterTarif");
-		lblAdapterTarif.setBounds(69, 212, 89, 14);
-		contentPane.add(lblAdapterTarif);
-		
 		JLabel lblNom2 = new JLabel("Nom du jeu");
 		lblNom2.setBounds(251, 45, 131, 20);
 		lblNom2.setText(jeuAModifier.getNom());
@@ -95,6 +91,7 @@ public class Ajouter_Exemplaire extends JFrame {
 		JCheckBox chckbxDisponibilite = new JCheckBox("Disponible");
 		chckbxDisponibilite.setBounds(251, 88, 130, 20);
 		chckbxDisponibilite.setSelected(true);
+		chckbxDisponibilite.setEnabled(false);
 		contentPane.add(chckbxDisponibilite);
 		
 		JLabel lblTarif2 = new JLabel("Tarif");
@@ -107,11 +104,6 @@ public class Ajouter_Exemplaire extends JFrame {
 		dateChooserDateTarif.setDate(jeuAModifier.getDateTarif());
 		dateChooserDateTarif.setEnabled(false);
 		contentPane.add(dateChooserDateTarif);
-		
-		JLabel lblAdapterTarif2 = new JLabel("AdapterTarif");
-		lblAdapterTarif2.setBounds(251, 209, 131, 20);
-		lblAdapterTarif2.setText(jeuAModifier.getAdapterTarif());
-		contentPane.add(lblAdapterTarif2);
 		
 		/*textFieldTarif = new JTextField();
 		textFieldTarif.setBounds(251, 126, 131, 20);
@@ -128,7 +120,7 @@ public class Ajouter_Exemplaire extends JFrame {
 		textFieldAdapterTarif.setColumns(10);*/
 		
 		JLabel lblListeConsoles = new JLabel("Console");
-		lblListeConsoles.setBounds(69, 257, 77, 14);
+		lblListeConsoles.setBounds(69, 213, 77, 14);
 		contentPane.add(lblListeConsoles);
 		ConsoleDAO consoleDAO = new ConsoleDAO(connect);
 		List<Console> listConsole = consoleDAO.findAll();
@@ -146,7 +138,7 @@ public class Ajouter_Exemplaire extends JFrame {
 
 		JList listConsoles = new JList(donnees);
 		listConsoles.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		listConsoles.setBounds(251, 256, 131, 199);
+		listConsoles.setBounds(251, 224, 131, 199);
 		listConsoles.setEnabled(false);
 		
 		int index = -1;
@@ -162,12 +154,12 @@ public class Ajouter_Exemplaire extends JFrame {
 		contentPane.add(listConsoles);
 		
 		JLabel lblNombreExemplaires = new JLabel("Nombre d'exemplaires");
-		lblNombreExemplaires.setBounds(69, 499, 146, 20);
+		lblNombreExemplaires.setBounds(69, 468, 146, 20);
 		contentPane.add(lblNombreExemplaires);
 		
 		JSpinner spinnerNombreExemplaires = new JSpinner();
 		spinnerNombreExemplaires.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
-		spinnerNombreExemplaires.setBounds(251, 499, 40, 20);
+		spinnerNombreExemplaires.setBounds(250, 468, 40, 20);
 		contentPane.add(spinnerNombreExemplaires);
 		
 		
@@ -199,7 +191,6 @@ public class Ajouter_Exemplaire extends JFrame {
 					jeuAModifier.setDispo((chckbxDisponibilite.isSelected()));
 					jeuAModifier.setTarif((Double.parseDouble(lblTarif2.getText())));
 					jeuAModifier.setDateTarif((dateChooserDateTarif.getDate()));
-					jeuAModifier.setAdapterTarif((lblAdapterTarif2.getText()));
 					jeuAModifier.setConsole(listConsole.get(listConsoles.getSelectedIndex()));
 					
 					int nombreExemplaires = (int)spinnerNombreExemplaires.getValue();

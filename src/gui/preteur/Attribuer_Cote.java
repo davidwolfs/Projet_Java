@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import dao.EmprunteurDAO;
+import dao.PreteurDAO;
 import exo.Emprunteur;
 import exo.Preteur;
 
@@ -70,6 +71,8 @@ public class Attribuer_Cote extends JFrame {
 					emprunteurACoter.incrementerNbrCote();
 					EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
 					emprunteurDAO.updateCote_NombreCote(emprunteurACoter);
+					PreteurDAO preteurDAO = new PreteurDAO(connect);
+					preteurDAO.marquerPreteursEmprunteursCotes(currentPreteur, emprunteurACoter);
 					dispose();
 					Coter_Emprunteurs coter_Emprunteurs = new Coter_Emprunteurs(connect, currentPreteur);
 					coter_Emprunteurs.setVisible(true);

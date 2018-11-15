@@ -90,7 +90,7 @@ public class EmprunteurDAO extends DAO<Emprunteur> {
 		boolean statementResult;
 		try {
 			Statement statement = connect.createStatement();
-			String query = "UPDATE Emprunteur SET Cote = Cote + " + "'" + emprunteur.getCote()  + "'," + " NombreCote = NombreCote + 1" + " WHERE ID = " + emprunteur.getiD() + ";";
+			String query = "UPDATE Emprunteur SET Cote = Cote + " + emprunteur.getCote()  + "," + " NombreCote = NombreCote + 1" + " WHERE ID = " + emprunteur.getiD() + ";";
 			System.out.println(query);
 			statementResult = true;
 			statementResult = statement.execute(query);
@@ -262,25 +262,6 @@ public class EmprunteurDAO extends DAO<Emprunteur> {
 			e.printStackTrace();
 		}
 		return existe;
-	}
-	
-	public List<Emprunteur> getEmprunteurSortByUnite() {
-		List<Emprunteur> listEmprunteur = new ArrayList<>();
- 		Emprunteur emprunteur = new Emprunteur();
-		try {
-			ResultSet result = this.connect
-					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
-					.executeQuery("SELECT Emprunteur.ID AS IDEMPRUNTEUR, Emprunteur.Nom AS NOMEMPRUNTEUR, Emprunteur.Prenom AS PRENOMEMPRUNTEUR, Emprunteur.DateNaiss AS DATENAISSEMPRUNTEUR, Emprunteur.Email AS EMAILEMPRUNTEUR, Emprunteur.Password AS PASSWORDEMPRUNTEUR, Emprunteur.Unite AS UNITEEMPRUNTEUR FROM (Pret AS A INNER JOIN Pret AS B ON A.IDExemplaire = B.IDExemplaire) INNER JOIN Emprunteur ON A.IDEmprunteur = Emprunteur.ID WHERE A.ID<>B.ID AND A.IDEmprunteur<>B.IDEmprunteur AND B.Confirmer_Pret=False ORDER BY Emprunteur.Unite DESC");
-			while (result.next()) {
-				emprunteur = new Emprunteur(result.getInt("IDEMPRUNTEUR"), result.getString("NOMEMPRUNTEUR"), result.getString("PRENOMEMPRUNTEUR"),
-						result.getDate("DATENAISSEMPRUNTEUR"),  result.getString("EMAILEMPRUNTEUR"), result.getString("PASSWORDEMPRUNTEUR"), result.getInt("UNITEEMPRUNTEUR"));
-				listEmprunteur.add(emprunteur);
-				
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return listEmprunteur;
 	}
 	
 	public List<Emprunteur> getEmprunteurSortByDateRes() {

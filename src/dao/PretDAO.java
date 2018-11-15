@@ -9,6 +9,8 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import exo.Console;
 import exo.Emprunteur;
 import exo.Exemplaire;
@@ -59,6 +61,23 @@ public class PretDAO extends DAO<Pret>{
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	public boolean delete_Pret_Emprunteur(Pret pret) {
+		boolean statementResult;
+		try {
+			Statement statement = connect.createStatement();
+			String query = "DELETE FROM Pret WHERE ID = " + pret.getId() + ";";
+			System.out.println(query);
+			statementResult = true;
+			statementResult = statement.execute(query);
+		} catch (SQLException e) {
+			statementResult = false;
+			e.printStackTrace();
+			System.out.println(e);
+		}
+		System.out.println(statementResult);
+		return statementResult;
+	}
 
 	@Override
 	public boolean update(Pret obj) {
@@ -72,6 +91,24 @@ public class PretDAO extends DAO<Pret>{
 		try {
 			Statement statement = connect.createStatement();
 			String query = "UPDATE Pret SET Confirmer_Pret = " + pret.isConfirmer_pret() + " WHERE ID = " + pret.getId() + ";";
+			System.out.println(query);
+			statementResult = true;
+			statementResult = statement.execute(query);
+		} catch (SQLException e) {
+			statementResult = false;
+			e.printStackTrace();
+			System.out.println(e);
+		}
+		System.out.println(statementResult);
+		return statementResult;
+	}
+	
+	public boolean update_Pret_Emprunteur(Emprunteur emprunteur, Pret pret) {
+		System.out.println("Mon objet depuis la méthode update : " + emprunteur);
+		boolean statementResult;
+		try {
+			Statement statement = connect.createStatement();
+			String query = "UPDATE Pret SET IDEmprunteur = " + emprunteur.getiD() + " WHERE ID = " + pret.getId() + ";";
 			System.out.println(query);
 			statementResult = true;
 			statementResult = statement.execute(query);
@@ -100,7 +137,7 @@ public class PretDAO extends DAO<Pret>{
 		try{
 			ResultSet result = this.connect.createStatement(
 					ResultSet.TYPE_SCROLL_INSENSITIVE,
-	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT Pret.ID AS IDPret, DateDebut, DateFin, Confirmer_Pret, Emprunteur.ID AS IDEMPRUNTEUR, Emprunteur.Nom AS NOMEMPRUNTEUR, Emprunteur.Prenom AS PRENOMEMPRUNTEUR, Emprunteur.DateNaiss AS DATENAISSEMPRUNTEUR, Emprunteur.Email AS EMAILEMPRUNTEUR, Emprunteur.Unite AS UNITEEMPRUNTEUR, Exemplaire.IDJeu AS ID_JEU FROM Exemplaire INNER JOIN (Emprunteur INNER JOIN Pret ON Emprunteur.ID = Pret.IDEmprunteur) ON Exemplaire.ID = Pret.IDExemplaire WHERE Emprunteur.ID <> " + emprunteur.getiD() + " AND Pret.ID <> 24");
+	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT Pret.ID AS IDPret, DateDebut, DateFin, Confirmer_Pret, Emprunteur.ID AS IDEMPRUNTEUR, Emprunteur.Nom AS NOMEMPRUNTEUR, Emprunteur.Prenom AS PRENOMEMPRUNTEUR, Emprunteur.DateNaiss AS DATENAISSEMPRUNTEUR, Emprunteur.Email AS EMAILEMPRUNTEUR, Emprunteur.Unite AS UNITEEMPRUNTEUR, Exemplaire.IDJeu AS ID_JEU, Pret.IDExemplaire AS IDEXEMPLAIRE FROM Exemplaire INNER JOIN (Emprunteur INNER JOIN Pret ON Emprunteur.ID = Pret.IDEmprunteur) ON Exemplaire.ID = Pret.IDExemplaire WHERE Emprunteur.ID <> " + emprunteur.getiD() + " AND Pret.ID <> 24");
 			while(result.next())
 			{
 				reservation = new Reservation();
@@ -141,6 +178,9 @@ public class PretDAO extends DAO<Pret>{
 				pret.setConfirmer_pret(result.getBoolean("Confirmer_Pret"));
 				pret.setExemplaire(exemplaire);
 				pret.setEmprunteur(emprunteur);
+				exemplaire.setId(result.getInt("IDEXEMPLAIRE"));
+				JOptionPane.showMessageDialog(null, "NUMERO DE l'exemplaire FIND ALL " + exemplaire.getId());
+				pret.setExemplaire(exemplaire);
 				listPret.add(pret);
 			}
 		}
@@ -150,12 +190,12 @@ public class PretDAO extends DAO<Pret>{
 		return listPret;
 	}
 	
-	public boolean sameReservationFound(){
+	public boolean sameReservationFound(Exemplaire exemplaire){
 		boolean found = false;
 		try{
 			ResultSet result = this.connect.createStatement(
 					ResultSet.TYPE_SCROLL_INSENSITIVE,
-	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Pret A INNER JOIN Pret B ON A.IDExemplaire = B.IDExemplaire WHERE A.ID <> B.ID AND A.IDEmprunteur <> B.IDEmprunteur AND B.Confirmer_Pret = False");
+	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Pret A INNER JOIN Pret B ON A.IDExemplaire = B.IDExemplaire WHERE A.ID <> B.ID AND A.IDEmprunteur <> B.IDEmprunteur AND A.IDExemplaire = " + exemplaire.getId() + " AND B.Confirmer_Pret = False");
 			if(result.first())
 			{
 				found = true;
@@ -171,20 +211,24 @@ public class PretDAO extends DAO<Pret>{
 		List<Pret> listPret = new ArrayList<>();
 		Pret pret;
 		Emprunteur emprunteur;
+		Exemplaire exemplaire;
 		try{
 			ResultSet result = this.connect.createStatement(
 					ResultSet.TYPE_SCROLL_INSENSITIVE,
-	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT A.ID, A.DateDebut, A.DateFin, A.IDEmprunteur, B.Confirmer_Pret, Emprunteur.Unite FROM (Pret AS A INNER JOIN Pret AS B ON A.IDExemplaire = B.IDExemplaire) INNER JOIN Emprunteur ON A.IDEmprunteur = Emprunteur.ID WHERE A.ID<>B.ID AND A.IDEmprunteur<>B.IDEmprunteur AND B.Confirmer_Pret=False ORDER BY Emprunteur.Unite DESC");
+	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT A.ID, A.DateDebut, A.DateFin, A.IDEmprunteur AS IDEMPRUNTEUR, B.Confirmer_Pret, Emprunteur.Unite, A.IDExemplaire AS IDEXEMPLAIRE FROM (Pret AS A INNER JOIN Pret AS B ON A.IDExemplaire = B.IDExemplaire) INNER JOIN Emprunteur ON A.IDEmprunteur = Emprunteur.ID WHERE A.ID<>B.ID AND A.IDEmprunteur<>B.IDEmprunteur AND B.Confirmer_Pret=False ORDER BY Emprunteur.Unite DESC");
 			while(result.next())
 			{
 				pret = new Pret();
 				emprunteur = new Emprunteur();
+				exemplaire = new Exemplaire();
 				pret.setId(result.getInt("ID"));
 				pret.setDateDebut(result.getDate("DateDebut"));
 				pret.setDateFin(result.getDate("DateFin"));
 				pret.setConfirmer_pret(result.getBoolean("Confirmer_Pret"));
-				emprunteur.setiD(result.getInt("IDEmprunteur"));
+				emprunteur.setiD(result.getInt("IDEMPRUNTEUR"));
+				exemplaire.setId(result.getInt("IDEXEMPLAIRE"));
 				pret.setEmprunteur(emprunteur);
+				pret.setExemplaire(exemplaire);
 				listPret.add(pret);
 			}
 		}
@@ -193,6 +237,9 @@ public class PretDAO extends DAO<Pret>{
 		}
 		return listPret;
 	}
+	
+	
+	// SELECT ID_Reservation, DateReservation, Jeu.Nom AS NOMJEU, Console.Nom AS NOMCONSOLE, DateDebut, DateFin, Confirmer_Pret FROM Console INNER JOIN ((((Emprunteur INNER JOIN Pret ON Emprunteur.ID = Pret.IDEmprunteur) INNER JOIN Reservation ON Emprunteur.ID = Reservation.IDEmprunteur) INNER JOIN (Jeu INNER JOIN Ligne_Reservation ON Jeu.ID = Ligne_Reservation.ID_Jeu) ON Reservation.ID = Ligne_Reservation.ID_Reservation) INNER JOIN Ligne_Jeu ON Jeu.ID = Ligne_Jeu.ID_Jeu) ON Console.ID = Ligne_Jeu.ID_Console WHERE Emprunteur.ID = " + currentEmprunteur.getiD()
 	
 	public List<Pret> findAllPretByEmprunteur(Emprunteur currentEmprunteur){
 		List<Pret> listPret = new ArrayList<>();
@@ -203,21 +250,20 @@ public class PretDAO extends DAO<Pret>{
 		try{
 			ResultSet result = this.connect.createStatement(
 					ResultSet.TYPE_SCROLL_INSENSITIVE,
-	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT ID_Reservation, DateReservation, Jeu.Nom AS NOMJEU, Console.Nom AS NOMCONSOLE, DateDebut, DateFin, Confirmer_Pret FROM (Console INNER JOIN ((Jeu INNER JOIN ((Emprunteur INNER JOIN Reservation ON Emprunteur.ID = Reservation.IDEmprunteur) INNER JOIN Ligne_Reservation ON Reservation.ID = Ligne_Reservation.ID_Reservation) ON Jeu.ID = Ligne_Reservation.ID_Jeu) INNER JOIN Ligne_Jeu ON Jeu.ID = Ligne_Jeu.ID_Jeu) ON Console.ID = Ligne_Jeu.ID_Console) INNER JOIN Pret ON (Reservation.ID = Pret.ID) AND (Emprunteur.ID = Pret.IDEmprunteur) WHERE Emprunteur.ID = 3");
+	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT ID_Reservation, DateReservation, Jeu.ID AS ID_Jeu, Jeu.Nom AS NOMJEU, Console.ID AS ID_Console, Console.Nom AS NOMCONSOLE, DateDebut, DateFin, Confirmer_Pret FROM Console INNER JOIN ((((Emprunteur INNER JOIN Pret ON Emprunteur.ID = Pret.IDEmprunteur) INNER JOIN Reservation ON Emprunteur.ID = Reservation.IDEmprunteur) INNER JOIN (Jeu INNER JOIN Ligne_Reservation ON Jeu.ID = Ligne_Reservation.ID_Jeu) ON Reservation.ID = Ligne_Reservation.ID_Reservation) INNER JOIN Ligne_Jeu ON Jeu.ID = Ligne_Jeu.ID_Jeu) ON Console.ID = Ligne_Jeu.ID_Console WHERE Emprunteur.ID = " + currentEmprunteur.getiD());
 			while(result.next())
 			{
 				jeu = new Jeu();
 				console = new Console();
 				pret = new Pret();
-				//console.setId(result.getInt("ID_Console"));
+				console.setId(result.getInt("ID_Console"));
 				console.setNom(result.getString("NOMCONSOLE"));
-				//jeu.setId(result.getInt("ID_Jeu"));
+				jeu.setId(result.getInt("ID_Jeu"));
 				jeu.setNom(result.getString("NOMJEU"));
 				System.out.println("NOM DU JEU  : " + jeu.getNom());
 				/*jeu.setDispo(result.getBoolean("Dispo"));
 				jeu.setTarif(result.getDouble("Tarif"));
-				jeu.setDateTarif(result.getDate("DateTarif"));
-				jeu.setAdapterTarif(result.getString("AdapterTarif"));*/
+				jeu.setDateTarif(result.getDate("DateTarif"));*/
 				jeu.setConsole(console);
 				pret.setDateDebut(result.getDate("DateDebut"));
 				pret.setDateFin(result.getDate("DateFin"));
@@ -251,4 +297,31 @@ public class PretDAO extends DAO<Pret>{
 		}
 		return isAlreadyConfirmed;
 	}
+	
+	public List<Pret> getPretEmprunteurSortByPriorites(Exemplaire exemplaire) {
+		List<Pret> listPret = new ArrayList<>();
+ 		Pret pret;
+ 		Emprunteur emprunteur;
+		try {
+			ResultSet result = this.connect
+					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
+					.executeQuery("SELECT A.ID AS IDPRET, A.DateDebut AS DATEDEBUT, A.DateFin AS DATEFIN, A.Confirmer_Pret AS CONFIRMER_PRET, Emprunteur.ID AS IDEMPRUNTEUR, Emprunteur.Nom AS NOMEMPRUNTEUR, Emprunteur.Prenom AS PRENOMEMPRUNTEUR, Emprunteur.DateNaiss AS DATENAISSEMPRUNTEUR, Emprunteur.Email AS EMAILEMPRUNTEUR, Emprunteur.Password AS PASSWORDEMPRUNTEUR, Emprunteur.Unite AS UNITEEMPRUNTEUR FROM (Pret AS A INNER JOIN Pret AS B ON A.IDExemplaire = B.IDExemplaire) INNER JOIN Emprunteur ON A.IDEmprunteur = Emprunteur.ID WHERE A.ID<>B.ID AND A.IDEmprunteur<>B.IDEmprunteur AND A.IDExemplaire = " + exemplaire.getId() + " AND B.Confirmer_Pret=False ORDER BY Emprunteur.Unite DESC, Date_en, Emprunteur.DateNaiss, rnd(B.ID)");
+			while (result.next()) {
+				pret = new Pret();
+				pret.setId(result.getInt("IDPRET"));
+				pret.setDateDebut(result.getDate("DATEDEBUT"));
+				pret.setDateFin(result.getDate("DATEFIN"));
+				pret.setConfirmer_pret(result.getBoolean("CONFIRMER_PRET"));
+				emprunteur = new Emprunteur(result.getInt("IDEMPRUNTEUR"), result.getString("NOMEMPRUNTEUR"), result.getString("PRENOMEMPRUNTEUR"),
+						result.getDate("DATENAISSEMPRUNTEUR"),  result.getString("EMAILEMPRUNTEUR"), result.getString("PASSWORDEMPRUNTEUR"), result.getInt("UNITEEMPRUNTEUR"));
+				pret.setEmprunteur(emprunteur);
+				listPret.add(pret);
+				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return listPret;
+	}
+	
 }

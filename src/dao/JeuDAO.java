@@ -27,7 +27,7 @@ public class JeuDAO extends DAO<Jeu>{
 		boolean statementResult;
 		try {
 			Statement statement = connect.createStatement();
-			String query = "INSERT INTO Jeu (Nom, Dispo, Tarif, DateTarif, AdapterTarif) VALUES ('" + jeu.getNom() + "','" + jeu.isDispo() + "','" + jeu.getTarif() + "','" + new Timestamp(date.getTime()) + "','" + jeu.getAdapterTarif() + "')" + ";";
+			String query = "INSERT INTO Jeu (Nom, Dispo, Tarif, DateTarif) VALUES ('" + jeu.getNom() + "','" + jeu.isDispo() + "','" + jeu.getTarif() + "','" + new Timestamp(date.getTime()) + "')" + ";";
 			System.out.println(query);
 			statementResult = true;
 			statementResult = statement.execute(query);
@@ -78,14 +78,16 @@ public class JeuDAO extends DAO<Jeu>{
 
 	@Override
 	public boolean update(Jeu jeu) {
+		java.util.Date date = new java.util.Date();
+		date = jeu.getDateTarif();
+		
 		System.out.println("Mon objet depuis la méthode update : " + jeu);
 		boolean statementResult;
 		try {
 			Statement statement = connect.createStatement();
 			String query = "UPDATE Jeu SET Nom = " + "'" + jeu.getNom() + "', " + "Dispo = "
 					+ jeu.isDispo() + ", " + "Tarif = " + jeu.getTarif() + ", " + "DateTarif = " 
-					+ "'" + new Timestamp(jeu.getDateTarif().getTime()) + "', " 
-					+ "AdapterTarif = " + "'" + jeu.getAdapterTarif() + "'"
+					+ "'" + new Timestamp(date.getTime()) + "'" 
 					+ " WHERE ID = " + jeu.getId() + ";";
 			System.out.println(query);
 			statementResult = true;
@@ -148,14 +150,14 @@ public class JeuDAO extends DAO<Jeu>{
 		try{
 			ResultSet result = this.connect.createStatement(
 					ResultSet.TYPE_SCROLL_INSENSITIVE,
-	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT Jeu.ID AS IDJEU, Jeu.Nom AS NOMJEU, Dispo, Tarif, DateTarif, AdapterTarif, Console.ID AS IDCONSOLE, Console.Nom AS NOMCONSOLE FROM Console INNER JOIN (Jeu INNER JOIN Ligne_Jeu ON Jeu.ID = Ligne_Jeu.ID_Jeu) ON Console.ID = Ligne_Jeu.ID_Console WHERE Jeu.ID = " + id);
+	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT Jeu.ID AS IDJEU, Jeu.Nom AS NOMJEU, Dispo, Tarif, DateTarif, Console.ID AS IDCONSOLE, Console.Nom AS NOMCONSOLE FROM Console INNER JOIN (Jeu INNER JOIN Ligne_Jeu ON Jeu.ID = Ligne_Jeu.ID_Jeu) ON Console.ID = Ligne_Jeu.ID_Console WHERE Jeu.ID = " + id);
 			if(result.first())
 			{
 				console = new Console();
 				console.setId(result.getInt("IDCONSOLE"));
 				console.setNom(result.getString("NOMCONSOLE"));
 				jeu = new Jeu(result.getInt("IDJEU"), result.getString("NOMJEU"), result.getBoolean("Dispo"),
-						result.getInt("Tarif"), result.getDate("DateTarif"), result.getString("AdapterTarif"), console);
+						result.getInt("Tarif"), result.getDate("DateTarif"), console);
 			}
 		}
 		catch(SQLException e){
@@ -178,7 +180,7 @@ public class JeuDAO extends DAO<Jeu>{
 				console.setId(result.getInt("ID_Console"));
 				console.setNom(result.getString("Console.NOM"));
 				jeu = new Jeu(result.getInt("ID"), result.getString("Jeu.NOM"), result.getBoolean("Dispo"),
-						result.getInt("Tarif"), result.getDate("DateTarif"), result.getString("AdapterTarif"), console);
+						result.getInt("Tarif"), result.getDate("DateTarif"), console);
 				listJeux.add(jeu);
 			}
 		}
@@ -201,7 +203,7 @@ public class JeuDAO extends DAO<Jeu>{
 				console.setId(result.getInt("ID_Console"));
 				console.setNom(result.getString("Console.NOM"));
 				jeu = new Jeu(result.getInt("ID"), result.getString("Jeu.Nom"), result.getBoolean("Dispo"),
-						result.getInt("Tarif"), result.getDate("DateTarif"), result.getString("AdapterTarif"), console);
+						result.getInt("Tarif"), result.getDate("DateTarif"), console);
 				listJeux.add(jeu);
 			}
 		}
@@ -221,7 +223,7 @@ public class JeuDAO extends DAO<Jeu>{
 			while(result.next())
 			{
 				jeu = new Jeu(result.getInt("ID"), result.getString("Nom"), result.getBoolean("Dispo"),
-						result.getInt("Tarif"), result.getDate("DateTarif"), result.getString("AdapterTarif"));
+						result.getInt("Tarif"), result.getDate("DateTarif"));
 				listJeux.add(jeu);
 			}
 		}

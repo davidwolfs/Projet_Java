@@ -85,7 +85,7 @@ public class Passer_Reservation extends JFrame {
 
 			System.out.println(listJeu.get(i).toString());
 			donnees[i] = listJeu.get(i).getNom() + " - " + dispo + " - " + listJeu.get(i).getTarif() + " - "
-					+ simpleDateFormat.format(listJeu.get(i).getDateTarif()) + " - " + listJeu.get(i).getAdapterTarif()
+					+ simpleDateFormat.format(listJeu.get(i).getDateTarif())
 					+ " - " + listJeu.get(i).getConsole().getNom();
 		}
 
@@ -181,7 +181,7 @@ public class Passer_Reservation extends JFrame {
 					ReservationDAO reservationDAO = new ReservationDAO(connect);
 					Jeu jeu = new Jeu(listJeu.get(index).getId(), listJeu.get(index).getNom(),
 							listJeu.get(index).isDispo(), listJeu.get(index).getTarif(),
-							listJeu.get(index).getDateTarif(), listJeu.get(index).getAdapterTarif(),
+							listJeu.get(index).getDateTarif(),
 							listJeu.get(index).getConsole());
 					java.util.Date date = new java.util.Date();
 					Exemplaire exemplaire = new Exemplaire(jeu);
@@ -202,14 +202,14 @@ public class Passer_Reservation extends JFrame {
 						System.out.println(exemplaire.getId());
 						Reservation reservation = new Reservation(new Timestamp(date.getTime()), jeu);
 						reservation.setId(-1);
-						int lastId = reservationDAO.findLastIdReservation();
-						reservation.setId(lastId);
 						Pret pret = new Pret(dateChooserDateDebut.getDate(), dateChooserDateFin.getDate(), currentEmprunteur);
 						System.out.println(pret);
 						System.out.println("ID RESERVATION : " + reservation.getId());
 						EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
 						Emprunteur emprunteur = emprunteurDAO.findIdByEmprunteur(currentEmprunteur);
 						reservationDAO.createReservation(reservation, emprunteur);
+						int lastId = reservationDAO.findLastIdReservation();
+						reservation.setId(lastId);
 						reservationDAO.create_Ligne_Reservation(reservation, jeu);
 						PretDAO pretDAO = new PretDAO(connect);
 						pretDAO.create_Pret(pret, emprunteur, exemplaire);

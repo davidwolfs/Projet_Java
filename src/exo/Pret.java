@@ -127,7 +127,9 @@ public class Pret {
 
 	@Override
 	public String toString() {
-		return "Pret [dateDebut=" + dateDebut + ", dateFin=" + dateFin + ", confirmer_pret=" + confirmer_pret + "]";
+		return "Pret [id=" + id + ", dateDebut=" + dateDebut + ", dateFin=" + dateFin + ", confirmer_pret="
+				+ confirmer_pret + ", exemplaire=" + exemplaire + ", emprunteur=" + emprunteur + ", preteur=" + preteur
+				+ "]";
 	}
 
 }

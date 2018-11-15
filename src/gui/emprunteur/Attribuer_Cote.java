@@ -71,6 +71,7 @@ public class Attribuer_Cote extends JFrame {
 					preteurACoter.incrementerNbrCote();
 					PreteurDAO preteurDAO = new PreteurDAO(connect);
 					preteurDAO.updateCote_NombreCote(preteurACoter);
+					preteurDAO.marquerPreteursEmprunteursCotes(preteurACoter, currentEmprunteur);
 					dispose();
 					Coter_Preteurs coter_Emprunteurs = new Coter_Preteurs(connect, currentEmprunteur);
 					coter_Emprunteurs.setVisible(true);

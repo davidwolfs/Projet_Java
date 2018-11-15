@@ -9,6 +9,8 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import dao.EmprunteurDAO;
 import dao.PreteurDAO;
@@ -57,21 +59,21 @@ public class Coter_Preteurs extends JFrame {
 		preteur.setEmail(currentEmprunteur.getEmail());
 		preteur.setPassword(currentEmprunteur.getPassword());
 		
-		List<Preteur> listPreteurs = preteurDAO.findAllExceptcurrentPreteur(preteur);
+		List<Preteur> listPreteur = preteurDAO.findAllExceptcurrentPreteur(preteur);
 		
 		EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
 
-		Object[] donnees2 = new Object[listPreteurs.size()];
+		Object[] donnees2 = new Object[listPreteur.size()];
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yy");
 		
-		for (int i = 0; i < listPreteurs.size(); i++) {
-			System.out.println(listPreteurs.get(i).toString());
-			donnees2[i] = listPreteurs.get(i).getNom() + " "
-					+ listPreteurs.get(i).getPrenom() + " - "
-					+ simpleDateFormat.format(listPreteurs.get(i).getDateNaiss()) + " - "
-					+ listPreteurs.get(i).getEmail() + " - " + " - "
-					+ "Cote : " + listPreteurs.get(i).CalculerMoyenneCote() + " - "
-					+ listPreteurs.get(i).getNbrCote() + " avis.";
+		for (int i = 0; i < listPreteur.size(); i++) {
+			System.out.println(listPreteur.get(i).toString());
+			donnees2[i] = listPreteur.get(i).getNom() + " "
+					+ listPreteur.get(i).getPrenom() + " - "
+					+ simpleDateFormat.format(listPreteur.get(i).getDateNaiss()) + " - "
+					+ listPreteur.get(i).getEmail() + " - " + " - "
+					+ "Cote : " + listPreteur.get(i).CalculerMoyenneCote() + "/5" + " - "
+					+ listPreteur.get(i).getNbrCote() + " avis.";
 		}
 		
 		JButton btnRetour = new JButton("Retour");
@@ -94,13 +96,13 @@ public class Coter_Preteurs extends JFrame {
 		scrollPane.setBounds(10, 50, 764, 334);
 		contentPane.add(scrollPane);
 		
-				JList listEmprunteur = new JList(donnees2);
-				scrollPane.setViewportView(listEmprunteur);
+		JList listPreteurs = new JList(donnees2);
+		scrollPane.setViewportView(listPreteurs);
 				
 		JButton btnCoter = new JButton("C\u00F4ter");
 		btnCoter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				int index = listEmprunteur.getSelectedIndex();
+				int index = listPreteurs.getSelectedIndex();
 
 				if (index == -1) {
 					lblMsgErrorEmprunteur.setText("Veuillez sélectionner un prêteur.");
@@ -108,7 +110,7 @@ public class Coter_Preteurs extends JFrame {
 				else {
 					System.out.println(index);
 					dispose();
-					Attribuer_Cote attribuer_Cote = new Attribuer_Cote(connect, currentEmprunteur, listPreteurs.get(index));
+					Attribuer_Cote attribuer_Cote = new Attribuer_Cote(connect, currentEmprunteur, listPreteur.get(index));
 					attribuer_Cote.setVisible(true);
 					attribuer_Cote.setResizable(false);
 				}
@@ -117,5 +119,27 @@ public class Coter_Preteurs extends JFrame {
 		});
 		btnCoter.setBounds(10, 447, 89, 23);
 		contentPane.add(btnCoter);
+		
+		
+		listPreteurs.addListSelectionListener(new ListSelectionListener()
+		{
+
+			@Override
+			public void valueChanged(ListSelectionEvent arg0) {
+				int index = listPreteurs.getSelectedIndex();
+				if(preteurDAO.isAlreadyCote(listPreteur.get(index), currentEmprunteur))
+				{
+					lblMsgErrorEmprunteur.setText("Vous avez déjà côté ce prêteur.");
+					btnCoter.setEnabled(false);
+				}
+				else
+				{
+					lblMsgErrorEmprunteur.setText("");
+					btnCoter.setEnabled(true);
+				}
+			}
+		});
 	}
+	
+	
 }

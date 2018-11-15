@@ -14,43 +14,38 @@ public class Jeu {
 	private boolean dispo;
 	private double tarif;
 	private Date dateTarif;
-	private String adapterTarif;
 	private Console console;
 
-	public Jeu(int id, String nom, boolean dispo, double tarif, Date dateTarif, String adapterTarif, Console console) {
+	public Jeu(int id, String nom, boolean dispo, double tarif, Date dateTarif, Console console) {
 		this.id = id;
 		this.nom = nom;
 		this.dispo = dispo;
 		this.tarif = tarif;
 		this.dateTarif = dateTarif;
-		this.adapterTarif = adapterTarif;
 		this.console = console;
 	}
 
-	public Jeu(int id, String nom, boolean dispo, double tarif, Date dateTarif, String adapterTarif) {
+	public Jeu(int id, String nom, boolean dispo, double tarif, Date dateTarif) {
 		this.id = id;
 		this.nom = nom;
 		this.dispo = dispo;
 		this.tarif = tarif;
 		this.dateTarif = dateTarif;
-		this.adapterTarif = adapterTarif;
 	}
 
-	public Jeu(String nom, boolean dispo, double tarif, Date dateTarif, String adapterTarif, Console console) {
+	public Jeu(String nom, boolean dispo, double tarif, Date dateTarif, Console console) {
 		this.nom = nom;
 		this.dispo = dispo;
 		this.tarif = tarif;
 		this.dateTarif = dateTarif;
-		this.adapterTarif = adapterTarif;
 		this.console = console;
 	}
 
-	public Jeu(String nom, boolean dispo, double tarif, Date dateTarif, String adapterTarif) {
+	public Jeu(String nom, boolean dispo, double tarif, Date dateTarif) {
 		this.nom = nom;
 		this.dispo = dispo;
 		this.tarif = tarif;
 		this.dateTarif = dateTarif;
-		this.adapterTarif = adapterTarif;
 	}
 
 	public Jeu() {
@@ -97,14 +92,6 @@ public class Jeu {
 		this.dateTarif = dateTarif;
 	}
 
-	public String getAdapterTarif() {
-		return adapterTarif;
-	}
-
-	public void setAdapterTarif(String adapterTarif) {
-		this.adapterTarif = adapterTarif;
-	}
-
 	public Console getConsole() {
 		return console;
 	}
@@ -113,10 +100,14 @@ public class Jeu {
 		this.console = console;
 	}
 
+	public void adapterTarif(double tarif) {
+		this.tarif -= tarif;
+	}
+
 	@Override
 	public String toString() {
-		return "Jeu [id=" + id + ", nom=" + nom + ", dispo=" + dispo + ", tarif=" + tarif + ", dateTarif=" + dateTarif
-				+ ", adapterTarif=" + adapterTarif + ", console=" + console + "]";
+		return "Jeu [connect=" + connect + ", id=" + id + ", nom=" + nom + ", dispo=" + dispo + ", tarif=" + tarif
+				+ ", dateTarif=" + dateTarif + ", console=" + console + "]";
 	}
 
 }

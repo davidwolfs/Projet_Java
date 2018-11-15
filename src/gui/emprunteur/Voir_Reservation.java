@@ -38,7 +38,7 @@ public class Voir_Reservation extends JFrame {
 		this.connect=connect;
 		this.currentEmprunteur=currentEmprunteur;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 700, 533);
+		setBounds(100, 100, 987, 533);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -58,11 +58,23 @@ public class Voir_Reservation extends JFrame {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yy");
 
 		for (int i = 0; i < listPret.size(); i++) {
+			
+			String confirmer_pret = " ";
+			if(listPret.get(i).isConfirmer_pret())
+			{
+				confirmer_pret = "Confirmé par le prêteur";
+			}
+			else
+			{
+				confirmer_pret = "En attente de confirmation par le prêteur";
+			}
+			
 			System.out.println(listPret.get(i).toString());
-			donnees[i] = "Date de réservation : " + simpleDateFormat.format(listPret.get(i).getEmprunteur().getReservation().getDateReservation()) + " - " + " - " + "Jeu : " +  listPret.get(i).getEmprunteur().getReservation().getJeu().getNom() /*listReservation.get(i).getJeu().isDispo() + " - " + listReservation.get(i).getJeu().getTarif() 
-					+ " - " + listReservation.get(i).getJeu().getAdapterTarif();*/
+			donnees[i] = "Date de réservation : " + simpleDateFormat.format(listPret.get(i).getEmprunteur().getReservation().getDateReservation()) + " - " + " - " + "Jeu : " +  listPret.get(i).getEmprunteur().getReservation().getJeu().getNom() /*listReservation.get(i).getJeu().isDispo() + " - " + listReservation.get(i).getJeu().getTarif() */
+					/*+ " - " + listReservation.get(i).getJeu().getAdapterTarif();*/
 					+ " - " + "Console : " + listPret.get(i).getEmprunteur().getReservation().getJeu().getConsole().getNom()
-					+ " - " + " - " + "Réservation : " +  "du " + listPret.get(i).getDateDebut() + " au " + listPret.get(i).getDateDebut(); 
+					+ " - " + " - " + "Réservation : " +  "du " + listPret.get(i).getDateDebut() + " au " + listPret.get(i).getDateFin()
+					+ " - " + " - " + "État : " + confirmer_pret;
 					
 		}
 		
@@ -75,11 +87,11 @@ public class Voir_Reservation extends JFrame {
 				dashboard_Emprunteur.setResizable(false);
 			}
 		});
-		btnRetour.setBounds(586, 460, 89, 23);
+		btnRetour.setBounds(872, 460, 89, 23);
 		contentPane.add(btnRetour);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 46, 665, 400);
+		scrollPane.setBounds(10, 46, 950, 400);
 		contentPane.add(scrollPane);
 		
 				JList listReservations = new JList(donnees);

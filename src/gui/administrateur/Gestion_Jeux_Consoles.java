@@ -158,7 +158,7 @@ public class Gestion_Jeux_Consoles extends JFrame {
 
 			System.out.println(listJeu.get(i).toString());
 			donnees2[i] = listJeu.get(i).getNom() + " - " + dispo + " - " + listJeu.get(i).getTarif() + " - "
-					+ simpleDateFormat2.format(listJeu.get(i).getDateTarif()) + " - " + listJeu.get(i).getAdapterTarif()
+					+ simpleDateFormat2.format(listJeu.get(i).getDateTarif())
 					+ " - " + listJeu.get(i).getConsole().getNom();
 		}
 

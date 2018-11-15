@@ -21,16 +21,6 @@ public class Main {
 
 	public static void main(String[] args) {
 		creerConnexion();
-		
-	/*	PretDAO pretDAO = new PretDAO(connect);
-		EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
-		
-		for(Pret pret : pretDAO.findAll())
-		{
-			System.out.println(pret);
-			pret.setEmprunteur(emprunteurDAO.find(pret.getEmprunteur()));
-			System.out.println(pret.getEmprunteur());
-		}*/
 	}
 
 }

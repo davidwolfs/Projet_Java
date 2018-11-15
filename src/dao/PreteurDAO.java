@@ -8,6 +8,8 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import exo.Emprunteur;
 import exo.Preteur;
 
@@ -144,7 +146,7 @@ public class PreteurDAO extends DAO<Preteur> {
 							+ password + "\"");
 			if (result.first()) {
 				preteur = new Preteur(result.getInt("ID"), result.getString("Nom"), result.getString("Prenom"), result.getDate("DateNaiss"),
-						email, password);
+						email, password, result.getInt("Cote"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -190,5 +192,39 @@ public class PreteurDAO extends DAO<Preteur> {
 			e.printStackTrace();
 		}
 		return existe;
+	}
+	
+	public boolean marquerPreteursEmprunteursCotes(Preteur preteur, Emprunteur emprunteur) {
+		boolean statementResult;
+		try {
+			Statement statement = connect.createStatement();
+			String query = "INSERT INTO Cote (IDPreteur, IDEmprunteur) VALUES (" + preteur.getiD() + "," + emprunteur.getiD() + ")" + ";";
+			System.out.println(query);
+			statementResult = true;
+			statementResult = statement.execute(query);
+		} catch (SQLException e) {
+			statementResult = false;
+			e.printStackTrace();
+			System.out.println(e);
+		}
+		System.out.println(statementResult);
+		return statementResult;
+	}
+	
+	public boolean isAlreadyCote(Preteur preteur, Emprunteur emprunteur) {
+		boolean isAlreadyCote = false;
+		try{
+			ResultSet result = this.connect.createStatement(
+					ResultSet.TYPE_SCROLL_INSENSITIVE,
+	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Emprunteur INNER JOIN (Preteur INNER JOIN Cote ON Preteur.ID = Cote.IDPreteur) ON Emprunteur.ID = Cote.IDEmprunteur WHERE Preteur.ID = " + preteur.getiD() + " AND Emprunteur.ID = " + emprunteur.getiD());
+			if(result.first())
+			{
+				isAlreadyCote = true;
+			}
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		return isAlreadyCote;
 	}
 }

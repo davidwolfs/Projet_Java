@@ -83,7 +83,7 @@ public class ExemplaireDAO extends DAO<Exemplaire>{
 		try{
 			ResultSet result = this.connect.createStatement(
 					ResultSet.TYPE_SCROLL_INSENSITIVE,
-	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT Console.ID AS IDCONSOLE, Console.Nom AS NOMCONSOLE, Jeu.ID AS IDJEU, Jeu.Nom AS NOMJEU, Dispo, Tarif, DateTarif, AdapterTarif, Exemplaire.ID, IDJeu, IDPreteur, Ligne_Jeu.ID_Jeu, ID_Jeu, ID_Console FROM Console INNER JOIN ((Jeu INNER JOIN Exemplaire ON Jeu.ID = Exemplaire.IDJeu) INNER JOIN Ligne_Jeu ON Jeu.ID = Ligne_Jeu.ID_Jeu) ON Console.ID = Ligne_Jeu.ID_Console WHERE IDPreteur = " + currentPreteur.getiD() + " AND Reserve = False");
+	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT COUNT(*) AS NOMBREEXEMPLAIRE, Jeu.ID AS IDJEU, Jeu.Nom AS NOMJEU, Dispo, Tarif, DateTarif, Console.ID AS IDCONSOLE, Console.Nom AS NOMCONSOLE FROM Console INNER JOIN ((Jeu INNER JOIN Exemplaire ON Jeu.ID = Exemplaire.IDJeu) INNER JOIN Ligne_Jeu ON Jeu.ID = Ligne_Jeu.ID_Jeu) ON Console.ID = Ligne_Jeu.ID_Console WHERE IDPreteur = " + currentPreteur.getiD() + " AND Reserve = False GROUP BY Jeu.ID, Jeu.Nom, Dispo, Tarif, DateTarif, Console.ID, Console.Nom");
 			while(result.next())
 			{
 				console = new Console();
@@ -96,8 +96,8 @@ public class ExemplaireDAO extends DAO<Exemplaire>{
 				jeu.setDispo(result.getBoolean("Dispo"));
 				jeu.setTarif(result.getDouble("Tarif"));
 				jeu.setDateTarif(result.getDate("DateTarif"));
-				jeu.setAdapterTarif(result.getString("AdapterTarif"));
 				jeu.setConsole(console);
+				exemplaire.setNbrExemplaire(result.getInt("NOMBREEXEMPLAIRE"));
 				exemplaire.setJeu(jeu);
 				listExemplaire.add(exemplaire);
 			}

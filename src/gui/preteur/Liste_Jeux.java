@@ -70,7 +70,6 @@ public class Liste_Jeux extends JFrame {
 					+ dispo + " - "
 					+ listJeu.get(i).getTarif() + " - " 
 					+ simpleDateFormat.format(listJeu.get(i).getDateTarif()) + " - "
-					+ listJeu.get(i).getAdapterTarif() + " - " 
 					+ listJeu.get(i).getConsole().getNom();
 		}
 		

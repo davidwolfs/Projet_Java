@@ -69,7 +69,6 @@ public class Liste_Jeux_A_Preter extends JFrame {
 		
 		
 		System.out.println("SIZE : " + listExemplaire.size());
-		int nbrExemplaires = 1;
 		for (int i = 0; i < listExemplaire.size(); i++) 
 		{
 				/*if(i<listExemplaire.size()-1)
@@ -97,7 +96,6 @@ public class Liste_Jeux_A_Preter extends JFrame {
 					}
 	
 				}*/
-		System.out.println("Nombre d'exemplaires : " + nbrExemplaires);
 		
 			String dispo = " ";
 			if(listExemplaire.get(i).getJeu().isDispo())
@@ -110,12 +108,11 @@ public class Liste_Jeux_A_Preter extends JFrame {
 			}
 			
 			System.out.println(listExemplaire.get(i).toString());
-			donnees[i] = /*nbrExemplaires + " - " +*/ listExemplaire.get(i).getJeu().getNom() + " - "
+			donnees[i] = listExemplaire.get(i).getNbrExemplaire() + " - " + listExemplaire.get(i).getJeu().getNom() + " - "
+					+ listExemplaire.get(i).getJeu().getConsole().getNom() + " - "
 					+ dispo + " - "
 					+ listExemplaire.get(i).getJeu().getTarif() + " - " 
-					+ simpleDateFormat.format(listExemplaire.get(i).getJeu().getDateTarif()) + " - "
-					+ listExemplaire.get(i).getJeu().getAdapterTarif() + " - "
-					+ listExemplaire.get(i).getJeu().getConsole().getNom();
+					+ simpleDateFormat.format(listExemplaire.get(i).getJeu().getDateTarif());
 			
 		}
 		

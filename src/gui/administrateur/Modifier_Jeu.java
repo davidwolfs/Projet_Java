@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
@@ -27,18 +28,20 @@ import exo.Preteur;
 
 import java.awt.event.ActionListener;
 import java.sql.Connection;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.awt.event.ActionEvent;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 
 public class Modifier_Jeu extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textFieldNom;
 	private JTextField textFieldTarif;
-	private JTextField textFieldAdapterTarif;
 	private Connection connect;
 	private Jeu jeuAModifier;
 	/**
@@ -49,7 +52,7 @@ public class Modifier_Jeu extends JFrame {
 		this.jeuAModifier=jeuAModifier;
 		setTitle("Modifier un jeu");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 455, 554);
+		setBounds(100, 100, 457, 630);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -89,19 +92,24 @@ public class Modifier_Jeu extends JFrame {
 		textFieldTarif = new JTextField();
 		textFieldTarif.setBounds(251, 126, 131, 20);
 		textFieldTarif.setText(String.valueOf(jeuAModifier.getTarif()));
+		textFieldTarif.setEnabled(false);
 		contentPane.add(textFieldTarif);
 		textFieldTarif.setColumns(10);
 		
 		JDateChooser dateChooserDateTarif = new JDateChooser();
 		dateChooserDateTarif.setBounds(251, 166, 131, 20);
 		dateChooserDateTarif.setDate(jeuAModifier.getDateTarif());
+		dateChooserDateTarif.setEnabled(false);
 		contentPane.add(dateChooserDateTarif);
 		
-		textFieldAdapterTarif = new JTextField();
-		textFieldAdapterTarif.setBounds(251, 209, 131, 20);
-		textFieldAdapterTarif.setText(jeuAModifier.getAdapterTarif());
-		contentPane.add(textFieldAdapterTarif);
-		textFieldAdapterTarif.setColumns(10);
+		JSpinner spinnerDiminuerTarif = new JSpinner();
+		spinnerDiminuerTarif.setModel(new SpinnerNumberModel(new Double(0), new Double(0), null, new Double(1)));
+		spinnerDiminuerTarif.setBounds(251, 209, 46, 20);
+		if(jeuAModifier.getTarif() <= 1)
+		{
+			spinnerDiminuerTarif.setEnabled(false);
+		}
+		contentPane.add(spinnerDiminuerTarif);
 		
 		JLabel lblListeConsoles = new JLabel("Console");
 		lblListeConsoles.setBounds(69, 257, 77, 14);
@@ -137,7 +145,7 @@ public class Modifier_Jeu extends JFrame {
 		
 		
 		JLabel labelMsgErreur = new JLabel("");
-		labelMsgErreur.setBounds(69, 360, 313, 29);
+		labelMsgErreur.setBounds(69, 494, 313, 29);
 		contentPane.add(labelMsgErreur);
 		
 		JButton btnModifier = new JButton("Modifier");
@@ -146,9 +154,18 @@ public class Modifier_Jeu extends JFrame {
 			public boolean champsVide() {
 				boolean valid = true;
 				if (textFieldNom.getText().isEmpty()
-						|| textFieldTarif.getText().isEmpty() || ((JTextField) dateChooserDateTarif.getDateEditor().getUiComponent()).getText().isEmpty()
-						|| textFieldAdapterTarif.getText().isEmpty()) {
+						|| textFieldTarif.getText().isEmpty() || ((JTextField) dateChooserDateTarif.getDateEditor().getUiComponent()).getText().isEmpty()) {
 					labelMsgErreur.setText("Veuillez remplir tous les champs.");
+					valid = false;
+				}
+				else if(listConsoles.getSelectedIndex() == -1)
+				{
+					labelMsgErreur.setText("Veuillez choisir une console.");
+					valid = false;
+				}
+				else if((double)spinnerDiminuerTarif.getValue() >= jeuAModifier.getTarif())
+				{
+					labelMsgErreur.setText("Le nouveau tarif serait négatif ou égal à 0.");
 					valid = false;
 				}
 
@@ -157,12 +174,18 @@ public class Modifier_Jeu extends JFrame {
 			
 			public void actionPerformed(ActionEvent e) {
 				if (champsVide()) {
+					java.util.Date date = new java.util.Date();
+					if((double)spinnerDiminuerTarif.getValue() == 0)
+					{
+						date = jeuAModifier.getDateTarif();
+					}
+					
+					
 					JeuDAO jeuDAO = new JeuDAO(connect);
 					jeuAModifier.setNom(textFieldNom.getText());
 					jeuAModifier.setDispo((chckbxDisponibilite.isSelected()));
 					jeuAModifier.setTarif((Double.parseDouble(textFieldTarif.getText())));
-					jeuAModifier.setDateTarif((dateChooserDateTarif.getDate()));
-					jeuAModifier.setAdapterTarif((textFieldAdapterTarif.getText()));
+					jeuAModifier.setDateTarif(new Timestamp(date.getTime()));
 					System.out.println("index selected : " + listConsole.get(listConsoles.getSelectedIndex()).toString());
 					jeuAModifier.setConsole(listConsole.get(listConsoles.getSelectedIndex()));
 					if (jeuDAO.alreadyExist(jeuAModifier)) {
@@ -171,7 +194,7 @@ public class Modifier_Jeu extends JFrame {
 					} else {
 					System.out.println(chckbxDisponibilite.getText().isEmpty());
 						
-						
+						jeuAModifier.adapterTarif((double)spinnerDiminuerTarif.getValue());
 						jeuDAO.update(jeuAModifier);
 
 						dispose();
@@ -183,7 +206,7 @@ public class Modifier_Jeu extends JFrame {
 				
 			}
 		});
-		btnModifier.setBounds(69, 473, 89, 23);
+		btnModifier.setBounds(69, 557, 89, 23);
 		contentPane.add(btnModifier);
 		
 		JButton btnRetour = new JButton("Retour");
@@ -195,7 +218,7 @@ public class Modifier_Jeu extends JFrame {
 				gestion_Jeux_Consoles.setResizable(false);
 			}
 		});
-		btnRetour.setBounds(251, 473, 100, 23);
+		btnRetour.setBounds(251, 557, 100, 23);
 		contentPane.add(btnRetour);
 	}
 }
