@@ -84,9 +84,11 @@ public class Passer_Reservation extends JFrame {
 			}
 
 			System.out.println(listJeu.get(i).toString());
-			donnees[i] = listJeu.get(i).getNom() + " - " + dispo + " - " + listJeu.get(i).getTarif() + " - "
-					+ simpleDateFormat.format(listJeu.get(i).getDateTarif())
-					+ " - " + listJeu.get(i).getConsole().getNom();
+			donnees[i] = listJeu.get(i).getNom() + " - " 
+					+ listJeu.get(i).getConsole().getNom() + " - "
+					+ "Tarif : " + listJeu.get(i).getTarif() + " - " 
+					+ simpleDateFormat.format(listJeu.get(i).getDateTarif()) + " - " 
+					+ dispo;
 		}
 
 		JLabel lblDateDebut = new JLabel("Date d\u00E9but");
@@ -141,26 +143,28 @@ public class Passer_Reservation extends JFrame {
 					lblMsgError.setText("Format de date attendu \"dd-MMM-yyyy\".");
 					valid = false;
 				}
-				java.util.Date dateDebut = new java.util.Date();
-				java.util.Date dateFin = new java.util.Date();
-				dateDebut = dateChooserDateDebut.getDate();
-				dateFin = dateChooserDateFin.getDate();
-				
-				dateDebut = new Timestamp(dateDebut.getTime());
-				dateFin = new Timestamp(dateFin.getTime());
-				System.out.println(dateDebut);
-				System.out.println(dateFin);
-				
-				
-				int res = dateDebut.compareTo(dateFin);
-				
-				System.out.println("RES  : " + res);
-				if(res == 1)
+				else
 				{
-					lblMsgError.setText("La date de fin doit être ultérieure à la date de début.");
-					valid = false;
+					java.util.Date dateDebut = new java.util.Date();
+					java.util.Date dateFin = new java.util.Date();
+					dateDebut = dateChooserDateDebut.getDate();
+					dateFin = dateChooserDateFin.getDate();
+					
+					dateDebut = new Timestamp(dateDebut.getTime());
+					dateFin = new Timestamp(dateFin.getTime());
+					System.out.println(dateDebut);
+					System.out.println(dateFin);
+					
+					
+					int res = dateDebut.compareTo(dateFin);
+					
+					if(res == 1)
+					{
+						lblMsgError.setText("La date de fin doit être ultérieure à la date de début.");
+						valid = false;
+					}
 				}
-
+				
 				return valid;
 			}
 

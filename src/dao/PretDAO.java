@@ -16,6 +16,7 @@ import exo.Emprunteur;
 import exo.Exemplaire;
 import exo.Jeu;
 import exo.Pret;
+import exo.Preteur;
 import exo.Reservation;
 
 public class PretDAO extends DAO<Pret>{
@@ -121,6 +122,24 @@ public class PretDAO extends DAO<Pret>{
 		return statementResult;
 	}
 
+	public boolean update_Pret_Preteur(Preteur preteur, Pret pret) {
+		System.out.println("Mon objet depuis la méthode update : " + pret);
+		boolean statementResult;
+		try {
+			Statement statement = connect.createStatement();
+			String query = "UPDATE Pret SET IDPreteur = " + preteur.getiD() + " WHERE ID = " + pret.getId() + ";";
+			System.out.println(query);
+			statementResult = true;
+			statementResult = statement.execute(query);
+		} catch (SQLException e) {
+			statementResult = false;
+			e.printStackTrace();
+			System.out.println(e);
+		}
+		System.out.println(statementResult);
+		return statementResult;
+	}
+	
 	@Override
 	public Pret find(int id) {
 		// TODO Auto-generated method stub
@@ -137,7 +156,7 @@ public class PretDAO extends DAO<Pret>{
 		try{
 			ResultSet result = this.connect.createStatement(
 					ResultSet.TYPE_SCROLL_INSENSITIVE,
-	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT Pret.ID AS IDPret, DateDebut, DateFin, Confirmer_Pret, Emprunteur.ID AS IDEMPRUNTEUR, Emprunteur.Nom AS NOMEMPRUNTEUR, Emprunteur.Prenom AS PRENOMEMPRUNTEUR, Emprunteur.DateNaiss AS DATENAISSEMPRUNTEUR, Emprunteur.Email AS EMAILEMPRUNTEUR, Emprunteur.Unite AS UNITEEMPRUNTEUR, Exemplaire.IDJeu AS ID_JEU, Pret.IDExemplaire AS IDEXEMPLAIRE FROM Exemplaire INNER JOIN (Emprunteur INNER JOIN Pret ON Emprunteur.ID = Pret.IDEmprunteur) ON Exemplaire.ID = Pret.IDExemplaire WHERE Emprunteur.ID <> " + emprunteur.getiD() + " AND Pret.ID <> 24");
+	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT Pret.ID AS IDPret, Pret.DateDebut, Pret.DateFin, Pret.Confirmer_Pret, Emprunteur.ID AS IDEMPRUNTEUR, Emprunteur.Nom AS NOMEMPRUNTEUR, Emprunteur.Prenom AS PRENOMEMPRUNTEUR, Emprunteur.DateNaiss AS DATENAISSEMPRUNTEUR, Emprunteur.Email AS EMAILEMPRUNTEUR, Emprunteur.Unite AS UNITEEMPRUNTEUR, Exemplaire.ID AS IDEXEMPLAIRE, Exemplaire.IDJeu AS ID_JEU, Pret.IDExemplaire AS IDEXEMPLAIRE, Jeu.ID AS IDJEU, Jeu.Nom AS NOMJEU, Jeu.Dispo AS DISPO, Jeu.Tarif AS TARIF, Jeu.DateTarif AS DATETARIF, Console.ID AS ID_Console, Console.Nom AS NOMCONSOLE FROM Console INNER JOIN ((Jeu INNER JOIN (Exemplaire INNER JOIN (Emprunteur INNER JOIN Pret ON Emprunteur.ID = Pret.IDEmprunteur) ON Exemplaire.ID = Pret.IDExemplaire) ON Jeu.ID = Exemplaire.IDJeu) INNER JOIN Ligne_Jeu ON Jeu.ID = Ligne_Jeu.ID_Jeu) ON Console.ID = Ligne_Jeu.ID_Console WHERE Emprunteur.ID <> " + emprunteur.getiD());
 			while(result.next())
 			{
 				reservation = new Reservation();
@@ -146,20 +165,19 @@ public class PretDAO extends DAO<Pret>{
 				console = new Console();
 				pret = new Pret();
 				exemplaire = new Exemplaire();
-				/*console.setId(result.getInt("ID_Console"));
-				console.setNom(result.getString("NOMCONSOLE"));*/
+				console.setId(result.getInt("ID_Console"));
+				console.setNom(result.getString("NOMCONSOLE"));
 				jeu.setId(result.getInt("ID_JEU"));
 				JeuDAO jeuDAO = new JeuDAO(connect);
 				System.out.println("ID DU JEU : " + jeu.getId());
 				jeu = jeuDAO.find(jeu.getId());
 				jeu.setNom(jeu.getNom());
 				System.out.println("ID JEU : " + jeu.getId());
-				/*jeu.setNom(result.getString("NOMJEU"));
-				jeu.setDispo(result.getBoolean("Dispo"));
-				jeu.setTarif(result.getDouble("Tarif"));
-				jeu.setDateTarif(result.getDate("DateTarif"));
-				jeu.setAdapterTarif(result.getString("AdapterTarif"));
-				jeu.setConsole(console);*/
+				jeu.setNom(result.getString("NOMJEU"));
+				jeu.setDispo(result.getBoolean("DISPO"));
+				jeu.setTarif(result.getDouble("TARIF"));
+				jeu.setDateTarif(result.getDate("DATETARIF"));
+				jeu.setConsole(console);
 				exemplaire.setJeu(jeu);
 				System.out.println("Exemplaire : " + exemplaire);
 				/*reservation.setId(result.getInt("ID_Reservation"));
@@ -179,7 +197,7 @@ public class PretDAO extends DAO<Pret>{
 				pret.setExemplaire(exemplaire);
 				pret.setEmprunteur(emprunteur);
 				exemplaire.setId(result.getInt("IDEXEMPLAIRE"));
-				JOptionPane.showMessageDialog(null, "NUMERO DE l'exemplaire FIND ALL " + exemplaire.getId());
+				exemplaire.setJeu(jeu);
 				pret.setExemplaire(exemplaire);
 				listPret.add(pret);
 			}
@@ -240,38 +258,50 @@ public class PretDAO extends DAO<Pret>{
 	
 	
 	// SELECT ID_Reservation, DateReservation, Jeu.Nom AS NOMJEU, Console.Nom AS NOMCONSOLE, DateDebut, DateFin, Confirmer_Pret FROM Console INNER JOIN ((((Emprunteur INNER JOIN Pret ON Emprunteur.ID = Pret.IDEmprunteur) INNER JOIN Reservation ON Emprunteur.ID = Reservation.IDEmprunteur) INNER JOIN (Jeu INNER JOIN Ligne_Reservation ON Jeu.ID = Ligne_Reservation.ID_Jeu) ON Reservation.ID = Ligne_Reservation.ID_Reservation) INNER JOIN Ligne_Jeu ON Jeu.ID = Ligne_Jeu.ID_Jeu) ON Console.ID = Ligne_Jeu.ID_Console WHERE Emprunteur.ID = " + currentEmprunteur.getiD()
-	
+	// SELECT Exemplaire.ID AS IDEXEMPLAIRE, Reservation.ID AS IDRESERVATION, Reservation.DateReservation AS DATERESERVATION, Jeu.ID AS IDJEU, Jeu.Nom AS NOMJEU, Console.ID AS IDCONSOLE, Console.Nom AS NOMCONSOLE, Pret.ID AS IDPRET, Pret.DateDebut AS DATEDEBUT, Pret.DateFin AS DATEFIN, Pret.Confirmer_Pret AS CONFIRMERPRET, Preteur.ID AS IDPRETEUR, Preteur.Nom AS NOMPRETEUR, Preteur.Prenom AS PRENOMPRETEUR FROM Preteur INNER JOIN (Reservation INNER JOIN (((Jeu INNER JOIN (Exemplaire INNER JOIN (Emprunteur INNER JOIN Pret ON Emprunteur.ID = Pret.IDEmprunteur) ON Exemplaire.ID = Pret.IDExemplaire) ON Jeu.ID = Exemplaire.IDJeu) INNER JOIN (Console INNER JOIN Ligne_Jeu ON Console.ID = Ligne_Jeu.ID_Console) ON Jeu.ID = Ligne_Jeu.ID_Jeu) INNER JOIN Ligne_Reservation ON Jeu.ID = Ligne_Reservation.ID_Jeu) ON Reservation.ID = Ligne_Reservation.ID_Reservation) ON Preteur.ID = Pret.IDPreteur WHERE Emprunteur.ID = " + currentEmprunteur.getiD());
 	public List<Pret> findAllPretByEmprunteur(Emprunteur currentEmprunteur){
 		List<Pret> listPret = new ArrayList<>();
+		Exemplaire exemplaire;
 		Jeu jeu;
 		Console console;
 		Pret pret;
 		Reservation reservation;
+		Preteur preteur;
 		try{
 			ResultSet result = this.connect.createStatement(
 					ResultSet.TYPE_SCROLL_INSENSITIVE,
-	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT ID_Reservation, DateReservation, Jeu.ID AS ID_Jeu, Jeu.Nom AS NOMJEU, Console.ID AS ID_Console, Console.Nom AS NOMCONSOLE, DateDebut, DateFin, Confirmer_Pret FROM Console INNER JOIN ((((Emprunteur INNER JOIN Pret ON Emprunteur.ID = Pret.IDEmprunteur) INNER JOIN Reservation ON Emprunteur.ID = Reservation.IDEmprunteur) INNER JOIN (Jeu INNER JOIN Ligne_Reservation ON Jeu.ID = Ligne_Reservation.ID_Jeu) ON Reservation.ID = Ligne_Reservation.ID_Reservation) INNER JOIN Ligne_Jeu ON Jeu.ID = Ligne_Jeu.ID_Jeu) ON Console.ID = Ligne_Jeu.ID_Console WHERE Emprunteur.ID = " + currentEmprunteur.getiD());
+	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT Exemplaire.ID AS IDEXEMPLAIRE, COUNT(Reservation.ID) AS IDRESERVATION, Jeu.ID AS IDJEU, Jeu.Nom AS NOMJEU, Console.ID AS IDCONSOLE, Console.Nom AS NOMCONSOLE, Pret.ID AS IDPRET, Pret.DateDebut AS DATEDEBUT, Pret.DateFin AS DATEFIN, Pret.Confirmer_Pret AS CONFIRMERPRET, Preteur.ID AS IDPRETEUR, Preteur.Nom AS NOMPRETEUR, Preteur.Prenom AS PRENOMPRETEUR FROM Preteur INNER JOIN (Reservation INNER JOIN (((Jeu INNER JOIN (Exemplaire INNER JOIN (Emprunteur INNER JOIN Pret ON Emprunteur.ID = Pret.IDEmprunteur) ON Exemplaire.ID = Pret.IDExemplaire) ON Jeu.ID = Exemplaire.IDJeu) INNER JOIN (Console INNER JOIN Ligne_Jeu ON Console.ID = Ligne_Jeu.ID_Console) ON Jeu.ID = Ligne_Jeu.ID_Jeu) INNER JOIN Ligne_Reservation ON Jeu.ID = Ligne_Reservation.ID_Jeu) ON Reservation.ID = Ligne_Reservation.ID_Reservation) ON Preteur.ID = Pret.IDPreteur WHERE Emprunteur.ID = " + currentEmprunteur.getiD() + " GROUP BY Exemplaire.ID,  Jeu.ID, Jeu.Nom, Console.ID, Console.Nom, Pret.ID, Pret.DateDebut, Pret.DateFin, Pret.Confirmer_Pret, Preteur.ID, Preteur.Nom, Preteur.Prenom");
 			while(result.next())
 			{
+				exemplaire = new Exemplaire();
 				jeu = new Jeu();
 				console = new Console();
 				pret = new Pret();
-				console.setId(result.getInt("ID_Console"));
+				preteur = new Preteur();
+				console.setId(result.getInt("IDCONSOLE"));
 				console.setNom(result.getString("NOMCONSOLE"));
-				jeu.setId(result.getInt("ID_Jeu"));
+				jeu.setId(result.getInt("IDJEU"));
 				jeu.setNom(result.getString("NOMJEU"));
 				System.out.println("NOM DU JEU  : " + jeu.getNom());
 				/*jeu.setDispo(result.getBoolean("Dispo"));
 				jeu.setTarif(result.getDouble("Tarif"));
 				jeu.setDateTarif(result.getDate("DateTarif"));*/
 				jeu.setConsole(console);
-				pret.setDateDebut(result.getDate("DateDebut"));
-				pret.setDateFin(result.getDate("DateFin"));
-				pret.setConfirmer_pret(result.getBoolean("Confirmer_Pret"));
-				reservation = new Reservation(result.getInt("ID_Reservation"), result.getDate("DateReservation"));
-				reservation.setJeu(jeu);
-				currentEmprunteur.setReservation(reservation);
+				exemplaire.setId(result.getInt("IDEXEMPLAIRE"));
+				exemplaire.setJeu(jeu);
+				pret.setId(result.getInt("IDPRET"));
+				pret.setDateDebut(result.getDate("DATEDEBUT"));
+				pret.setDateFin(result.getDate("DATEFIN"));
+				pret.setConfirmer_pret(result.getBoolean("CONFIRMERPRET"));
+			/*	reservation = new Reservation(result.getInt("IDRESERVATION"), result.getDate("DATERESERVATION"));
+				reservation.setJeu(jeu);*/
+				preteur.setiD(result.getInt("IDPRETEUR"));
+				preteur.setNom(result.getString("NOMPRETEUR"));
+				preteur.setPrenom(result.getString("PRENOMPRETEUR"));
+				//currentEmprunteur.setReservation(reservation);
+				pret.setExemplaire(exemplaire);
 				pret.setEmprunteur(currentEmprunteur);
+				pret.setPreteur(preteur);
 				listPret.add(pret);
 			}
 		}
@@ -315,6 +345,7 @@ public class PretDAO extends DAO<Pret>{
 				emprunteur = new Emprunteur(result.getInt("IDEMPRUNTEUR"), result.getString("NOMEMPRUNTEUR"), result.getString("PRENOMEMPRUNTEUR"),
 						result.getDate("DATENAISSEMPRUNTEUR"),  result.getString("EMAILEMPRUNTEUR"), result.getString("PASSWORDEMPRUNTEUR"), result.getInt("UNITEEMPRUNTEUR"));
 				pret.setEmprunteur(emprunteur);
+				pret.setExemplaire(exemplaire);
 				listPret.add(pret);
 				
 			}

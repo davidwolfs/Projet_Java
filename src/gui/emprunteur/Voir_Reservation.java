@@ -62,7 +62,7 @@ public class Voir_Reservation extends JFrame {
 			String confirmer_pret = " ";
 			if(listPret.get(i).isConfirmer_pret())
 			{
-				confirmer_pret = "Confirmé par le prêteur";
+				confirmer_pret = "Confirmé par " + listPret.get(i).getPreteur().getNom() + " " +  listPret.get(i).getPreteur().getPrenom();
 			}
 			else
 			{
@@ -70,9 +70,9 @@ public class Voir_Reservation extends JFrame {
 			}
 			
 			System.out.println(listPret.get(i).toString());
-			donnees[i] = "Date de réservation : " + simpleDateFormat.format(listPret.get(i).getEmprunteur().getReservation().getDateReservation()) + " - " + " - " + "Jeu : " +  listPret.get(i).getEmprunteur().getReservation().getJeu().getNom() /*listReservation.get(i).getJeu().isDispo() + " - " + listReservation.get(i).getJeu().getTarif() */
+			donnees[i] = /*"Date de réservation : " + simpleDateFormat.format(listPret.get(i).getEmprunteur().getReservation().getDateReservation()) + " - " + " - " + */"Jeu : " +  listPret.get(i).getExemplaire().getJeu().getNom() /*listReservation.get(i).getJeu().isDispo() + " - " + listReservation.get(i).getJeu().getTarif() */
 					/*+ " - " + listReservation.get(i).getJeu().getAdapterTarif();*/
-					+ " - " + "Console : " + listPret.get(i).getEmprunteur().getReservation().getJeu().getConsole().getNom()
+					+ " - " + "Console : " + listPret.get(i).getExemplaire().getJeu().getConsole().getNom()
 					+ " - " + " - " + "Réservation : " +  "du " + listPret.get(i).getDateDebut() + " au " + listPret.get(i).getDateFin()
 					+ " - " + " - " + "État : " + confirmer_pret;
 					

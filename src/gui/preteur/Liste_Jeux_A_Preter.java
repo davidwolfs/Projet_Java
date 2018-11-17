@@ -111,8 +111,8 @@ public class Liste_Jeux_A_Preter extends JFrame {
 			donnees[i] = listExemplaire.get(i).getNbrExemplaire() + " - " + listExemplaire.get(i).getJeu().getNom() + " - "
 					+ listExemplaire.get(i).getJeu().getConsole().getNom() + " - "
 					+ dispo + " - "
-					+ listExemplaire.get(i).getJeu().getTarif() + " - " 
-					+ simpleDateFormat.format(listExemplaire.get(i).getJeu().getDateTarif());
+					+ "Tarif : " + listExemplaire.get(i).getJeu().getTarif() + " - " 
+					+ "Date tarif : " + simpleDateFormat.format(listExemplaire.get(i).getJeu().getDateTarif());
 			
 		}
 		
