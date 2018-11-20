@@ -1,17 +1,12 @@
 package exo;
 
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
-import dao.PreteurDAO;
 
 public class Preteur extends Joueur {
 	private List<Exemplaire> listExemplaire = new ArrayList<>();
-	private int cote;
+	private double cote;
 	private int nbrCote = 0;
 
 	public Preteur(List<Exemplaire> listExemplaire) {
@@ -20,16 +15,18 @@ public class Preteur extends Joueur {
 
 	public Preteur(int id, String nom, String prenom, Date dateNaiss, String email, String password, int cote) {
 		super(id, nom, prenom, dateNaiss, email, password);
-		this.cote=cote;
+		this.cote = cote;
 	}
+
 	public Preteur(int id, String nom, String prenom, Date dateNaiss, String email, String password) {
 		super(id, nom, prenom, dateNaiss, email, password);
 	}
 
-	public Preteur(int id, String nom, String prenom, Date dateNaiss, String email, String password, int cote, int nbrCote) {
+	public Preteur(int id, String nom, String prenom, Date dateNaiss, String email, String password, double cote,
+			int nbrCote) {
 		super(id, nom, prenom, dateNaiss, email, password);
 		this.cote = cote;
-		this.nbrCote=nbrCote;
+		this.nbrCote = nbrCote;
 	}
 
 	public Preteur(String nom, String prenom, Date dateNaiss, String email, String password) {
@@ -40,15 +37,14 @@ public class Preteur extends Joueur {
 
 	}
 
-	public int getCote() {
+	public double getCote() {
 		return cote;
 	}
 
-	public void setCote(int cote) {
+	public void setCote(double cote) {
 		this.cote = cote;
 	}
 
-	
 	public int getNbrCote() {
 		return nbrCote;
 	}
@@ -60,7 +56,7 @@ public class Preteur extends Joueur {
 	public void incrementerNbrCote() {
 		this.nbrCote++;
 	}
-	
+
 	public List<Exemplaire> getListExemplaire() {
 		return listExemplaire;
 	}
@@ -69,32 +65,34 @@ public class Preteur extends Joueur {
 		this.listExemplaire = listExemplaire;
 	}
 
-	public void addExemplaire(Exemplaire exemplaire) {
+	public void AjouterExemplaire(Exemplaire exemplaire) {
 		this.listExemplaire.add(exemplaire);
 	}
 
-	public void remoteExemplaire(Exemplaire exemplaire) {
+	public void SupprimerExemplaire(Exemplaire exemplaire) {
 		this.listExemplaire.remove(exemplaire);
 	}
 
-	public double CalculerMoyenneCote()
-	{
+	@Override
+	public double CalculerMoyenneCote() {
 		double moyenneCote = 0.0;
-		
+
 		// On déclenche une exception si on a une division par zéro
-		try
-		{
-			moyenneCote = (double)(cote / nbrCote);
+		try {
+			if (nbrCote == 0) {
+				moyenneCote = 0.0;
+			} else {
+				moyenneCote = (cote / nbrCote);
+
+			}
 			System.out.println(moyenneCote);
-		}
-		catch(ArithmeticException ex)
-		{
+		} catch (ArithmeticException ex) {
 			ex.getMessage();
 		}
-		
+
 		return moyenneCote;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Preteur [listExemplaire=" + listExemplaire + ", cote=" + cote + "]";

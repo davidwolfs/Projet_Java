@@ -5,27 +5,18 @@ import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-
 import com.toedter.calendar.JDateChooser;
-
-import dao.AdministrateurDAO;
 import dao.EmprunteurDAO;
 import dao.PreteurDAO;
 import exo.Administrateur;
 import exo.Emprunteur;
 import exo.Preteur;
-import gui.administrateur.Dashboard_Administrateur;
-import gui.emprunteur.Dashboard_Emprunteur;
-import gui.preteur.Dashboard_Preteur;
 import javax.swing.JPasswordField;
 
 public class Modifier_Participant extends JFrame {
@@ -38,19 +29,25 @@ public class Modifier_Participant extends JFrame {
 	private JButton btnRetour;
 	private JLabel labelMsgErreur;
 	private JPasswordField passwordField;
+	@SuppressWarnings("unused")
 	private Administrateur currentAdministrateur;
+	@SuppressWarnings("unused")
 	private Emprunteur emprunteurAModifier;
+	@SuppressWarnings("unused")
 	private Preteur preteurAModifier;
-	
+	private JLabel lblConfirmPassword;
+	private JPasswordField confirmPasswordField;
+
 	/**
 	 * Create the frame.
 	 */
-	public Modifier_Participant(Connection connect, Administrateur currentAdministrateur, Emprunteur emprunteurAModifier, Preteur preteurAModifier) {
+	public Modifier_Participant(Connection connect, Administrateur currentAdministrateur,
+			Emprunteur emprunteurAModifier, Preteur preteurAModifier) {
 		setTitle("Projet Jeux Video");
 		this.connect = connect;
-		this.currentAdministrateur=currentAdministrateur;
-		this.emprunteurAModifier=emprunteurAModifier;
-		this.preteurAModifier=preteurAModifier;
+		this.currentAdministrateur = currentAdministrateur;
+		this.emprunteurAModifier = emprunteurAModifier;
+		this.preteurAModifier = preteurAModifier;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 436, 454);
 		contentPane = new JPanel();
@@ -106,14 +103,18 @@ public class Modifier_Participant extends JFrame {
 		passwordField.setText(emprunteurAModifier.getPassword());
 		contentPane.add(passwordField);
 
-		ButtonGroup personneRadio = new ButtonGroup();
+		lblConfirmPassword = new JLabel("Confirmer password (*)");
+		lblConfirmPassword.setBounds(24, 263, 137, 14);
+		contentPane.add(lblConfirmPassword);
+
+		confirmPasswordField = new JPasswordField();
+		confirmPasswordField.setBounds(233, 260, 162, 20);
+		confirmPasswordField.setText(emprunteurAModifier.getPassword());
+		contentPane.add(confirmPasswordField);
 
 		JButton btnModifierAdministrateur = new JButton("Modifier");
 		btnModifierAdministrateur.addActionListener(new ActionListener() {
-			public void choixTypePersonne() {
-				labelMsgErreur.setText("Veuillez sélectionner un type de personne.");
-			}
-
+			@SuppressWarnings("deprecation")
 			public boolean champsVide() {
 				String regex = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
 				String regex2 = "^(([0-9])|([0-2][0-9])|([3][0-1]))\\-(janv.|févr.|mars|avr.|mai|juin|juil.|août|sept.|oct.|nov.|déc.)\\-\\d{4}$";
@@ -126,7 +127,8 @@ public class Modifier_Participant extends JFrame {
 				boolean valid = true;
 				if (textFieldNom.getText().isEmpty() || textFieldPrenom.getText().isEmpty()
 						|| ((JTextField) dateChooserDateNaiss.getDateEditor().getUiComponent()).getText().isEmpty()
-						|| textFieldEmail.getText().isEmpty() || passwordField.getText().isEmpty()) {
+						|| textFieldEmail.getText().isEmpty() || passwordField.getText().isEmpty()
+						|| confirmPasswordField.getText().isEmpty()) {
 					labelMsgErreur.setText("Veuillez remplir tous les champs.");
 					valid = false;
 				}
@@ -141,28 +143,16 @@ public class Modifier_Participant extends JFrame {
 					valid = false;
 				}
 
+				else if (!passwordField.getText().equals(confirmPasswordField.getText())) {
+					labelMsgErreur.setText("Les mots de passes doivent être identiques.");
+					valid = false;
+				}
+
 				return valid;
 			}
 
+			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
-				/*
-				 * if (rdbtnAdministrateur.isSelected()) { if (champsVide()) { AdministrateurDAO
-				 * administrateurDAO = new AdministrateurDAO(connect); Administrateur
-				 * administrateur = new Administrateur(textFieldNom.getText(),
-				 * textFieldPrenom.getText(), dateChooserDateNaiss.getDate(),
-				 * textFieldEmail.getText(), passwordField.getText());
-				 * System.out.println("DATE STRING : " + ((JTextField)
-				 * dateChooserDateNaiss.getDateEditor().getUiComponent()).getText());
-				 * System.out.println("DATE IS VALID : " +
-				 * dateChooserDateNaiss.getDateFormatString()); if
-				 * (administrateurDAO.alreadyExist(textFieldEmail.getText())) {
-				 * labelMsgErreur.setText("Cet adresse e-mail existe déjà."); } else {
-				 * 
-				 * administrateurDAO.create(administrateur); dispose(); Dashboard_Administrateur
-				 * dashboard_administrateur = new Dashboard_Administrateur(connect,
-				 * administrateur); dashboard_administrateur.setVisible(true); } } /* } if
-				 * (rdbtnPreteur.isSelected()) {
-				 */
 				if (champsVide()) {
 					EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
 					PreteurDAO preteurDAO = new PreteurDAO(connect);
@@ -171,7 +161,7 @@ public class Modifier_Participant extends JFrame {
 					emprunteurAModifier.setDateNaiss(dateChooserDateNaiss.getDate());
 					emprunteurAModifier.setEmail(textFieldEmail.getText());
 					emprunteurAModifier.setPassword(passwordField.getText());
-					
+
 					preteurAModifier.setNom(textFieldNom.getText());
 					preteurAModifier.setPrenom(textFieldPrenom.getText());
 					preteurAModifier.setDateNaiss(dateChooserDateNaiss.getDate());
@@ -179,36 +169,19 @@ public class Modifier_Participant extends JFrame {
 					preteurAModifier.setPassword(passwordField.getText());
 					if (emprunteurDAO.alreadyExist(emprunteurAModifier)) {
 						labelMsgErreur.setText("Cet adresse e-mail existe déjà.");
-					
+
 					} else {
-					
-						
+
 						emprunteurDAO.update(emprunteurAModifier);
 						preteurDAO.update(preteurAModifier);
-						
+
 						dispose();
-						Gestion_Utilisateurs gestion_Utilisateurs = new Gestion_Utilisateurs(connect, currentAdministrateur);
+						Gestion_Utilisateurs gestion_Utilisateurs = new Gestion_Utilisateurs(connect,
+								currentAdministrateur);
 						gestion_Utilisateurs.setVisible(true);
 						gestion_Utilisateurs.setResizable(false);
 					}
 				}
-				// }
-
-				/*
-				 * else if (rdbtnEmprunteur.isSelected()) { if (champsVide()) { EmprunteurDAO
-				 * emprunteurDAO = new EmprunteurDAO(connect); Emprunteur emprunteur = new
-				 * Emprunteur(textFieldNom.getText(), textFieldPrenom.getText(),
-				 * dateChooserDateNaiss.getDate(), textFieldEmail.getText(),
-				 * passwordField.getText()); System.out.println("DATE DAO : " +
-				 * dateChooserDateNaiss.getDate()); if
-				 * (emprunteurDAO.alreadyExist(textFieldEmail.getText())) {
-				 * labelMsgErreur.setText("Cet adresse e-mail existe déjà."); } else {
-				 * emprunteurDAO.create(emprunteur); dispose(); Dashboard_Emprunteur
-				 * dashboard_Emprunteur = new Dashboard_Emprunteur(emprunteur);
-				 * dashboard_Emprunteur.setVisible(true); } } }
-				 */ /*else {
-					choixTypePersonne();
-				}*/
 			}
 		});
 		btnModifierAdministrateur.setBounds(41, 341, 89, 23);

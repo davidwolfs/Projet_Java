@@ -2,10 +2,6 @@ package exo;
 
 import java.sql.Connection;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-
-import dao.JeuDAO;
 
 public class Jeu {
 	private Connection connect;

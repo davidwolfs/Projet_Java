@@ -1,38 +1,26 @@
 package gui.preteur;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JButton;
-import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.JCheckBox;
 import com.toedter.calendar.JDateChooser;
-
-import dao.AdministrateurDAO;
 import dao.ConsoleDAO;
-import dao.EmprunteurDAO;
 import dao.ExemplaireDAO;
 import dao.JeuDAO;
-import dao.PreteurDAO;
-import exo.Administrateur;
 import exo.Console;
-import exo.Emprunteur;
 import exo.Exemplaire;
 import exo.Jeu;
 import exo.Preteur;
-
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 import java.awt.event.ActionEvent;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
@@ -40,19 +28,19 @@ import javax.swing.SpinnerNumberModel;
 public class Ajouter_Exemplaire extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textFieldNom;
-	private JTextField textFieldTarif;
-	private JTextField textFieldAdapterTarif;
 	private Connection connect;
+	@SuppressWarnings("unused")
 	private Preteur currentPreteur;
+	@SuppressWarnings("unused")
 	private Jeu jeuAModifier;
+
 	/**
 	 * Create the frame.
 	 */
 	public Ajouter_Exemplaire(Connection connect, Preteur currentPreteur, Jeu jeuAModifier) {
-		this.connect=connect;
-		this.currentPreteur=currentPreteur;
-		this.jeuAModifier=jeuAModifier;
+		this.connect = connect;
+		this.currentPreteur = currentPreteur;
+		this.jeuAModifier = jeuAModifier;
 		setTitle("Ajouter un exemplaire");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 454, 645);
@@ -60,72 +48,50 @@ public class Ajouter_Exemplaire extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+
 		JLabel lblNom = new JLabel("Nom du jeu");
 		lblNom.setBounds(69, 48, 89, 14);
 		contentPane.add(lblNom);
-		
+
 		JLabel lblDisponibilite = new JLabel("Disponibilite");
 		lblDisponibilite.setBounds(69, 91, 89, 14);
 		contentPane.add(lblDisponibilite);
-		
+
 		JLabel lblTarif = new JLabel("Tarif");
 		lblTarif.setBounds(69, 129, 89, 14);
 		contentPane.add(lblTarif);
-		
+
 		JLabel lblDateTarif = new JLabel("DateTarif");
 		lblDateTarif.setBounds(69, 166, 89, 14);
 		contentPane.add(lblDateTarif);
-		
+
 		JLabel lblNom2 = new JLabel("Nom du jeu");
 		lblNom2.setBounds(251, 45, 131, 20);
 		lblNom2.setText(jeuAModifier.getNom());
 		contentPane.add(lblNom2);
-		
-		/*textFieldNom = new JTextField();
-		textFieldNom.setBounds(251, 45, 131, 20);
-		textFieldNom.setText(jeuAModifier.getNom());
-		contentPane.add(textFieldNom);
-		textFieldNom.setColumns(10);*/
-		
+
 		JCheckBox chckbxDisponibilite = new JCheckBox("Disponible");
 		chckbxDisponibilite.setBounds(251, 88, 130, 20);
 		chckbxDisponibilite.setSelected(true);
 		chckbxDisponibilite.setEnabled(false);
 		contentPane.add(chckbxDisponibilite);
-		
+
 		JLabel lblTarif2 = new JLabel("Tarif");
 		lblTarif2.setBounds(251, 126, 131, 20);
 		lblTarif2.setText(String.valueOf(jeuAModifier.getTarif()));
 		contentPane.add(lblTarif2);
-		
+
 		JDateChooser dateChooserDateTarif = new JDateChooser();
 		dateChooserDateTarif.setBounds(251, 166, 131, 20);
 		dateChooserDateTarif.setDate(jeuAModifier.getDateTarif());
 		dateChooserDateTarif.setEnabled(false);
 		contentPane.add(dateChooserDateTarif);
-		
-		/*textFieldTarif = new JTextField();
-		textFieldTarif.setBounds(251, 126, 131, 20);
-		textFieldTarif.setText(String.valueOf(jeuAModifier.getTarif()));
-		contentPane.add(textFieldTarif);
-		textFieldTarif.setColumns(10);*/
-		
-	
-		
-		/*textFieldAdapterTarif = new JTextField();
-		textFieldAdapterTarif.setBounds(251, 209, 131, 20);
-		textFieldAdapterTarif.setText(jeuAModifier.getAdapterTarif());
-		contentPane.add(textFieldAdapterTarif);
-		textFieldAdapterTarif.setColumns(10);*/
-		
+
 		JLabel lblListeConsoles = new JLabel("Console");
 		lblListeConsoles.setBounds(69, 213, 77, 14);
 		contentPane.add(lblListeConsoles);
 		ConsoleDAO consoleDAO = new ConsoleDAO(connect);
 		List<Console> listConsole = consoleDAO.findAll();
-
-		// List<Vehicule> listVehicule = vehiculeDAO.listVehicule();
 		Object[] console = listConsole.toArray();
 
 		Object[] donnees = new Object[listConsole.size()];
@@ -136,52 +102,49 @@ public class Ajouter_Exemplaire extends JFrame {
 			donnees[i] = listConsole.get(i).getNom();
 		}
 
+		@SuppressWarnings({ "rawtypes", "unchecked" })
 		JList listConsoles = new JList(donnees);
 		listConsoles.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		listConsoles.setBounds(251, 224, 131, 199);
 		listConsoles.setEnabled(false);
-		
+
 		int index = -1;
-		for(int i = 0; i < listConsole.size();i++)
-		{
-			if(jeuAModifier.getConsole().getId() == listConsole.get(i).getId())
-			{
+		for (int i = 0; i < listConsole.size(); i++) {
+			if (jeuAModifier.getConsole().getId() == listConsole.get(i).getId()) {
 				index = i;
 			}
 		}
 		System.out.println("Index : " + index);
 		listConsoles.setSelectedIndex(index);
 		contentPane.add(listConsoles);
-		
+
 		JLabel lblNombreExemplaires = new JLabel("Nombre d'exemplaires");
 		lblNombreExemplaires.setBounds(69, 468, 146, 20);
 		contentPane.add(lblNombreExemplaires);
-		
+
 		JSpinner spinnerNombreExemplaires = new JSpinner();
 		spinnerNombreExemplaires.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
 		spinnerNombreExemplaires.setBounds(250, 468, 40, 20);
 		contentPane.add(spinnerNombreExemplaires);
-		
-		
+
 		JLabel labelMsgErreur = new JLabel("");
 		labelMsgErreur.setBounds(69, 532, 313, 29);
 		contentPane.add(labelMsgErreur);
-		
+
 		JButton btnValider = new JButton("Valider");
 		btnValider.addActionListener(new ActionListener() {
-			
+
 			public boolean champsVide() {
 				boolean valid = true;
-				
-				if((int)spinnerNombreExemplaires.getValue() <= 0)
-				{
+
+				if ((int) spinnerNombreExemplaires.getValue() <= 0) {
 					labelMsgErreur.setText("Veuillez entrez un nombre supérieur à 0.");
 					valid = false;
 				}
 
 				return valid;
 			}
-			
+
 			public void actionPerformed(ActionEvent e) {
 				if (champsVide()) {
 					System.out.println(spinnerNombreExemplaires.getValue());
@@ -192,22 +155,21 @@ public class Ajouter_Exemplaire extends JFrame {
 					jeuAModifier.setTarif((Double.parseDouble(lblTarif2.getText())));
 					jeuAModifier.setDateTarif((dateChooserDateTarif.getDate()));
 					jeuAModifier.setConsole(listConsole.get(listConsoles.getSelectedIndex()));
-					
-					int nombreExemplaires = (int)spinnerNombreExemplaires.getValue();
-					
+
+					int nombreExemplaires = (int) spinnerNombreExemplaires.getValue();
+
 					Exemplaire exemplaire = null;
-					for(int i=0;i<nombreExemplaires;i++)
-					{
-						exemplaire= new Exemplaire(jeuAModifier);
-						currentPreteur.addExemplaire(exemplaire);
+					for (int i = 0; i < nombreExemplaires; i++) {
+						exemplaire = new Exemplaire(jeuAModifier);
+						currentPreteur.AjouterExemplaire(exemplaire);
 						exemplaireDAO.create_Exemplaire(exemplaire, currentPreteur);
 					}
 					jeuAModifier.setDispo(true);
 					jeuDAO.update_Dispo(jeuAModifier);
-					
+
 					if (jeuDAO.alreadyExist(jeuAModifier)) {
 						labelMsgErreur.setText("Ce jeu existe déjà pour cette console.");
-					
+
 					} else {
 						System.out.println("Nombre d'exemplaires : " + currentPreteur.getListExemplaire().size());
 						System.out.println(currentPreteur.getListExemplaire());
@@ -217,15 +179,13 @@ public class Ajouter_Exemplaire extends JFrame {
 						liste_Jeux.setResizable(false);
 					}
 				}
-				
+
 			}
 		});
-		
-		
-		
+
 		btnValider.setBounds(69, 572, 89, 23);
 		contentPane.add(btnValider);
-		
+
 		JButton btnRetour = new JButton("Retour");
 		btnRetour.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

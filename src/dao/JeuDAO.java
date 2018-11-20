@@ -18,16 +18,21 @@ public class JeuDAO extends DAO<Jeu>{
 		super(conn);
 		// TODO Auto-generated constructor stub
 	}
-
+	
 	@Override
-	public boolean create(Jeu jeu) {
+	public boolean create(Jeu obj) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	public boolean create(Jeu jeu, Administrateur currentAdministrateur) {
 		java.util.Date date = new java.util.Date();
 		date = jeu.getDateTarif();
 		
 		boolean statementResult;
 		try {
 			Statement statement = connect.createStatement();
-			String query = "INSERT INTO Jeu (Nom, Dispo, Tarif, DateTarif) VALUES ('" + jeu.getNom() + "','" + jeu.isDispo() + "','" + jeu.getTarif() + "','" + new Timestamp(date.getTime()) + "')" + ";";
+			String query = "INSERT INTO Jeu (Nom, Dispo, Tarif, DateTarif, IDAdministrateur) VALUES ('" + jeu.getNom() + "','" + jeu.isDispo() + "','" + jeu.getTarif() + "','" + new Timestamp(date.getTime()) + "','" + currentAdministrateur.getiD() + "')" + ";";
 			System.out.println(query);
 			statementResult = true;
 			statementResult = statement.execute(query);

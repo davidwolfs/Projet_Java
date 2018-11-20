@@ -5,13 +5,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
-import javax.swing.JOptionPane;
-
 import exo.Administrateur;
 
 public class AdministrateurDAO extends DAO<Administrateur> {
@@ -106,8 +101,8 @@ public class AdministrateurDAO extends DAO<Administrateur> {
 					.executeQuery("SELECT * FROM Administrateur WHERE Email = " + "\"" + email + "\" AND Password = "
 							+ "\"" + password + "\"");
 			if (result.first()) {
-				administrateur = new Administrateur(result.getString("Nom"), result.getString("Prenom"),
-						result.getDate("DateNaiss"), email, password);
+				administrateur = new Administrateur(result.getInt("ID"), result.getString("Nom"),
+						result.getString("Prenom"), result.getDate("DateNaiss"), email, password);
 				existe = true;
 			}
 
@@ -125,8 +120,8 @@ public class AdministrateurDAO extends DAO<Administrateur> {
 					.executeQuery("SELECT * FROM Administrateur WHERE Email = " + "\"" + email + "\" AND Password = "
 							+ "\"" + password + "\"");
 			if (result.first()) {
-				administrateur = new Administrateur(result.getString("Nom"), result.getString("Prenom"),
-						result.getDate("DateNaiss"), email, password);
+				administrateur = new Administrateur(result.getInt("ID"), result.getString("Nom"),
+						result.getString("Prenom"), result.getDate("DateNaiss"), email, password);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -157,13 +152,12 @@ public class AdministrateurDAO extends DAO<Administrateur> {
 		boolean existe = false;
 		try {
 			String sql = "SELECT * FROM Administrateur WHERE Email = " + "\"" + administrateur.getEmail() + "\"";
-			if(administrateur.getiD()>0) {
+			if (administrateur.getiD() > 0) {
 				sql = sql + " AND Administrateur.ID != " + administrateur.getiD();
 			}
 			System.out.println(sql);
 			ResultSet result = this.connect
-					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
-					.executeQuery(sql);
+					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery(sql);
 			if (result.first()) {
 				existe = true;
 			}

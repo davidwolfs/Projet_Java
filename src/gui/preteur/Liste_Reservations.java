@@ -1,35 +1,25 @@
 package gui.preteur;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.List;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
 import dao.EmprunteurDAO;
 import dao.ExemplaireDAO;
 import dao.JeuDAO;
 import dao.PretDAO;
-import dao.ReservationDAO;
 import exo.Emprunteur;
-import exo.Jeu;
 import exo.Pret;
 import exo.Preteur;
-import exo.Reservation;
-
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.SwingConstants;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
@@ -37,31 +27,31 @@ public class Liste_Reservations extends JFrame {
 
 	private JPanel contentPane;
 	private Connection connect;
+	@SuppressWarnings("unused")
 	private Preteur currentPreteur;
-	private ListSelectionModel listSelectionModel;
-	
+
 	/**
 	 * Create the frame.
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Liste_Reservations(Connection connect, Preteur currentPreteur) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1022, 687);
+		setBounds(100, 100, 1180, 687);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+
 		JLabel lblListePrets = new JLabel("Liste des pr\u00EAts");
 		lblListePrets.setBounds(10, 11, 124, 14);
 		contentPane.add(lblListePrets);
-		
+
 		Emprunteur emprunteur = new Emprunteur();
 		emprunteur.setiD(currentPreteur.getiD());
-		
+
 		PretDAO pretDAO = new PretDAO(connect);
 		List<Pret> listPret = pretDAO.findAll(emprunteur);
 
-		// List<Vehicule> listVehicule = vehiculeDAO.listVehicule();
 		Object[] pret = listPret.toArray();
 
 		Object[] donnees = new Object[listPret.size()];
@@ -69,30 +59,23 @@ public class Liste_Reservations extends JFrame {
 
 		for (int i = 0; i < listPret.size(); i++) {
 			String confirmer_pret = " ";
-			if(listPret.get(i).isConfirmer_pret())
-			{
+			if (listPret.get(i).isConfirmer_pret()) {
 				confirmer_pret = "Confirmé";
-			}
-			else
-			{
+			} else {
 				confirmer_pret = "En attente de confirmation";
 			}
-			
-			donnees[i] = "Emprunteur : " + listPret.get(i).getEmprunteur().getNom() + " - " 
+
+			donnees[i] = "Emprunteur : " + listPret.get(i).getEmprunteur().getNom() + " - "
 					+ listPret.get(i).getEmprunteur().getPrenom() + " - "
 					+ listPret.get(i).getEmprunteur().getDateNaiss() + " - "
-					+ listPret.get(i).getEmprunteur().getEmail() + " - "
-					//+ listPret.get(i).getEmprunteur().getPassword() + " - " + " - "
-					+ "Prêt : " + "du " + listPret.get(i).getDateDebut() + " au " + listPret.get(i).getDateFin() + " - " + " - "
-					+ "Jeu : " + listPret.get(i).getExemplaire().getJeu().getNom() + " - "
-				//	+ dispo + " - "
-				/*	+ listPret.get(i).getExemplaire().getJeu().getTarif() + " - " 
-					+ simpleDateFormat.format(listPret.get(i).getExemplaire().getJeu().getDateTarif()) + " - "
-					+ listPret.get(i).getExemplaire().getJeu().getAdapterTarif() + " - " */
-					+ "Console : " + listPret.get(i).getExemplaire().getJeu().getConsole().getNom() + " - " + " - "
-					+ "Statut : " + confirmer_pret;
+					+ listPret.get(i).getEmprunteur().getEmail() + " - " + " - " + "Date de réservation : "
+					+ listPret.get(i).getEmprunteur().getReservation().getDateReservation() + " - " + " - " + "Prêt : "
+					+ "du " + listPret.get(i).getDateDebut() + " au " + listPret.get(i).getDateFin() + " - " + " - "
+					+ "Jeu : " + listPret.get(i).getExemplaire().getJeu().getNom() + " - " + "Console : "
+					+ listPret.get(i).getExemplaire().getJeu().getConsole().getNom() + " - " + " - " + "Statut : "
+					+ confirmer_pret;
 		}
-		
+
 		JButton btnRetour = new JButton("Retour");
 		btnRetour.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -102,47 +85,42 @@ public class Liste_Reservations extends JFrame {
 				dashboard_Preteur.setResizable(false);
 			}
 		});
-		btnRetour.setBounds(911, 611, 89, 23);
+		btnRetour.setBounds(1071, 614, 89, 23);
 		contentPane.add(btnRetour);
-		
+
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 50, 990, 550);
+		scrollPane.setBounds(10, 50, 1150, 550);
 		contentPane.add(scrollPane);
-		
+
 		JLabel lblMsgError = new JLabel("");
 		lblMsgError.setBounds(313, 614, 241, 23);
 		contentPane.add(lblMsgError);
-		
+
 		JList listPrets = new JList(donnees);
 		listPrets.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane.setViewportView(listPrets);
-		
+
 		JButton btnConfirmer = new JButton("Confirmer");
-		
-		listPrets.addListSelectionListener(new ListSelectionListener()
-		{
+
+		listPrets.addListSelectionListener(new ListSelectionListener() {
 
 			@Override
 			public void valueChanged(ListSelectionEvent arg0) {
 				int index = listPrets.getSelectedIndex();
-				if(pretDAO.isAlreadyConfirmed(listPret.get(index)))
-				{
+				if (pretDAO.isAlreadyConfirmed(listPret.get(index))) {
 					lblMsgError.setText("Ce prêt a déjà été confirmé.");
 					btnConfirmer.setEnabled(false);
-				}
-				else if(listPret.get(index).getEmprunteur().getUnite() < listPret.get(index).getExemplaire().getJeu().getTarif())
-				{
+				} else if (listPret.get(index).getEmprunteur().getUnite() < listPret.get(index).getExemplaire().getJeu()
+						.getTarif()) {
 					lblMsgError.setText("L'emprunteur n'a pas assez d'unité.");
 					btnConfirmer.setEnabled(false);
-				}
-				else
-				{
+				} else {
 					lblMsgError.setText("");
 					btnConfirmer.setEnabled(true);
 				}
 			}
 		});
-		
+
 		btnConfirmer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				PretDAO pretDAO = new PretDAO(connect);
@@ -152,59 +130,45 @@ public class Liste_Reservations extends JFrame {
 					lblMsgError.setText("Veuillez sélectionner un prêt.");
 				} else {
 					System.out.println(index);
-					JOptionPane.showMessageDialog(null, "NUMERO DE L EXEMPLAIRE" + listPret.get(index).getExemplaire().getId());
-					if(pretDAO.sameReservationFound(listPret.get(index).getExemplaire()))
-					{
+					if (pretDAO.sameReservationFound(listPret.get(index).getExemplaire())) {
 						System.out.println("Même réservation trouvée.");
 						List<Pret> listPret = pretDAO.findAll(emprunteur);
 						EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
 						Emprunteur emprunteur = new Emprunteur();
-						List<Pret> listPretEmprunteur = pretDAO.getPretEmprunteurSortByPriorites(listPret.get(index).getExemplaire());
-						
-						/*for(Pret pret : listPretEmprunteur)
-						{
-							System.out.println(listPretEmprunteur.get(0));
-						}*/
-						
-					//	System.out.println(listPretEmprunteur.get(0).getId());
-						
-						
-						
-						
-					Pret pret = new Pret();
+						List<Pret> listPretEmprunteur = pretDAO
+								.getPretEmprunteurSortByPriorites(listPret.get(index).getExemplaire());
+
+						Pret pret = new Pret();
 						pret.setId(listPretEmprunteur.get(0).getId());
 						emprunteur.setiD(listPretEmprunteur.get(0).getEmprunteur().getiD());
 						System.out.println(listPretEmprunteur.get(0).getEmprunteur().getiD());
-						JOptionPane.showMessageDialog(null, listPretEmprunteur.get(0).getEmprunteur().getiD());
 						pretDAO.update_Pret_Emprunteur(emprunteur, pret);
-						
 
-						for(int i=1;i<listPretEmprunteur.size();i++)
-						{
-						
+						for (int i = 1; i < listPretEmprunteur.size(); i++) {
+
 							System.out.println(listPretEmprunteur.get(i));
 							pretDAO.delete_Pret_Emprunteur(listPretEmprunteur.get(i));
 						}
-						
-						
+
 						dispose();
 						listPretEmprunteur.get(0).setConfirmer_pret(true);
 						Emprunteur emprunteurADebiter = listPretEmprunteur.get(0).getEmprunteur();
 						Emprunteur emprunteurACrediter = new Emprunteur();
 						emprunteurACrediter.setiD(currentPreteur.getiD());
 						emprunteurACrediter = emprunteurDAO.findEmprunteurById(emprunteurACrediter);
-						//System.out.println(listPretEmprunteur.get(index));
-						System.out.println("Unite de l'emprunteur : " + listPretEmprunteur.get(0).getEmprunteur().getUnite());
+						System.out.println(
+								"Unite de l'emprunteur : " + listPretEmprunteur.get(0).getEmprunteur().getUnite());
 						System.out.println("Unite de prêteur: " + emprunteurACrediter.getUnite());
-						
-						emprunteurADebiter.soustraireUnite((int)listPretEmprunteur.get(0).getExemplaire().getJeu().getTarif());
-						
+
+						emprunteurADebiter
+								.soustraireUnite((int) listPretEmprunteur.get(0).getExemplaire().getJeu().getTarif());
+
 						emprunteurACrediter.setiD(currentPreteur.getiD());
-						emprunteurACrediter.ajouterUnite(((int)listPretEmprunteur.get(0).getExemplaire().getJeu().getTarif()));
-						System.out.println("Unite de l'emprunteur : " + listPretEmprunteur.get(0).getEmprunteur().getUnite());
+						emprunteurACrediter
+								.ajouterUnite(((int) listPretEmprunteur.get(0).getExemplaire().getJeu().getTarif()));
+						System.out.println(
+								"Unite de l'emprunteur : " + listPretEmprunteur.get(0).getEmprunteur().getUnite());
 						System.out.println("Unite de prêteur: " + emprunteurACrediter.getUnite());
-						JOptionPane.showMessageDialog(null, emprunteurADebiter.getUnite());
-						JOptionPane.showMessageDialog(null, emprunteurACrediter.getUnite());
 						emprunteurDAO.updateUnite(emprunteurADebiter);
 						emprunteurDAO.updateUnite(emprunteurACrediter);
 						pretDAO.update_Confirmation(listPretEmprunteur.get(0));
@@ -218,9 +182,7 @@ public class Liste_Reservations extends JFrame {
 						Liste_Reservations liste_Reservations = new Liste_Reservations(connect, currentPreteur);
 						liste_Reservations.setVisible(true);
 						liste_Reservations.setResizable(false);
-					}
-					else
-					{
+					} else {
 						dispose();
 						listPret.get(index).setConfirmer_pret(true);
 						Emprunteur emprunteurADebiter = listPret.get(index).getEmprunteur();
@@ -231,14 +193,14 @@ public class Liste_Reservations extends JFrame {
 						System.out.println(listPret.get(index));
 						System.out.println("Unite de l'emprunteur : " + listPret.get(index).getEmprunteur().getUnite());
 						System.out.println("Unite de prêteur: " + emprunteurACrediter.getUnite());
-						emprunteurADebiter.soustraireUnite((int)listPret.get(index).getExemplaire().getJeu().getTarif());
-						
+						emprunteurADebiter
+								.soustraireUnite((int) listPret.get(index).getExemplaire().getJeu().getTarif());
+
 						emprunteurACrediter.setiD(currentPreteur.getiD());
-						emprunteurACrediter.ajouterUnite(((int)listPret.get(index).getExemplaire().getJeu().getTarif()));
+						emprunteurACrediter
+								.ajouterUnite(((int) listPret.get(index).getExemplaire().getJeu().getTarif()));
 						System.out.println("Unite de l'emprunteur : " + listPret.get(index).getEmprunteur().getUnite());
 						System.out.println("Unite de prêteur: " + emprunteurACrediter.getUnite());
-						JOptionPane.showMessageDialog(null, emprunteurADebiter.getUnite());
-						JOptionPane.showMessageDialog(null, emprunteurACrediter.getUnite());
 						emprunteurDAO.updateUnite(emprunteurADebiter);
 						emprunteurDAO.updateUnite(emprunteurACrediter);
 						pretDAO.update_Confirmation(listPret.get(index));
@@ -253,6 +215,6 @@ public class Liste_Reservations extends JFrame {
 		});
 		btnConfirmer.setBounds(10, 614, 99, 23);
 		contentPane.add(btnConfirmer);
-	
+
 	}
 }

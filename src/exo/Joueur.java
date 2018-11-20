@@ -2,7 +2,7 @@ package exo;
 
 import java.util.Date;
 
-public class Joueur extends Personne {
+public abstract class Joueur extends Personne {
 
 	private double solde;
 	private Date date_en;
@@ -50,6 +50,8 @@ public class Joueur extends Personne {
 	public void rayerJoueur() {
 
 	}
+	
+	public abstract double CalculerMoyenneCote();
 
 	@Override
 	public String toString() {

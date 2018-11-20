@@ -1,9 +1,6 @@
 package exo;
 
-import java.sql.Connection;
 import java.util.Date;
-
-import dao.AdministrateurDAO;
 
 public class Administrateur extends Personne {
 

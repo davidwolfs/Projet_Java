@@ -5,16 +5,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-
-import exo.Console;
 import exo.Emprunteur;
 import exo.Jeu;
-import exo.Pret;
 import exo.Reservation;
 
-public class ReservationDAO extends DAO<Reservation>{
+public class ReservationDAO extends DAO<Reservation> {
 
 	public ReservationDAO(Connection conn) {
 		super(conn);
@@ -30,12 +25,12 @@ public class ReservationDAO extends DAO<Reservation>{
 	public boolean createReservation(Reservation reservation, Emprunteur emprunteur) {
 		java.util.Date date = new java.util.Date();
 		date = reservation.getDateReservation();
-		
+
 		boolean statementResult;
 		try {
 			Statement statement = connect.createStatement();
-			String query = "INSERT INTO Reservation (DateReservation, IDEmprunteur) VALUES ('" +
-					new Timestamp(date.getTime()) + "','" +  emprunteur.getiD() + "')" + ";";
+			String query = "INSERT INTO Reservation (DateReservation, IDEmprunteur) VALUES ('"
+					+ new Timestamp(date.getTime()) + "','" + emprunteur.getiD() + "')" + ";";
 			System.out.println(query);
 			statementResult = true;
 			statementResult = statement.execute(query);
@@ -47,12 +42,13 @@ public class ReservationDAO extends DAO<Reservation>{
 		System.out.println(statementResult);
 		return statementResult;
 	}
-	
+
 	public boolean create_Ligne_Reservation(Reservation reservation, Jeu jeu) {
 		boolean statementResult;
 		try {
 			Statement statement = connect.createStatement();
-			String query = "INSERT INTO Ligne_Reservation (ID_Jeu, ID_Reservation) VALUES ('" + jeu.getId() + "','" +  reservation.getId() + "')" + ";";
+			String query = "INSERT INTO Ligne_Reservation (ID_Jeu, ID_Reservation) VALUES ('" + jeu.getId() + "','"
+					+ reservation.getId() + "')" + ";";
 			System.out.println(query);
 			statementResult = true;
 			statementResult = statement.execute(query);
@@ -64,7 +60,7 @@ public class ReservationDAO extends DAO<Reservation>{
 		System.out.println(statementResult);
 		return statementResult;
 	}
-	
+
 	@Override
 	public boolean delete(Reservation obj) {
 		// TODO Auto-generated method stub
@@ -82,19 +78,17 @@ public class ReservationDAO extends DAO<Reservation>{
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	public int findLastIdReservation(){
-		int lastID=0;
-		try{
-			ResultSet result = this.connect.createStatement(
-					ResultSet.TYPE_SCROLL_INSENSITIVE,
-	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Reservation ORDER BY ID DESC");
-			if(result.first())
-			{
+
+	public int findLastIdReservation() {
+		int lastID = 0;
+		try {
+			ResultSet result = this.connect
+					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
+					.executeQuery("SELECT * FROM Reservation ORDER BY ID DESC");
+			if (result.first()) {
 				lastID = result.getInt("ID");
 			}
-		}
-		catch(SQLException e){
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return lastID;

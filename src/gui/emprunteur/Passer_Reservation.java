@@ -1,20 +1,15 @@
 package gui.emprunteur;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
 import exo.Emprunteur;
 import exo.Exemplaire;
 import exo.Jeu;
 import exo.Pret;
 import exo.Reservation;
-
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -22,34 +17,33 @@ import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.awt.event.ActionEvent;
 import com.toedter.calendar.JDateChooser;
-
 import dao.EmprunteurDAO;
 import dao.ExemplaireDAO;
 import dao.JeuDAO;
 import dao.PretDAO;
 import dao.ReservationDAO;
-
 import javax.swing.JList;
-import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
 public class Passer_Reservation extends JFrame {
 
 	private JPanel contentPane;
 	private JButton btnReservation;
+	@SuppressWarnings("rawtypes")
 	private JList list;
 	private Connection connect;
+	@SuppressWarnings("unused")
 	private Emprunteur currentEmprunteur;
 
 	/**
 	 * Create the frame.
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Passer_Reservation(Connection connect, Emprunteur currentEmprunteur) {
 		this.connect = connect;
 		this.currentEmprunteur = currentEmprunteur;
@@ -66,10 +60,6 @@ public class Passer_Reservation extends JFrame {
 
 		JeuDAO jeuDAO = new JeuDAO(connect);
 		List<Jeu> listJeu = jeuDAO.findAllAvailable();
-		ExemplaireDAO exemplaireDAO = new ExemplaireDAO(connect);
-		//int nombreExemplaireJeu = exemplaireDAO.getNombreExemplaireJeu(jeu);
-
-		// List<Vehicule> listVehicule = vehiculeDAO.listVehicule();
 		Object[] jeu = listJeu.toArray();
 
 		Object[] donnees = new Object[listJeu.size()];
@@ -84,10 +74,8 @@ public class Passer_Reservation extends JFrame {
 			}
 
 			System.out.println(listJeu.get(i).toString());
-			donnees[i] = listJeu.get(i).getNom() + " - " 
-					+ listJeu.get(i).getConsole().getNom() + " - "
-					+ "Tarif : " + listJeu.get(i).getTarif() + " - " 
-					+ simpleDateFormat.format(listJeu.get(i).getDateTarif()) + " - " 
+			donnees[i] = listJeu.get(i).getNom() + " - " + listJeu.get(i).getConsole().getNom() + " - " + "Tarif : "
+					+ listJeu.get(i).getTarif() + " - " + simpleDateFormat.format(listJeu.get(i).getDateTarif()) + " - "
 					+ dispo;
 		}
 
@@ -118,17 +106,21 @@ public class Passer_Reservation extends JFrame {
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 46, 564, 214);
 		contentPane.add(scrollPane);
-		
+
 		JList listJeux = new JList(donnees);
 		scrollPane.setViewportView(listJeux);
-				
+
 		btnReservation = new JButton("R\u00E9server");
 		btnReservation.addActionListener(new ActionListener() {
 			public boolean champsVide() {
 				String regex = "^(([0-9])|([0-2][0-9])|([3][0-1]))\\-(janv.|févr.|mars|avr.|mai|juin|juil.|août|sept.|oct.|nov.|déc.)\\-\\d{4}$";
 				Pattern pattern = Pattern.compile(regex);
+				Pattern pattern2 = Pattern.compile(regex);
 				Matcher matcher = pattern
 						.matcher(((JTextField) dateChooserDateDebut.getDateEditor().getUiComponent()).getText());
+
+				Matcher matcher2 = pattern2
+						.matcher(((JTextField) dateChooserDateFin.getDateEditor().getUiComponent()).getText());
 
 				boolean valid = true;
 				if (((JTextField) dateChooserDateDebut.getDateEditor().getUiComponent()).getText().isEmpty()) {
@@ -139,32 +131,28 @@ public class Passer_Reservation extends JFrame {
 					valid = false;
 				}
 
-				else if (!(matcher.matches())) {
+				else if (!(matcher.matches()) || !(matcher2.matches())) {
 					lblMsgError.setText("Format de date attendu \"dd-MMM-yyyy\".");
 					valid = false;
-				}
-				else
-				{
+				} else {
 					java.util.Date dateDebut = new java.util.Date();
 					java.util.Date dateFin = new java.util.Date();
 					dateDebut = dateChooserDateDebut.getDate();
 					dateFin = dateChooserDateFin.getDate();
-					
+
 					dateDebut = new Timestamp(dateDebut.getTime());
 					dateFin = new Timestamp(dateFin.getTime());
 					System.out.println(dateDebut);
 					System.out.println(dateFin);
-					
-					
+
 					int res = dateDebut.compareTo(dateFin);
-					
-					if(res == 1)
-					{
+
+					if (res == 1) {
 						lblMsgError.setText("La date de fin doit être ultérieure à la date de début.");
 						valid = false;
 					}
 				}
-				
+
 				return valid;
 			}
 
@@ -181,69 +169,57 @@ public class Passer_Reservation extends JFrame {
 					Passer_Reservation passer_Reservation = new Passer_Reservation(connect, currentEmprunteur);
 					passer_Reservation.setVisible(true);
 					passer_Reservation.setResizable(false);
-					// }
 					ReservationDAO reservationDAO = new ReservationDAO(connect);
 					Jeu jeu = new Jeu(listJeu.get(index).getId(), listJeu.get(index).getNom(),
 							listJeu.get(index).isDispo(), listJeu.get(index).getTarif(),
-							listJeu.get(index).getDateTarif(),
-							listJeu.get(index).getConsole());
+							listJeu.get(index).getDateTarif(), listJeu.get(index).getConsole());
 					java.util.Date date = new java.util.Date();
 					Exemplaire exemplaire = new Exemplaire(jeu);
 					ExemplaireDAO exemplaireDAO = new ExemplaireDAO(connect);
 					exemplaire = exemplaireDAO.findExemplaireByIdJeu(jeu);
-					if(exemplaireDAO.isLastExemplaire(listJeu.get(index)))
-					{
+					if (exemplaireDAO.isLastExemplaire(listJeu.get(index))) {
 						System.out.println("C EST LE LAST EXEMPLAIRE");
-						
-					}
-					else
-					{
-						
-						// if (input == 0) {
+
+					} else {
 						exemplaireDAO.update(exemplaire);
 					}
-						exemplaire.setJeu(jeu);
-						System.out.println(exemplaire.getId());
-						Reservation reservation = new Reservation(new Timestamp(date.getTime()), jeu);
-						reservation.setId(-1);
-						Pret pret = new Pret(dateChooserDateDebut.getDate(), dateChooserDateFin.getDate(), currentEmprunteur);
-						System.out.println(pret);
-						System.out.println("ID RESERVATION : " + reservation.getId());
-						EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
-						Emprunteur emprunteur = emprunteurDAO.findIdByEmprunteur(currentEmprunteur);
-						reservationDAO.createReservation(reservation, emprunteur);
-						int lastId = reservationDAO.findLastIdReservation();
-						reservation.setId(lastId);
-						reservationDAO.create_Ligne_Reservation(reservation, jeu);
-						PretDAO pretDAO = new PretDAO(connect);
-						pretDAO.create_Pret(pret, emprunteur, exemplaire);
-						// }
-					//}
+					exemplaire.setJeu(jeu);
+					System.out.println(exemplaire.getId());
+					Reservation reservation = new Reservation(new Timestamp(date.getTime()), jeu);
+					reservation.setId(-1);
+					Pret pret = new Pret(dateChooserDateDebut.getDate(), dateChooserDateFin.getDate(),
+							currentEmprunteur);
+					System.out.println(pret);
+					System.out.println("ID RESERVATION : " + reservation.getId());
+					EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
+					Emprunteur emprunteur = emprunteurDAO.findIdByEmprunteur(currentEmprunteur);
+					reservationDAO.createReservation(reservation, emprunteur);
+					int lastId = reservationDAO.findLastIdReservation();
+					reservation.setId(lastId);
+					reservationDAO.create_Ligne_Reservation(reservation, jeu);
+					PretDAO pretDAO = new PretDAO(connect);
+					pretDAO.create_Pret(pret, emprunteur, exemplaire);
 				}
 			}
 		});
 		btnReservation.setBounds(24, 409, 89, 23);
 		contentPane.add(btnReservation);
 
-		listJeux.addListSelectionListener(new ListSelectionListener()
-		{
+		listJeux.addListSelectionListener(new ListSelectionListener() {
 
 			@Override
 			public void valueChanged(ListSelectionEvent arg0) {
 				int index = listJeux.getSelectedIndex();
-				if(currentEmprunteur.getUnite() < listJeu.get(index).getTarif())
-				{
+				if (currentEmprunteur.getUnite() < listJeu.get(index).getTarif()) {
 					lblMsgError.setText("Vous n'avez pas assez d'unité pour réserver ce jeu.");
 					btnReservation.setEnabled(false);
-				}
-				else
-				{
+				} else {
 					lblMsgError.setText("");
 					btnReservation.setEnabled(true);
 				}
 			}
 		});
-		
+
 		JButton btnRetour = new JButton("Retour");
 		btnRetour.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {

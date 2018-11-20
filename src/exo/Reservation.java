@@ -3,8 +3,6 @@ package exo;
 import java.sql.Connection;
 import java.util.Date;
 
-import dao.ReservationDAO;
-
 public class Reservation {
 	private int id;
 	private Date dateReservation;
@@ -12,9 +10,9 @@ public class Reservation {
 	private Jeu jeu;
 
 	public Reservation() {
-	
+
 	}
-	
+
 	public Reservation(int id, Date dateReservation, Jeu jeu) {
 		this.id = id;
 		this.dateReservation = dateReservation;
@@ -26,7 +24,6 @@ public class Reservation {
 		this.dateReservation = dateReservation;
 	}
 
-	
 	public Reservation(Date dateReservation, Jeu jeu) {
 		this.dateReservation = dateReservation;
 		this.jeu = jeu;

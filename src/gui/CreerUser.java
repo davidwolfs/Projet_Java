@@ -5,27 +5,17 @@ import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-
 import com.toedter.calendar.JDateChooser;
-
-import dao.AdministrateurDAO;
 import dao.EmprunteurDAO;
 import dao.PreteurDAO;
-import exo.Administrateur;
 import exo.Emprunteur;
 import exo.Preteur;
-import gui.administrateur.Dashboard_Administrateur;
-import gui.emprunteur.Dashboard_Emprunteur;
-import gui.preteur.Dashboard_Preteur;
 import javax.swing.JPasswordField;
 
 public class CreerUser extends JFrame {
@@ -38,6 +28,7 @@ public class CreerUser extends JFrame {
 	private JButton btnRetour;
 	private JLabel labelMsgErreur;
 	private JPasswordField passwordField;
+	private JPasswordField confirmPasswordField;
 
 	/**
 	 * Create the frame.
@@ -72,6 +63,10 @@ public class CreerUser extends JFrame {
 		lblPassword.setBounds(24, 213, 89, 17);
 		contentPane.add(lblPassword);
 
+		JLabel lblConfirmPassword = new JLabel("Confirmer password (*)");
+		lblConfirmPassword.setBounds(24, 265, 137, 14);
+		contentPane.add(lblConfirmPassword);
+
 		textFieldNom = new JTextField();
 		textFieldNom.setBounds(233, 21, 162, 20);
 		contentPane.add(textFieldNom);
@@ -95,14 +90,13 @@ public class CreerUser extends JFrame {
 		passwordField.setBounds(233, 209, 162, 20);
 		contentPane.add(passwordField);
 
-		ButtonGroup personneRadio = new ButtonGroup();
+		confirmPasswordField = new JPasswordField();
+		confirmPasswordField.setBounds(233, 262, 162, 20);
+		contentPane.add(confirmPasswordField);
 
 		JButton btnCreerUser = new JButton("Cr\u00E9er");
 		btnCreerUser.addActionListener(new ActionListener() {
-			public void choixTypePersonne() {
-				labelMsgErreur.setText("Veuillez sélectionner un type de personne.");
-			}
-
+			@SuppressWarnings("deprecation")
 			public boolean champsVide() {
 				String regex = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
 				String regex2 = "^(([0-9])|([0-2][0-9])|([3][0-1]))\\-(janv.|févr.|mars|avr.|mai|juin|juil.|août|sept.|oct.|nov.|déc.)\\-\\d{4}$";
@@ -115,7 +109,8 @@ public class CreerUser extends JFrame {
 				boolean valid = true;
 				if (textFieldNom.getText().isEmpty() || textFieldPrenom.getText().isEmpty()
 						|| ((JTextField) dateChooserDateNaiss.getDateEditor().getUiComponent()).getText().isEmpty()
-						|| textFieldEmail.getText().isEmpty() || passwordField.getText().isEmpty()) {
+						|| textFieldEmail.getText().isEmpty() || passwordField.getText().isEmpty()
+						|| confirmPasswordField.getText().isEmpty()) {
 					labelMsgErreur.setText("Veuillez remplir tous les champs.");
 					valid = false;
 				}
@@ -130,28 +125,16 @@ public class CreerUser extends JFrame {
 					valid = false;
 				}
 
+				else if (!passwordField.getText().equals(confirmPasswordField.getText())) {
+					labelMsgErreur.setText("Les mots de passes doivent être identiques.");
+					valid = false;
+				}
+
 				return valid;
 			}
 
+			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
-				/*
-				 * if (rdbtnAdministrateur.isSelected()) { if (champsVide()) { AdministrateurDAO
-				 * administrateurDAO = new AdministrateurDAO(connect); Administrateur
-				 * administrateur = new Administrateur(textFieldNom.getText(),
-				 * textFieldPrenom.getText(), dateChooserDateNaiss.getDate(),
-				 * textFieldEmail.getText(), passwordField.getText());
-				 * System.out.println("DATE STRING : " + ((JTextField)
-				 * dateChooserDateNaiss.getDateEditor().getUiComponent()).getText());
-				 * System.out.println("DATE IS VALID : " +
-				 * dateChooserDateNaiss.getDateFormatString()); if
-				 * (administrateurDAO.alreadyExist(textFieldEmail.getText())) {
-				 * labelMsgErreur.setText("Cet adresse e-mail existe déjà."); } else {
-				 * 
-				 * administrateurDAO.create(administrateur); dispose(); Dashboard_Administrateur
-				 * dashboard_administrateur = new Dashboard_Administrateur(connect,
-				 * administrateur); dashboard_administrateur.setVisible(true); } } /* } if
-				 * (rdbtnPreteur.isSelected()) {
-				 */
 				if (champsVide()) {
 					PreteurDAO preteurDAO = new PreteurDAO(connect);
 					Preteur preteur = new Preteur(textFieldNom.getText(), textFieldPrenom.getText(),
@@ -177,23 +160,6 @@ public class CreerUser extends JFrame {
 						connexion.setResizable(false);
 					}
 				}
-				// }
-
-				/*
-				 * else if (rdbtnEmprunteur.isSelected()) { if (champsVide()) { EmprunteurDAO
-				 * emprunteurDAO = new EmprunteurDAO(connect); Emprunteur emprunteur = new
-				 * Emprunteur(textFieldNom.getText(), textFieldPrenom.getText(),
-				 * dateChooserDateNaiss.getDate(), textFieldEmail.getText(),
-				 * passwordField.getText()); System.out.println("DATE DAO : " +
-				 * dateChooserDateNaiss.getDate()); if
-				 * (emprunteurDAO.alreadyExist(textFieldEmail.getText())) {
-				 * labelMsgErreur.setText("Cet adresse e-mail existe déjà."); } else {
-				 * emprunteurDAO.create(emprunteur); dispose(); Dashboard_Emprunteur
-				 * dashboard_Emprunteur = new Dashboard_Emprunteur(emprunteur);
-				 * dashboard_Emprunteur.setVisible(true); } } }
-				 */ /*else {
-					choixTypePersonne();
-				}*/
 			}
 		});
 		btnCreerUser.setBounds(41, 341, 89, 23);

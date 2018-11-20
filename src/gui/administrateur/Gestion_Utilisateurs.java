@@ -1,32 +1,22 @@
 package gui.administrateur;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
 import java.sql.Connection;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
 import dao.AdministrateurDAO;
 import dao.EmprunteurDAO;
 import dao.PreteurDAO;
 import exo.Administrateur;
 import exo.Emprunteur;
-import exo.Jeu;
 import gui.Connexion;
-
+import gui.Main;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
-
-import java.awt.Color;
-import javax.swing.JTable;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.ListSelectionModel;
@@ -35,12 +25,11 @@ import javax.swing.JScrollPane;
 public class Gestion_Utilisateurs extends JFrame {
 
 	private JPanel contentPane;
-	private JTable table;
-	private JTable table_1;
 
 	/**
 	 * Create the frame.
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Gestion_Utilisateurs(Connection connect, Administrateur currentAdministrateur) {
 		setTitle("Projet Jeux Video");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -62,8 +51,7 @@ public class Gestion_Utilisateurs extends JFrame {
 
 		for (int i = 0; i < listAdministrateur.size(); i++) {
 			System.out.println(listAdministrateur.get(i).toString());
-			donnees[i] = listAdministrateur.get(i).getNom() + " "
-					+ listAdministrateur.get(i).getPrenom() + " - "
+			donnees[i] = listAdministrateur.get(i).getNom() + " " + listAdministrateur.get(i).getPrenom() + " - "
 					+ simpleDateFormat.format(listAdministrateur.get(i).getDateNaiss()) + " - "
 					+ listAdministrateur.get(i).getEmail();
 		}
@@ -117,11 +105,11 @@ public class Gestion_Utilisateurs extends JFrame {
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 36, 764, 150);
 		contentPane.add(scrollPane);
-		
-				JList listAdministrateurs = new JList(donnees);
-				scrollPane.setViewportView(listAdministrateurs);
-				listAdministrateurs.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-				
+
+		JList listAdministrateurs = new JList(donnees);
+		scrollPane.setViewportView(listAdministrateurs);
+		listAdministrateurs.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
 		JButton btnModifierAdministrateur = new JButton("Modifier un administrateur");
 		btnModifierAdministrateur.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -146,11 +134,26 @@ public class Gestion_Utilisateurs extends JFrame {
 		btnSupprimerAdministrateur.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int index = listAdministrateurs.getSelectedIndex();
+				SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yy");
 				System.out.println(index);
 				if (index == -1) {
 					lblMsgErrorAdministrateur.setText("Veuillez sélectionner un administrateur.");
 				} else if (index == 0) {
 					lblMsgErrorAdministrateur.setText("Vous ne pouvez pas supprimer cet administrateur.");
+				} else if (listAdministrateurs.getSelectedValue()
+						.equals(currentAdministrateur.getNom() + " " + currentAdministrateur.getPrenom() + " - "
+								+ simpleDateFormat.format(currentAdministrateur.getDateNaiss()) + " - "
+								+ currentAdministrateur.getEmail())) {
+					int input = JOptionPane.showConfirmDialog(null,
+							"Êtes-vous sûr de bien vouloir supprimer votre propre compte administrateur ? Vous serez ensuite déconnecté.");
+					if (input == 0) {
+						int id = listAdministrateur.get(index).getiD();
+						System.out.println(id);
+						JOptionPane.showMessageDialog(null, "Votre compte administrateur a bien été supprimé.");
+						administrateurDAO.delete(listAdministrateur.get(index));
+						dispose();
+						Main.creerConnexion();
+					}
 				} else {
 					int input = JOptionPane.showConfirmDialog(null,
 							"Êtes-vous sûr de bien vouloir supprimer cette administrateur ?");
@@ -177,15 +180,14 @@ public class Gestion_Utilisateurs extends JFrame {
 
 		EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
 		List<Emprunteur> listEmprunteurs = emprunteurDAO.findAll();
-		
+
 		PreteurDAO preteurDAO = new PreteurDAO(connect);
 
 		Object[] donnees2 = new Object[listEmprunteurs.size()];
 
 		for (int i = 0; i < listEmprunteurs.size(); i++) {
 			System.out.println(listEmprunteurs.get(i).toString());
-			donnees2[i] = listEmprunteurs.get(i).getNom() + " "
-					+ listEmprunteurs.get(i).getPrenom() + " - "
+			donnees2[i] = listEmprunteurs.get(i).getNom() + " " + listEmprunteurs.get(i).getPrenom() + " - "
 					+ simpleDateFormat.format(listEmprunteurs.get(i).getDateNaiss()) + " - "
 					+ listEmprunteurs.get(i).getEmail() + " - " + listEmprunteurs.get(i).getUnite() + " U";
 		}
@@ -205,10 +207,10 @@ public class Gestion_Utilisateurs extends JFrame {
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(10, 296, 764, 150);
 		contentPane.add(scrollPane_1);
-		
-				JList listEmprunteur = new JList(donnees2);
-				scrollPane_1.setViewportView(listEmprunteur);
-				
+
+		JList listEmprunteur = new JList(donnees2);
+		scrollPane_1.setViewportView(listEmprunteur);
+
 		JButton btnModifierParticipant = new JButton("Modifier un participant");
 		btnModifierParticipant.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -244,7 +246,7 @@ public class Gestion_Utilisateurs extends JFrame {
 						System.out.println(id);
 						emprunteurDAO.delete(listEmprunteurs.get(index));
 						preteurDAO.delete(preteurDAO.find(id));
-					
+
 						dispose();
 						Gestion_Utilisateurs gestion_Utilisateurs = new Gestion_Utilisateurs(connect,
 								currentAdministrateur);

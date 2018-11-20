@@ -4,12 +4,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-
 import exo.Console;
-import exo.Jeu;
 
 public class ConsoleDAO extends DAO<Console> {
 
@@ -60,7 +57,8 @@ public class ConsoleDAO extends DAO<Console> {
 		boolean statementResult;
 		try {
 			Statement statement = connect.createStatement();
-			String query = "UPDATE Console SET Nom = " + "'" + console.getNom() + "'" + " WHERE ID = " + console.getId() + ";";
+			String query = "UPDATE Console SET Nom = " + "'" + console.getNom() + "'" + " WHERE ID = " + console.getId()
+					+ ";";
 			System.out.println(query);
 			statementResult = true;
 			statementResult = statement.execute(query);
@@ -79,23 +77,40 @@ public class ConsoleDAO extends DAO<Console> {
 		return null;
 	}
 
-	public List<Console> findAll(){
+	public List<Console> findAll() {
 		List<Console> listConsole = new ArrayList<>();
 		Console console = new Console();
-		try{
-			ResultSet result = this.connect.createStatement(
-					ResultSet.TYPE_SCROLL_INSENSITIVE,
-	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Console");
-			while(result.next())
-			{
+		try {
+			ResultSet result = this.connect
+					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
+					.executeQuery("SELECT * FROM Console");
+			while (result.next()) {
 				console = new Console(result.getInt("ID"), result.getString("Nom"));
 				listConsole.add(console);
 			}
-		}
-		catch(SQLException e){
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return listConsole;
 	}
-	
+
+	public boolean alreadyExist(Console console) {
+		boolean existe = false;
+		try {
+			String sql = "SELECT * FROM Console WHERE Nom = " + "'" + console.getNom() + "'";
+			if (console.getId() > 0) {
+				sql = sql + " AND Console.ID != " + console.getId();
+			}
+			System.out.println(sql);
+			ResultSet result = this.connect
+					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery(sql);
+			if (result.first()) {
+				existe = true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return existe;
+	}
+
 }

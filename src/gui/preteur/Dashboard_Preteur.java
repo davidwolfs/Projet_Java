@@ -4,32 +4,21 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
 import dao.EmprunteurDAO;
-import dao.JeuDAO;
 import exo.Emprunteur;
-import exo.Jeu;
 import exo.Preteur;
 import gui.Main;
-import gui.administrateur.Ajouter_Jeu;
-import gui.administrateur.Modifier_Jeu;
-
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.awt.event.ActionEvent;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.JTextPane;
+
 
 public class Dashboard_Preteur extends JFrame {
 
 	private JPanel contentPane;
 	private Connection connect;
+	@SuppressWarnings("unused")
 	private Preteur currentPreteur;
 	
 	/**
@@ -71,7 +60,7 @@ public class Dashboard_Preteur extends JFrame {
 		btnListeJeux.setBounds(199, 76, 180, 28);
 		contentPane.add(btnListeJeux);
 		
-		JButton btnListeJeuxAPreter = new JButton("Voir les jeux a pr\u00EAter");
+		JButton btnListeJeuxAPreter = new JButton("Voir mes jeux a pr\u00EAter");
 		btnListeJeuxAPreter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();

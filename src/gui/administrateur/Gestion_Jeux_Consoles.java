@@ -1,21 +1,15 @@
 package gui.administrateur;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
-
-import dao.AdministrateurDAO;
 import dao.ConsoleDAO;
 import dao.JeuDAO;
 import exo.Administrateur;
 import exo.Console;
 import exo.Jeu;
 import gui.Connexion;
-
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -31,11 +25,13 @@ public class Gestion_Jeux_Consoles extends JFrame {
 
 	private JPanel contentPane;
 	private Connection connect;
+	@SuppressWarnings("unused")
 	private Administrateur currentAdministrateur;
 
 	/**
 	 * Create the frame.
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Gestion_Jeux_Consoles(Connection connect, Administrateur currentAdministrateur) {
 		this.connect = connect;
 		this.currentAdministrateur = currentAdministrateur;
@@ -53,7 +49,6 @@ public class Gestion_Jeux_Consoles extends JFrame {
 		ConsoleDAO consoleDAO = new ConsoleDAO(connect);
 		List<Console> listConsole = consoleDAO.findAll();
 
-		// List<Vehicule> listVehicule = vehiculeDAO.listVehicule();
 		Object[] console = listConsole.toArray();
 
 		Object[] donnees = new Object[listConsole.size()];
@@ -83,11 +78,11 @@ public class Gestion_Jeux_Consoles extends JFrame {
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 46, 764, 150);
 		contentPane.add(scrollPane);
-		
-				JList listConsoles = new JList(donnees);
-				scrollPane.setViewportView(listConsoles);
-				listConsoles.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-				
+
+		JList listConsoles = new JList(donnees);
+		scrollPane.setViewportView(listConsoles);
+		listConsoles.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
 		JButton btnModifierConsole = new JButton("Modifier une console");
 		btnModifierConsole.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -158,8 +153,8 @@ public class Gestion_Jeux_Consoles extends JFrame {
 
 			System.out.println(listJeu.get(i).toString());
 			donnees2[i] = listJeu.get(i).getNom() + " - " + dispo + " - " + listJeu.get(i).getTarif() + " - "
-					+ simpleDateFormat2.format(listJeu.get(i).getDateTarif())
-					+ " - " + listJeu.get(i).getConsole().getNom();
+					+ simpleDateFormat2.format(listJeu.get(i).getDateTarif()) + " - "
+					+ listJeu.get(i).getConsole().getNom();
 		}
 
 		JLabel lblMsgErrorJeux = new JLabel("");
@@ -181,15 +176,14 @@ public class Gestion_Jeux_Consoles extends JFrame {
 		btnAjouterJeu.setBounds(12, 493, 175, 23);
 		contentPane.add(btnAjouterJeu);
 
-
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(10, 313, 764, 150);
 		contentPane.add(scrollPane_1);
-		
-				JList listJeux = new JList(donnees2);
-				scrollPane_1.setViewportView(listJeux);
-				listJeux.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-				
+
+		JList listJeux = new JList(donnees2);
+		scrollPane_1.setViewportView(listJeux);
+		listJeux.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
 		JButton btnModifierJeu = new JButton("Modifier un jeu");
 		btnModifierJeu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

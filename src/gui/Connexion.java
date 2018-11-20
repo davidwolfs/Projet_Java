@@ -90,6 +90,7 @@ public class Connexion extends JFrame {
 				labelMsgErreur.setText("Veuillez sélectionner un type de personne.");
 			}
 
+			@SuppressWarnings("deprecation")
 			public boolean champsVide() {
 				boolean vide = false;
 				if (textFieldUser.getText().isEmpty() || passwordField.getText().isEmpty()) {
@@ -104,11 +105,11 @@ public class Connexion extends JFrame {
 
 			}
 
+			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
 				if (rdbtnAdministrateur.isSelected()) {
 					if (!champsVide()) {
 						AdministrateurDAO administrateurDAO = new AdministrateurDAO(connect);
-						Administrateur administrateur = new Administrateur();
 						if (administrateurDAO.findByEmailPassword(textFieldUser.getText(),
 								passwordField.getText())) {
 							currentAdministrateur = administrateurDAO.findAdministrateurByEmailPassword(
@@ -125,9 +126,6 @@ public class Connexion extends JFrame {
 				} else if (rdbtnPreteur.isSelected()) {
 					if (!champsVide()) {
 						PreteurDAO preteurDAO = new PreteurDAO(connect);
-						Preteur preteur = new Preteur();
-						EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
-						Emprunteur emprunteur = new Emprunteur();
 						if (preteurDAO.findByEmailPassword(textFieldUser.getText(), passwordField.getText())) {
 							currentPreteur = preteurDAO.findPreteurByEmailPassword(textFieldUser.getText(),
 									passwordField.getText());
@@ -142,7 +140,6 @@ public class Connexion extends JFrame {
 				} else if (rdbtnEmprunteur.isSelected()) {
 					if (!champsVide()) {
 						EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
-						Emprunteur emprunteur = new Emprunteur();
 						if (emprunteurDAO.findByEmailPassword(textFieldUser.getText(), passwordField.getText())) {
 							currentEmprunteur = emprunteurDAO.findEmprunteurByEmailPassword(textFieldUser.getText(),
 									passwordField.getText());

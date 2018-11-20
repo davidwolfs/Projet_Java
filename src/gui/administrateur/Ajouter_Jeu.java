@@ -1,12 +1,7 @@
 package gui.administrateur;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -14,25 +9,16 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.JCheckBox;
-import com.toedter.calendar.JDateChooser;
-
 import dao.ConsoleDAO;
-import dao.EmprunteurDAO;
 import dao.JeuDAO;
-import dao.PreteurDAO;
 import exo.Administrateur;
 import exo.Console;
-import exo.Emprunteur;
 import exo.Jeu;
-import exo.Preteur;
-
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.awt.event.ActionEvent;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
@@ -46,6 +32,7 @@ public class Ajouter_Jeu extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Ajouter_Jeu(Connection connect, Administrateur currentAdministrateur) {
 		this.connect = connect;
 		setTitle("Ajouter un jeu");
@@ -77,14 +64,12 @@ public class Ajouter_Jeu extends JFrame {
 		chckbxDisponibilite.setBounds(251, 88, 130, 20);
 		contentPane.add(chckbxDisponibilite);
 
-		
 		JLabel lblListeConsoles = new JLabel("Console");
 		lblListeConsoles.setBounds(69, 179, 77, 14);
 		contentPane.add(lblListeConsoles);
 		ConsoleDAO consoleDAO = new ConsoleDAO(connect);
 		List<Console> listConsole = consoleDAO.findAll();
 
-		// List<Vehicule> listVehicule = vehiculeDAO.listVehicule();
 		Object[] console = listConsole.toArray();
 
 		Object[] donnees = new Object[listConsole.size()];
@@ -99,8 +84,7 @@ public class Ajouter_Jeu extends JFrame {
 		listConsoles.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		listConsoles.setBounds(250, 178, 131, 180);
 		contentPane.add(listConsoles);
-		
-		
+
 		JLabel labelMsgErreur = new JLabel("");
 		labelMsgErreur.setBounds(69, 459, 313, 29);
 		contentPane.add(labelMsgErreur);
@@ -109,23 +93,19 @@ public class Ajouter_Jeu extends JFrame {
 		spinnerAjouterTarif.setModel(new SpinnerNumberModel(new Double(0), new Double(0), null, new Double(1)));
 		spinnerAjouterTarif.setBounds(250, 126, 44, 20);
 		contentPane.add(spinnerAjouterTarif);
-		
+
 		JButton btnAjouter = new JButton("Ajouter");
 		btnAjouter.addActionListener(new ActionListener() {
 
 			public boolean champsVide() {
 				boolean valid = true;
-				if (textFieldNom.getText().isEmpty() || chckbxDisponibilite.getText().isEmpty()){
+				if (textFieldNom.getText().isEmpty() || chckbxDisponibilite.getText().isEmpty()) {
 					labelMsgErreur.setText("Veuillez remplir tous les champs.");
 					valid = false;
-				}
-				else if((double)spinnerAjouterTarif.getValue() <= 0.0)
-				{
+				} else if ((double) spinnerAjouterTarif.getValue() <= 0.0) {
 					labelMsgErreur.setText("Le tarif ne peut pas être égal à 0.");
 					valid = false;
-				}
-				else if(listConsoles.getSelectedIndex() == -1)
-				{
+				} else if (listConsoles.getSelectedIndex() == -1) {
 					labelMsgErreur.setText("Veuillez choisir une console.");
 					valid = false;
 				}
@@ -136,12 +116,12 @@ public class Ajouter_Jeu extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (champsVide()) {
 					java.util.Date date = new java.util.Date();
-					
+
 					JeuDAO jeuDAO = new JeuDAO(connect);
 					int index = listConsoles.getSelectedIndex();
 					Console consoleChoisie = listConsole.get(index);
 					Jeu jeu = new Jeu(textFieldNom.getText(), chckbxDisponibilite.isSelected(),
-							(double)spinnerAjouterTarif.getValue(), new Timestamp(date.getTime()), consoleChoisie);
+							(double) spinnerAjouterTarif.getValue(), new Timestamp(date.getTime()), consoleChoisie);
 					jeu.setId(-1);
 					if (jeuDAO.alreadyExist(jeu)) {
 						labelMsgErreur.setText("Ce jeu existe déjà pour cette console.");
@@ -149,7 +129,7 @@ public class Ajouter_Jeu extends JFrame {
 
 						System.out.println(jeu.getNom() + " " + jeu.isDispo() + " " + jeu.getTarif() + " "
 								+ jeu.getDateTarif() + " " + jeu.getConsole());
-						jeuDAO.create(jeu);
+						jeuDAO.create(jeu, currentAdministrateur);
 						int lastId = jeuDAO.findLastIdJeu();
 						jeu.setId(lastId);
 						jeuDAO.create_Ligne_Jeu(jeu);
