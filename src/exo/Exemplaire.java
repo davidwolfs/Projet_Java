@@ -52,10 +52,24 @@ public class Exemplaire {
 		this.jeu = jeu;
 	}
 
+	public void create_Exemplaire(Exemplaire exemplaire, Preteur preteur, Connection connect)
+	{
+		ExemplaireDAO exemplaireDAO = new ExemplaireDAO(connect);
+		exemplaireDAO.create_Exemplaire(exemplaire, preteur);
+	}
+	
 	public void update(Exemplaire exemplaire, Connection connect)
 	{
 		ExemplaireDAO exemplaireDAO = new ExemplaireDAO(connect);
 		exemplaireDAO.update(exemplaire);
+	}
+	
+	public List<Exemplaire> findAll(Preteur preteur, Connection connect)
+	{
+		ExemplaireDAO exemplaireDAO = new ExemplaireDAO(connect);
+		List<Exemplaire> listExemplaire = exemplaireDAO.findAll(preteur);
+		
+		return listExemplaire;
 	}
 	
 	public Exemplaire findExemplaireByIdJeu(Jeu jeu, Connection connect)

@@ -9,9 +9,6 @@ import javax.swing.JButton;
 import javax.swing.ListSelectionModel;
 import javax.swing.JCheckBox;
 import com.toedter.calendar.JDateChooser;
-import dao.ConsoleDAO;
-import dao.ExemplaireDAO;
-import dao.JeuDAO;
 import exo.Console;
 import exo.Exemplaire;
 import exo.Jeu;
@@ -90,8 +87,8 @@ public class Ajouter_Exemplaire extends JFrame {
 		JLabel lblListeConsoles = new JLabel("Console");
 		lblListeConsoles.setBounds(69, 213, 77, 14);
 		contentPane.add(lblListeConsoles);
-		ConsoleDAO consoleDAO = new ConsoleDAO(connect);
-		List<Console> listConsole = consoleDAO.findAll();
+		Console c = new Console();
+		List<Console> listConsole = c.findAll(connect);
 		Object[] console = listConsole.toArray();
 
 		Object[] donnees = new Object[listConsole.size()];
@@ -148,8 +145,8 @@ public class Ajouter_Exemplaire extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (champsVide()) {
 					System.out.println(spinnerNombreExemplaires.getValue());
-					JeuDAO jeuDAO = new JeuDAO(connect);
-					ExemplaireDAO exemplaireDAO = new ExemplaireDAO(connect);
+					Jeu jeu = new Jeu();
+					Exemplaire ex = new Exemplaire();
 					jeuAModifier.setNom(lblNom2.getText());
 					jeuAModifier.setDispo((chckbxDisponibilite.isSelected()));
 					jeuAModifier.setTarif((Double.parseDouble(lblTarif2.getText())));
@@ -162,10 +159,10 @@ public class Ajouter_Exemplaire extends JFrame {
 					for (int i = 0; i < nombreExemplaires; i++) {
 						exemplaire = new Exemplaire(jeuAModifier);
 						currentPreteur.AjouterExemplaire(exemplaire);
-						exemplaireDAO.create_Exemplaire(exemplaire, currentPreteur);
+						ex.create_Exemplaire(exemplaire, currentPreteur, connect);
 					}
 					jeuAModifier.setDispo(true);
-					jeuDAO.update_Dispo(jeuAModifier);
+					jeu.update_Dispo(jeuAModifier, connect);
 
 					if (jeuAModifier.alreadyExist(jeuAModifier, connect)) {
 						labelMsgErreur.setText("Ce jeu existe déjà pour cette console.");

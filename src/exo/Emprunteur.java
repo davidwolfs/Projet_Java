@@ -148,6 +148,12 @@ public class Emprunteur extends Joueur {
 		EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
 		emprunteurDAO.create(emprunteur);
 	}
+
+	public void updateCote_NombreCote(Emprunteur emprunteur, Connection connect)
+	{
+		EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
+		emprunteurDAO.updateCote_NombreCote(emprunteur);
+	}
 	
 	public void update(Emprunteur emprunteur, Connection connect)
 	{
@@ -228,6 +234,13 @@ public class Emprunteur extends Joueur {
 			}
 		}
 		return emprunteur;
+	}
+	
+	public List<Emprunteur> findAllExceptcurrentEmprunteur(Emprunteur emprunteur, Connection connect) {
+		EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
+		List<Emprunteur> listEmprunteurs = emprunteurDAO.findAllExceptcurrentEmprunteur(emprunteur);
+		
+		return listEmprunteurs;
 	}
 	
 	public boolean alreadyExist(Emprunteur emprunteur, Connection connect) {

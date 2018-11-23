@@ -8,8 +8,6 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import dao.EmprunteurDAO;
-import dao.PreteurDAO;
 import exo.Emprunteur;
 import exo.Preteur;
 import javax.swing.JLabel;
@@ -46,8 +44,6 @@ public class Coter_Emprunteurs extends JFrame {
 		lblListeEmprunteurs.setBounds(10, 25, 137, 14);
 		contentPane.add(lblListeEmprunteurs);
 
-		EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
-
 		Emprunteur emprunteur = new Emprunteur();
 		emprunteur.setiD(currentPreteur.getiD());
 		emprunteur.setNom(currentPreteur.getNom());
@@ -56,9 +52,9 @@ public class Coter_Emprunteurs extends JFrame {
 		emprunteur.setEmail(currentPreteur.getEmail());
 		emprunteur.setPassword(currentPreteur.getPassword());
 
-		List<Emprunteur> listEmprunteur = emprunteurDAO.findAllExceptcurrentEmprunteur(emprunteur);
+		List<Emprunteur> listEmprunteur = emprunteur.findAllExceptcurrentEmprunteur(emprunteur, connect);
 
-		PreteurDAO preteurDAO = new PreteurDAO(connect);
+		Preteur preteur = new Preteur();
 
 		Object[] donnees2 = new Object[listEmprunteur.size()];
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yy");
@@ -124,7 +120,7 @@ public class Coter_Emprunteurs extends JFrame {
 			@Override
 			public void valueChanged(ListSelectionEvent arg0) {
 				int index = listEmprunteurs.getSelectedIndex();
-				if (preteurDAO.isAlreadyCote(currentPreteur, listEmprunteur.get(index))) {
+				if (preteur.isAlreadyCote(currentPreteur, listEmprunteur.get(index), connect)) {
 					lblMsgErrorEmprunteur.setText("Vous avez déjà côté cet emprunteur.");
 					btnCoter.setEnabled(false);
 				} else {

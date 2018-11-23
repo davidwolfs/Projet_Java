@@ -4,7 +4,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import dao.EmprunteurDAO;
 import exo.Emprunteur;
 import exo.Preteur;
 import gui.Main;
@@ -104,8 +103,7 @@ public class Dashboard_Preteur extends JFrame {
 		lblNombreUnite.setBounds(333, 334, 46, 14);
 		Emprunteur emprunteur = new Emprunteur();
 		emprunteur.setiD(currentPreteur.getiD());
-		EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
-		emprunteur = emprunteurDAO.findEmprunteurById(emprunteur);
+		emprunteur = emprunteur.findEmprunteurById(emprunteur, connect);
 		lblNombreUnite.setText(String.valueOf(emprunteur.getUnite()));
 		contentPane.add(lblNombreUnite);
 	}

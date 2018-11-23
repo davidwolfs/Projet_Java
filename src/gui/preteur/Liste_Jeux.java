@@ -11,7 +11,6 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import dao.JeuDAO;
 import exo.Jeu;
 import exo.Preteur;
 import javax.swing.JScrollPane;
@@ -42,10 +41,9 @@ public class Liste_Jeux extends JFrame {
 		lblMsgErrorJeux.setBounds(196, 392, 214, 21);
 		contentPane.add(lblMsgErrorJeux);
 
-		JeuDAO jeuDAO = new JeuDAO(connect);
-		List<Jeu> listJeu = jeuDAO.findAll();
-
-		// List<Vehicule> listVehicule = vehiculeDAO.listVehicule();
+		Jeu j = new Jeu();
+		List<Jeu> listJeu = j.findAll(connect);
+		
 		Object[] jeu = listJeu.toArray();
 
 		Object[] donnees = new Object[listJeu.size()];

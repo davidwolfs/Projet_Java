@@ -9,8 +9,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import dao.ExemplaireDAO;
-import dao.JeuDAO;
 import exo.Exemplaire;
 import exo.Preteur;
 import javax.swing.JLabel;
@@ -43,9 +41,9 @@ public class Liste_Jeux_A_Preter extends JFrame {
 		lblJeuxAPreter.setBounds(10, 28, 243, 14);
 		contentPane.add(lblJeuxAPreter);
 		
-		ExemplaireDAO exemplaireDAO = new ExemplaireDAO(connect);
+		Exemplaire e = new Exemplaire();
 
-		List<Exemplaire> listExemplaires = exemplaireDAO.findAll(currentPreteur);
+		List<Exemplaire> listExemplaires = e.findAll(currentPreteur, connect);
 		currentPreteur.setListExamplaire(listExemplaires);
 		List<Exemplaire> listExemplaire = currentPreteur.getListExemplaire();
 

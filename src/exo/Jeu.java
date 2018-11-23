@@ -123,6 +123,12 @@ public class Jeu {
 		jeuDAO.update(jeu);
 	}
 	
+	public void update_Dispo(Jeu jeu, Connection connect)
+	{
+		JeuDAO jeuDAO = new JeuDAO(connect);
+		jeuDAO.update_Dispo(jeu);
+	}
+	
 	public void delete(Jeu jeu, Connection connect)
 	{
 		JeuDAO jeuDAO = new JeuDAO(connect);
