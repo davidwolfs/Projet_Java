@@ -194,7 +194,7 @@ public class Passer_Reservation extends JFrame {
 					EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
 					Emprunteur emprunteur = emprunteurDAO.findIdByEmprunteur(currentEmprunteur);
 					reservationDAO.createReservation(reservation, emprunteur);
-					int lastId = reservationDAO.findLastIdReservation();
+					int lastId = reservation.findLastIdReservation(connect);
 					reservation.setId(lastId);
 					reservationDAO.create_Ligne_Reservation(reservation, jeu);
 					PretDAO pretDAO = new PretDAO(connect);

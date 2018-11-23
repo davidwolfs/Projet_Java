@@ -10,8 +10,6 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.JCheckBox;
 import com.toedter.calendar.JDateChooser;
-import dao.ConsoleDAO;
-import dao.JeuDAO;
 import exo.Administrateur;
 import exo.Console;
 import exo.Jeu;
@@ -103,8 +101,8 @@ public class Modifier_Jeu extends JFrame {
 		JLabel lblListeConsoles = new JLabel("Console");
 		lblListeConsoles.setBounds(69, 257, 77, 14);
 		contentPane.add(lblListeConsoles);
-		ConsoleDAO consoleDAO = new ConsoleDAO(connect);
-		List<Console> listConsole = consoleDAO.findAll();
+		Console c = new Console();
+		List<Console> listConsole = c.findAll(connect);
 
 		Object[] console = listConsole.toArray();
 
@@ -159,8 +157,8 @@ public class Modifier_Jeu extends JFrame {
 					if ((double) spinnerDiminuerTarif.getValue() == 0) {
 						date = jeuAModifier.getDateTarif();
 					}
-
-					JeuDAO jeuDAO = new JeuDAO(connect);
+					
+					Jeu jeu = new Jeu();
 					jeuAModifier.setNom(textFieldNom.getText());
 					jeuAModifier.setDispo((chckbxDisponibilite.isSelected()));
 					jeuAModifier.setTarif((Double.parseDouble(textFieldTarif.getText())));
@@ -168,14 +166,14 @@ public class Modifier_Jeu extends JFrame {
 					System.out
 							.println("index selected : " + listConsole.get(listConsoles.getSelectedIndex()).toString());
 					jeuAModifier.setConsole(listConsole.get(listConsoles.getSelectedIndex()));
-					if (jeuDAO.alreadyExist(jeuAModifier)) {
+					if (jeuAModifier.alreadyExist(jeuAModifier, connect)) {
 						labelMsgErreur.setText("Ce jeu existe déjà pour cette console.");
 
 					} else {
 						System.out.println(chckbxDisponibilite.getText().isEmpty());
 
 						jeuAModifier.adapterTarif((double) spinnerDiminuerTarif.getValue());
-						jeuDAO.update(jeuAModifier);
+						jeu.update(jeuAModifier, connect);
 
 						dispose();
 						Gestion_Jeux_Consoles gestion_Jeux_Consoles = new Gestion_Jeux_Consoles(connect,

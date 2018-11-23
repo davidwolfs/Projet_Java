@@ -4,8 +4,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
-import dao.ConsoleDAO;
-import dao.JeuDAO;
 import exo.Administrateur;
 import exo.Console;
 import exo.Jeu;
@@ -45,9 +43,8 @@ public class Gestion_Jeux_Consoles extends JFrame {
 		JLabel label = new JLabel("Liste des consoles");
 		label.setBounds(12, 11, 116, 14);
 		contentPane.add(label);
-
-		ConsoleDAO consoleDAO = new ConsoleDAO(connect);
-		List<Console> listConsole = consoleDAO.findAll();
+		Console c = new Console();
+		List<Console> listConsole = c.findAll(connect);
 
 		Object[] console = listConsole.toArray();
 
@@ -116,7 +113,7 @@ public class Gestion_Jeux_Consoles extends JFrame {
 					if (input == 0) {
 						int id = listConsole.get(index).getId();
 						System.out.println(id);
-						consoleDAO.delete(listConsole.get(index));
+						c.delete(listConsole.get(index), connect);
 
 						dispose();
 						Gestion_Jeux_Consoles gestion_Jeux_Consoles = new Gestion_Jeux_Consoles(connect,
@@ -134,10 +131,9 @@ public class Gestion_Jeux_Consoles extends JFrame {
 		lblListeJeu.setBounds(12, 288, 146, 14);
 		contentPane.add(lblListeJeu);
 
-		JeuDAO jeuDAO = new JeuDAO(connect);
-		List<Jeu> listJeu = jeuDAO.findAll();
+		Jeu j = new Jeu();
+		List<Jeu> listJeu = j.findAll(connect);
 
-		// List<Vehicule> listVehicule = vehiculeDAO.listVehicule();
 		Object[] jeu = listJeu.toArray();
 
 		Object[] donnees2 = new Object[listJeu.size()];
@@ -216,7 +212,7 @@ public class Gestion_Jeux_Consoles extends JFrame {
 					if (input == 0) {
 						int id = listJeu.get(index).getId();
 						System.out.println(id);
-						jeuDAO.delete(listJeu.get(index));
+						j.delete(listJeu.get(index), connect);
 
 						dispose();
 						Gestion_Jeux_Consoles gestion_Jeux_Consoles = new Gestion_Jeux_Consoles(connect,

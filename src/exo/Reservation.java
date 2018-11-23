@@ -2,13 +2,17 @@ package exo;
 
 import java.sql.Connection;
 import java.util.Date;
+import java.util.List;
+
+import dao.JeuDAO;
+import dao.ReservationDAO;
 
 public class Reservation {
 	private int id;
 	private Date dateReservation;
-	private Connection connect;
 	private Jeu jeu;
-
+	private Connection connect;
+	
 	public Reservation() {
 
 	}
@@ -53,6 +57,21 @@ public class Reservation {
 		this.jeu = jeu;
 	}
 
+	public int findLastIdReservation(Connection connect)
+	{
+		int lastID = 0;
+		ReservationDAO reservationDAO = new ReservationDAO(connect);
+		List<Reservation> listReservations = reservationDAO.findAllReservation();
+		
+		for(Reservation reservation : listReservations)
+		{
+			reservation = listReservations.get(listReservations.size()-1);
+			lastID = reservation.getId();
+		}
+		
+		return lastID;
+	}
+	
 	@Override
 	public String toString() {
 		return "Reservation [dateReservation=" + dateReservation + ", connect=" + connect + ", jeu=" + jeu + "]";

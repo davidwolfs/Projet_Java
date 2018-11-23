@@ -238,24 +238,27 @@ public class JeuDAO extends DAO<Jeu>{
 		return listJeux;
 	}
 
-	public int findLastIdJeu(){
-		int lastID=0;
+	public List<Jeu> findAllJeu(){
+		List<Jeu> listJeux = new ArrayList<>();
+		Jeu jeu = new Jeu();
 		try{
 			ResultSet result = this.connect.createStatement(
 					ResultSet.TYPE_SCROLL_INSENSITIVE,
-	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Jeu ORDER BY ID DESC");
-			if(result.first())
+	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Jeu");
+			while(result.next())
 			{
-				lastID = result.getInt("ID");
+				jeu = new Jeu(result.getInt("ID"), result.getString("Jeu.NOM"), result.getBoolean("Dispo"),
+						result.getInt("Tarif"), result.getDate("DateTarif"));
+				listJeux.add(jeu);
 			}
 		}
 		catch(SQLException e){
 			e.printStackTrace();
 		}
-		return lastID;
+		return listJeux;
 	}
 	
-	public boolean alreadyExist(Jeu jeu)
+	/*public boolean alreadyExist(Jeu jeu)
 	{
 		boolean existe = false;
 		try{
@@ -276,5 +279,5 @@ public class JeuDAO extends DAO<Jeu>{
 			e.printStackTrace();
 		}
 		return existe;
-	}
+	}*/
 }

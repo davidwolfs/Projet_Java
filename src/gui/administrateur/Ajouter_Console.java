@@ -3,7 +3,6 @@ package gui.administrateur;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import dao.ConsoleDAO;
 import exo.Administrateur;
 import exo.Console;
 import javax.swing.JLabel;
@@ -61,13 +60,12 @@ public class Ajouter_Console extends JFrame {
 
 			public void actionPerformed(ActionEvent e) {
 				if (champsVide()) {
-					ConsoleDAO consoleDAO = new ConsoleDAO(connect);
 					Console console = new Console(textFieldNom.getText());
 					console.setId(-1);
-					if (consoleDAO.alreadyExist(console)) {
+					if (console.alreadyExist(console, connect)) {
 						labelMsgErreur.setText("Cette console existe déjà.");
 					} else {
-						consoleDAO.create(console);
+						console.create(console, connect);
 						dispose();
 						Gestion_Jeux_Consoles gestion_Jeux_Consoles = new Gestion_Jeux_Consoles(connect,
 								currentAdministrateur);

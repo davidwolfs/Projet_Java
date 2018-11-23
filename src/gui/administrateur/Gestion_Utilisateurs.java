@@ -6,11 +6,9 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import dao.AdministrateurDAO;
-import dao.EmprunteurDAO;
-import dao.PreteurDAO;
 import exo.Administrateur;
 import exo.Emprunteur;
+import exo.Preteur;
 import gui.Connexion;
 import gui.Main;
 import javax.swing.JButton;
@@ -43,8 +41,8 @@ public class Gestion_Utilisateurs extends JFrame {
 		lblListeAdministrateur.setBounds(10, 11, 146, 14);
 		contentPane.add(lblListeAdministrateur);
 
-		AdministrateurDAO administrateurDAO = new AdministrateurDAO(connect);
-		List<Administrateur> listAdministrateur = administrateurDAO.findAll();
+		Administrateur admin = new Administrateur();
+		List<Administrateur> listAdministrateur = admin.findAll(connect);
 
 		Object[] donnees = new Object[listAdministrateur.size()];
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yy");
@@ -133,6 +131,8 @@ public class Gestion_Utilisateurs extends JFrame {
 		JButton btnSupprimerAdministrateur = new JButton("Supprimer un administrateur");
 		btnSupprimerAdministrateur.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Administrateur administrateur = new Administrateur();
+				
 				int index = listAdministrateurs.getSelectedIndex();
 				SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yy");
 				System.out.println(index);
@@ -150,7 +150,7 @@ public class Gestion_Utilisateurs extends JFrame {
 						int id = listAdministrateur.get(index).getiD();
 						System.out.println(id);
 						JOptionPane.showMessageDialog(null, "Votre compte administrateur a bien été supprimé.");
-						administrateurDAO.delete(listAdministrateur.get(index));
+						administrateur.delete(listAdministrateur.get(index), connect);
 						dispose();
 						Main.creerConnexion();
 					}
@@ -160,7 +160,7 @@ public class Gestion_Utilisateurs extends JFrame {
 					if (input == 0) {
 						int id = listAdministrateur.get(index).getiD();
 						System.out.println(id);
-						administrateurDAO.delete(listAdministrateur.get(index));
+						administrateur.delete(listAdministrateur.get(index), connect);
 
 						dispose();
 						Gestion_Utilisateurs gestion_Utilisateurs = new Gestion_Utilisateurs(connect,
@@ -177,12 +177,12 @@ public class Gestion_Utilisateurs extends JFrame {
 		JLabel lblListeParticipants = new JLabel("Liste des participants");
 		lblListeParticipants.setBounds(10, 255, 146, 14);
 		contentPane.add(lblListeParticipants);
-
-		EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
-		List<Emprunteur> listEmprunteurs = emprunteurDAO.findAll();
-
-		PreteurDAO preteurDAO = new PreteurDAO(connect);
-
+		
+		Emprunteur e = new Emprunteur();
+		List<Emprunteur> listEmprunteurs = e.findAll(connect);
+		
+		Preteur p = new Preteur();
+		
 		Object[] donnees2 = new Object[listEmprunteurs.size()];
 
 		for (int i = 0; i < listEmprunteurs.size(); i++) {
@@ -222,7 +222,7 @@ public class Gestion_Utilisateurs extends JFrame {
 					System.out.println(index);
 					dispose();
 					Modifier_Participant modifier_Participant = new Modifier_Participant(connect, currentAdministrateur,
-							listEmprunteurs.get(index), preteurDAO.find(listEmprunteurs.get(index).getiD()));
+							listEmprunteurs.get(index), p.find(listEmprunteurs.get(index).getiD(), connect));
 					modifier_Participant.setVisible(true);
 					modifier_Participant.setResizable(false);
 				}
@@ -233,6 +233,9 @@ public class Gestion_Utilisateurs extends JFrame {
 
 		JButton btnSupprimerParticipant = new JButton("Supprimer un participant");
 		btnSupprimerParticipant.addActionListener(new ActionListener() {
+			Emprunteur emprunteur = new Emprunteur();
+			Preteur preteur = new Preteur();
+			
 			public void actionPerformed(ActionEvent e) {
 				int index = listEmprunteur.getSelectedIndex();
 				System.out.println(index);
@@ -244,8 +247,8 @@ public class Gestion_Utilisateurs extends JFrame {
 					if (input == 0) {
 						int id = listEmprunteurs.get(index).getiD();
 						System.out.println(id);
-						emprunteurDAO.delete(listEmprunteurs.get(index));
-						preteurDAO.delete(preteurDAO.find(id));
+						emprunteur.delete(listEmprunteurs.get(index), connect);
+						preteur.delete(p.find(id, connect), connect);
 
 						dispose();
 						Gestion_Utilisateurs gestion_Utilisateurs = new Gestion_Utilisateurs(connect,

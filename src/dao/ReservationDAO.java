@@ -5,6 +5,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+
+import exo.Administrateur;
 import exo.Emprunteur;
 import exo.Jeu;
 import exo.Reservation;
@@ -79,6 +83,23 @@ public class ReservationDAO extends DAO<Reservation> {
 		return null;
 	}
 
+	public List<Reservation> findAllReservation() {
+		List<Reservation> listReservations = new ArrayList<>();
+		Reservation reservation = new Reservation();
+		try {
+			ResultSet result = this.connect
+					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
+					.executeQuery("SELECT * FROM Reservation");
+			while (result.next()) {
+				reservation = new Reservation(result.getInt("ID"), result.getDate("DateNaiss"));
+				listReservations.add(reservation);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return listReservations;
+	}
+	
 	public int findLastIdReservation() {
 		int lastID = 0;
 		try {

@@ -12,8 +12,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import com.toedter.calendar.JDateChooser;
-import dao.EmprunteurDAO;
-import dao.PreteurDAO;
 import exo.Administrateur;
 import exo.Emprunteur;
 import exo.Preteur;
@@ -154,8 +152,8 @@ public class Modifier_Participant extends JFrame {
 			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
 				if (champsVide()) {
-					EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
-					PreteurDAO preteurDAO = new PreteurDAO(connect);
+					Emprunteur emprunteur = new Emprunteur();
+					Preteur preteur = new Preteur();
 					emprunteurAModifier.setNom(textFieldNom.getText());
 					emprunteurAModifier.setPrenom(textFieldPrenom.getText());
 					emprunteurAModifier.setDateNaiss(dateChooserDateNaiss.getDate());
@@ -167,13 +165,13 @@ public class Modifier_Participant extends JFrame {
 					preteurAModifier.setDateNaiss(dateChooserDateNaiss.getDate());
 					preteurAModifier.setEmail(textFieldEmail.getText());
 					preteurAModifier.setPassword(passwordField.getText());
-					if (emprunteurDAO.alreadyExist(emprunteurAModifier)) {
+					if (emprunteurAModifier.alreadyExist(emprunteurAModifier, connect)) {
 						labelMsgErreur.setText("Cet adresse e-mail existe déjà.");
 
 					} else {
 
-						emprunteurDAO.update(emprunteurAModifier);
-						preteurDAO.update(preteurAModifier);
+						emprunteur.update(emprunteurAModifier, connect);
+						preteur.update(preteurAModifier, connect);
 
 						dispose();
 						Gestion_Utilisateurs gestion_Utilisateurs = new Gestion_Utilisateurs(connect,

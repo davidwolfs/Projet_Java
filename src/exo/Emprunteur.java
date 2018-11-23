@@ -1,8 +1,15 @@
 package exo;
 
+import java.sql.Connection;
 import java.util.Date;
+import java.util.List;
+
+import dao.AdministrateurDAO;
+import dao.EmprunteurDAO;
+import dao.PreteurDAO;
 
 public class Emprunteur extends Joueur {
+	private Connection connect;
 	private int unite;
 	private double cote;
 	private int nbrCote = 0;
@@ -134,6 +141,103 @@ public class Emprunteur extends Joueur {
 		}
 		
 		return moyenneCote;
+	}
+	
+	public void create(Emprunteur emprunteur, Connection connect)
+	{
+		EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
+		emprunteurDAO.create(emprunteur);
+	}
+	
+	public void update(Emprunteur emprunteur, Connection connect)
+	{
+		EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
+		emprunteurDAO.update(emprunteur);
+	}
+	
+	public void delete(Emprunteur emprunteur, Connection connect)
+	{
+		EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
+		emprunteurDAO.delete(emprunteur);
+	}
+	
+	public List<Emprunteur> findAll(Connection connect)
+	{
+		EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
+		List<Emprunteur> listEmprunteurs = emprunteurDAO.findAll();
+		
+		for(Emprunteur e : listEmprunteurs)
+		{
+			this.setNom(e.getNom());
+			this.setPrenom(e.getPrenom());
+			this.setDateNaiss(e.getDateNaiss());
+			this.setEmail(e.getEmail());
+		}
+		
+		return listEmprunteurs;
+	}
+	
+	public boolean findByEmailPassword(String email, String password, Connection connect) {
+		boolean existe = false;
+		EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
+		List<Emprunteur> listEmprunteurs = emprunteurDAO.findAll();
+		Emprunteur emprunteur = new Emprunteur();
+		
+		
+		for(Emprunteur e : listEmprunteurs)
+		{
+			if(e.getEmail().equals(email) && e.getPassword().equals(password))
+			{
+				emprunteur = new Emprunteur(e.getiD(), e.getNom(),
+						e.getPrenom(), e.getDateNaiss(), email, password);
+				existe = true;
+			}
+		}
+	
+		return existe;
+	}
+	
+	public Emprunteur findEmprunteurByEmailPassword(String email, String password, Connection connect) {
+		Emprunteur emprunteur = new Emprunteur();
+		EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
+		List<Emprunteur> listEmprunteurs = emprunteurDAO.findAll();
+		
+		for(Emprunteur e : listEmprunteurs)
+		{
+			if(e.getEmail().equals(email) && e.getPassword().equals(password))
+			{
+				emprunteur = new Emprunteur(e.getiD(), e.getNom(),
+						e.getPrenom(), e.getDateNaiss(), email, password);
+			}
+		}
+		return emprunteur;
+	}
+	
+	public boolean alreadyExist(Emprunteur emprunteur, Connection connect) {
+		boolean existe = false;
+		EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
+		List<Emprunteur> listEmprunteurs = emprunteurDAO.findAll();
+		
+		for(Emprunteur e : listEmprunteurs)
+		{
+			if(e.getiD() > 0)
+			{
+				if(e.getEmail().equals(emprunteur.getEmail()) && e.getiD() != emprunteur.getiD())
+				{
+					existe = true;
+				}
+			}
+			else
+			{
+				if(e.getEmail().equals(emprunteur.getEmail()))
+				{
+					existe = true;
+				}
+			}
+		}
+		System.out.println("methode already exist emprunteur");
+		
+		return existe;
 	}
 	
 	@Override

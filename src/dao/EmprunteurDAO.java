@@ -155,7 +155,7 @@ public class EmprunteurDAO extends DAO<Emprunteur> {
 		return emprunteur;
 	}
 
-	public boolean findByEmailPassword(String email, String password) {
+	/*public boolean findByEmailPassword(String email, String password) {
 		boolean existe = false;
 		Emprunteur emprunteur;
 		try {
@@ -173,7 +173,7 @@ public class EmprunteurDAO extends DAO<Emprunteur> {
 			e.printStackTrace();
 		}
 		return existe;
-	}
+	}*/
 
 	public Emprunteur findEmprunteurById(Emprunteur emprunteur) {
 		try {
@@ -191,7 +191,7 @@ public class EmprunteurDAO extends DAO<Emprunteur> {
 		return emprunteur;
 	}
 
-	public Emprunteur findEmprunteurByEmailPassword(String email, String password) {
+	/*public Emprunteur findEmprunteurByEmailPassword(String email, String password) {
 		Emprunteur emprunteur = new Emprunteur();
 		try {
 			ResultSet result = this.connect
@@ -206,7 +206,7 @@ public class EmprunteurDAO extends DAO<Emprunteur> {
 			e.printStackTrace();
 		}
 		return emprunteur;
-	}
+	}*/
 
 	public List<Emprunteur> findAll() {
 		List<Emprunteur> listEmprunteurs = new ArrayList<>();
@@ -245,7 +245,7 @@ public class EmprunteurDAO extends DAO<Emprunteur> {
 		return listEmprunteurs;
 	}
 
-	public boolean alreadyExist(Emprunteur emprunteur) {
+	/*public boolean alreadyExist(Emprunteur emprunteur) {
 		boolean existe = false;
 		try {
 			String sql = "SELECT * FROM Emprunteur WHERE Email = " + "\"" + emprunteur.getEmail() + "\"";
@@ -263,5 +263,5 @@ public class EmprunteurDAO extends DAO<Emprunteur> {
 			e.printStackTrace();
 		}
 		return existe;
-	}
+	}*/
 }

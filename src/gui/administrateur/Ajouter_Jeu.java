@@ -9,8 +9,6 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.JCheckBox;
-import dao.ConsoleDAO;
-import dao.JeuDAO;
 import exo.Administrateur;
 import exo.Console;
 import exo.Jeu;
@@ -67,8 +65,8 @@ public class Ajouter_Jeu extends JFrame {
 		JLabel lblListeConsoles = new JLabel("Console");
 		lblListeConsoles.setBounds(69, 179, 77, 14);
 		contentPane.add(lblListeConsoles);
-		ConsoleDAO consoleDAO = new ConsoleDAO(connect);
-		List<Console> listConsole = consoleDAO.findAll();
+		Console c = new Console();
+		List<Console> listConsole = c.findAll(connect);
 
 		Object[] console = listConsole.toArray();
 
@@ -116,23 +114,22 @@ public class Ajouter_Jeu extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (champsVide()) {
 					java.util.Date date = new java.util.Date();
-
-					JeuDAO jeuDAO = new JeuDAO(connect);
 					int index = listConsoles.getSelectedIndex();
 					Console consoleChoisie = listConsole.get(index);
 					Jeu jeu = new Jeu(textFieldNom.getText(), chckbxDisponibilite.isSelected(),
 							(double) spinnerAjouterTarif.getValue(), new Timestamp(date.getTime()), consoleChoisie);
 					jeu.setId(-1);
-					if (jeuDAO.alreadyExist(jeu)) {
+					if (jeu.alreadyExist(jeu, connect)) {
 						labelMsgErreur.setText("Ce jeu existe déjà pour cette console.");
 					} else {
 
 						System.out.println(jeu.getNom() + " " + jeu.isDispo() + " " + jeu.getTarif() + " "
 								+ jeu.getDateTarif() + " " + jeu.getConsole());
-						jeuDAO.create(jeu, currentAdministrateur);
-						int lastId = jeuDAO.findLastIdJeu();
+						jeu.create(jeu, currentAdministrateur, connect);
+						int lastId = jeu.findLastIdJeu(connect);
+						System.out.println("LAST ID : " + lastId);
 						jeu.setId(lastId);
-						jeuDAO.create_Ligne_Jeu(jeu);
+						jeu.create_Ligne_Jeu(jeu, currentAdministrateur, connect);
 						dispose();
 						Gestion_Jeux_Consoles gestion_Jeux_Consoles = new Gestion_Jeux_Consoles(connect,
 								currentAdministrateur);

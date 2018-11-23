@@ -12,8 +12,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import com.toedter.calendar.JDateChooser;
-import dao.EmprunteurDAO;
-import dao.PreteurDAO;
 import exo.Administrateur;
 import exo.Emprunteur;
 import exo.Preteur;
@@ -142,24 +140,20 @@ public class Ajouter_Participant extends JFrame {
 			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
 				if (champsVide()) {
-					PreteurDAO preteurDAO = new PreteurDAO(connect);
 					Preteur preteur = new Preteur(textFieldNom.getText(), textFieldPrenom.getText(),
 							dateChooserDateNaiss.getDate(), textFieldEmail.getText(), passwordField.getText());
-					System.out.println("DATE DAO : " + dateChooserDateNaiss.getDate());
 					preteur.setiD(-1);
-					EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
 					Emprunteur emprunteur = new Emprunteur(textFieldNom.getText(), textFieldPrenom.getText(),
 							dateChooserDateNaiss.getDate(), textFieldEmail.getText(), passwordField.getText());
 					emprunteur.setiD(-1);
-					System.out.println("DATE DAO : " + dateChooserDateNaiss.getDate());
-					if (preteurDAO.alreadyExist(preteur)) {
+					if (preteur.alreadyExist(preteur, connect)) {
 						labelMsgErreur.setText("Cet adresse e-mail existe déjà.");
-					} else if (emprunteurDAO.alreadyExist(emprunteur)) {
+					} else if (emprunteur.alreadyExist(emprunteur, connect)) {
 						labelMsgErreur.setText("Cet adresse e-mail existe déjà.");
 					} else {
-						preteurDAO.create(preteur);
+						preteur.create(preteur, connect);
 
-						emprunteurDAO.create(emprunteur);
+						emprunteur.create(emprunteur, connect);
 						dispose();
 						Gestion_Utilisateurs gestion_Utilisateurs = new Gestion_Utilisateurs(connect,
 								currentAdministrateur);

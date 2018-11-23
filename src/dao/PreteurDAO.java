@@ -120,7 +120,26 @@ public class PreteurDAO extends DAO<Preteur> {
 		return preteur;
 	}
 
-	public boolean findByEmailPassword(String email, String password) {
+	public List<Preteur> findAll() {
+		List<Preteur> listPreteurs = new ArrayList<>();
+		Preteur preteur = new Preteur();
+		try {
+			ResultSet result = this.connect
+					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
+					.executeQuery("SELECT * FROM Emprunteur WHERE ID <> 19");
+			while (result.next()) {
+				preteur = new Preteur(result.getInt("ID"), result.getString("Nom"), result.getString("Prenom"),
+						result.getDate("DateNaiss"), result.getString("Email"), result.getString("Password"),
+						result.getInt("Unite"));
+				listPreteurs.add(preteur);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return listPreteurs;
+	}
+	
+	/*public boolean findByEmailPassword(String email, String password) {
 		boolean existe = false;
 		Preteur preteur = null;
 		try {
@@ -138,9 +157,9 @@ public class PreteurDAO extends DAO<Preteur> {
 			e.printStackTrace();
 		}
 		return existe;
-	}
+	}*/
 
-	public Preteur findPreteurByEmailPassword(String email, String password) {
+	/*public Preteur findPreteurByEmailPassword(String email, String password) {
 		Preteur preteur = new Preteur();
 		try {
 			ResultSet result = this.connect
@@ -155,7 +174,7 @@ public class PreteurDAO extends DAO<Preteur> {
 			e.printStackTrace();
 		}
 		return preteur;
-	}
+	}*/
 
 	public List<Preteur> findAllExceptcurrentPreteur(Preteur preteur) {
 		List<Preteur> listPreteurs = new ArrayList<>();

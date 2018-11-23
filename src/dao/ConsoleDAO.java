@@ -94,7 +94,7 @@ public class ConsoleDAO extends DAO<Console> {
 		return listConsole;
 	}
 
-	public boolean alreadyExist(Console console) {
+	/*public boolean alreadyExist(Console console) {
 		boolean existe = false;
 		try {
 			String sql = "SELECT * FROM Console WHERE Nom = " + "'" + console.getNom() + "'";
@@ -111,6 +111,6 @@ public class ConsoleDAO extends DAO<Console> {
 			e.printStackTrace();
 		}
 		return existe;
-	}
+	}*/
 
 }

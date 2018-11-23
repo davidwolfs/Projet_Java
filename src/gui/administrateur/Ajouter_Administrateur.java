@@ -12,7 +12,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import com.toedter.calendar.JDateChooser;
-import dao.AdministrateurDAO;
 import exo.Administrateur;
 import javax.swing.JPasswordField;
 
@@ -138,16 +137,14 @@ public class Ajouter_Administrateur extends JFrame {
 			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
 				if (champsVide()) {
-					AdministrateurDAO administrateurDAO = new AdministrateurDAO(connect);
 					Administrateur administrateur = new Administrateur(textFieldNom.getText(),
 							textFieldPrenom.getText(), dateChooserDateNaiss.getDate(), textFieldEmail.getText(),
 							passwordField.getText());
 					administrateur.setiD(-1);
-					System.out.println("DATE DAO : " + dateChooserDateNaiss.getDate());
-					if (administrateurDAO.alreadyExist(administrateur)) {
+					if (administrateur.alreadyExist(administrateur, connect)) {
 						labelMsgErreur.setText("Cet adresse e-mail existe déjà.");
 					} else {
-						administrateurDAO.create(administrateur);
+						administrateur.create(administrateur, connect);
 						dispose();
 						Gestion_Utilisateurs gestion_Utilisateurs = new Gestion_Utilisateurs(connect,
 								currentAdministrateur);

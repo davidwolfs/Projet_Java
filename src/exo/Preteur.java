@@ -1,10 +1,16 @@
 package exo;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import dao.AdministrateurDAO;
+import dao.EmprunteurDAO;
+import dao.PreteurDAO;
+
 public class Preteur extends Joueur {
+	private Connection connect;
 	private List<Exemplaire> listExemplaire = new ArrayList<>();
 	private double cote;
 	private int nbrCote = 0;
@@ -93,6 +99,111 @@ public class Preteur extends Joueur {
 		return moyenneCote;
 	}
 
+	public void create(Preteur preteur, Connection connect)
+	{
+		PreteurDAO preteurDAO = new PreteurDAO(connect);
+		preteurDAO.create(preteur);
+	}
+	
+	public void update(Preteur preteur, Connection connect)
+	{
+		PreteurDAO preteurDAO = new PreteurDAO(connect);
+		preteurDAO.update(preteur);
+	}
+	
+	public void delete(Preteur preteur, Connection connect)
+	{
+		PreteurDAO preteurDAO = new PreteurDAO(connect);
+		preteurDAO.delete(preteur);
+	}
+	
+	public Preteur find(int id, Connection connect)
+	{
+		PreteurDAO preteurDAO = new PreteurDAO(connect);
+		Preteur preteur = preteurDAO.find(id);
+		
+		return preteur;
+	}
+	
+	public List<Preteur> findAll(Connection connect)
+	{
+		PreteurDAO preteurDAO = new PreteurDAO(connect);
+		List<Preteur> listPreteurs = preteurDAO.findAll();
+		
+		for(Preteur p : listPreteurs)
+		{
+			this.setNom(p.getNom());
+			this.setPrenom(p.getPrenom());
+			this.setDateNaiss(p.getDateNaiss());
+			this.setEmail(p.getEmail());
+		}
+		
+		return listPreteurs;
+	}
+	
+	public boolean findByEmailPassword(String email, String password, Connection connect) {
+		boolean existe = false;
+		PreteurDAO preteurDAO = new PreteurDAO(connect);
+		List<Preteur> listPreteurs = preteurDAO.findAll();
+		Preteur preteur = new Preteur();
+		
+		
+		for(Preteur p : listPreteurs)
+		{
+			if(p.getEmail().equals(email) && p.getPassword().equals(password))
+			{
+				preteur = new Preteur(p.getiD(), p.getNom(),
+						p.getPrenom(), p.getDateNaiss(), email, password);
+				existe = true;
+			}
+		}
+	
+		return existe;
+	}
+	
+	public Preteur findPreteurByEmailPassword(String email, String password, Connection connect) {
+		Preteur preteur = new Preteur();
+		PreteurDAO preteurDAO = new PreteurDAO(connect);
+		List<Preteur> listPreteurs = preteurDAO.findAll();
+		
+		for(Preteur p : listPreteurs)
+		{
+			if(p.getEmail().equals(email) && p.getPassword().equals(password))
+			{
+				preteur = new Preteur(p.getiD(), p.getNom(),
+						p.getPrenom(), p.getDateNaiss(), email, password);
+			}
+		}
+		return preteur;
+	}
+	
+	public boolean alreadyExist(Preteur preteur, Connection connect) {
+		boolean existe = false;
+		PreteurDAO preteurDAO = new PreteurDAO(connect);
+		List<Preteur> listPreteurs = preteurDAO.findAll();
+		
+		for(Preteur p : listPreteurs)
+		{
+			if(p.getiD() > 0)
+			{
+				if(p.getEmail().equals(preteur.getEmail()) && p.getiD() != preteur.getiD())
+				{
+					existe = true;
+				}
+			}
+			else
+			{
+				if(p.getEmail().equals(p.getEmail()))
+				{
+					existe = true;
+				}
+			}
+		}
+		System.out.println("methode already exist emprunteur");
+		
+		return existe;
+	}
+	
 	@Override
 	public String toString() {
 		return "Preteur [listExemplaire=" + listExemplaire + ", cote=" + cote + "]";

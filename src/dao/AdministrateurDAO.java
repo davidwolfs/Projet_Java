@@ -92,7 +92,7 @@ public class AdministrateurDAO extends DAO<Administrateur> {
 		return null;
 	}
 
-	public boolean findByEmailPassword(String email, String password) {
+	/*public boolean findByEmailPassword(String email, String password) {
 		boolean existe = false;
 		Administrateur administrateur;
 		try {
@@ -110,9 +110,9 @@ public class AdministrateurDAO extends DAO<Administrateur> {
 			e.printStackTrace();
 		}
 		return existe;
-	}
+	}*/
 
-	public Administrateur findAdministrateurByEmailPassword(String email, String password) {
+	/*public Administrateur findAdministrateurByEmailPassword(String email, String password) {
 		Administrateur administrateur = new Administrateur();
 		try {
 			ResultSet result = this.connect
@@ -127,7 +127,7 @@ public class AdministrateurDAO extends DAO<Administrateur> {
 			e.printStackTrace();
 		}
 		return administrateur;
-	}
+	}*/
 
 	public List<Administrateur> findAll() {
 		List<Administrateur> listAdministrateurs = new ArrayList<>();
@@ -148,7 +148,7 @@ public class AdministrateurDAO extends DAO<Administrateur> {
 		return listAdministrateurs;
 	}
 
-	public boolean alreadyExist(Administrateur administrateur) {
+	/*public boolean alreadyExist(Administrateur administrateur) {
 		boolean existe = false;
 		try {
 			String sql = "SELECT * FROM Administrateur WHERE Email = " + "\"" + administrateur.getEmail() + "\"";
@@ -166,5 +166,5 @@ public class AdministrateurDAO extends DAO<Administrateur> {
 			e.printStackTrace();
 		}
 		return existe;
-	}
+	}*/
 }
