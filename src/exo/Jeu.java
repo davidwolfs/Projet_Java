@@ -129,6 +129,12 @@ public class Jeu {
 		jeuDAO.update_Dispo(jeu);
 	}
 	
+	public void update_Dispo_False(Jeu jeu, Connection connect)
+	{
+		JeuDAO jeuDAO = new JeuDAO(connect);
+		jeuDAO.update_Dispo_False(jeu);
+	}
+	
 	public void delete(Jeu jeu, Connection connect)
 	{
 		JeuDAO jeuDAO = new JeuDAO(connect);

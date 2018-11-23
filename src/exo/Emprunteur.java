@@ -161,6 +161,12 @@ public class Emprunteur extends Joueur {
 		emprunteurDAO.update(emprunteur);
 	}
 	
+	public void updateUnite(Emprunteur emprunteur, Connection connect)
+	{
+		EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
+		emprunteurDAO.updateUnite(emprunteur);
+	}
+	
 	public void delete(Emprunteur emprunteur, Connection connect)
 	{
 		EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);

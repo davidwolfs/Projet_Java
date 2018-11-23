@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.util.Date;
 import java.util.List;
 
+import dao.ConsoleDAO;
+import dao.EmprunteurDAO;
+import dao.JeuDAO;
 import dao.PretDAO;
 import dao.ReservationDAO;
 
@@ -120,6 +123,41 @@ public class Pret {
 		pretDAO.create_Pret(pret, emprunteur, exemplaire);
 	}
 	
+	public void update_Pret_Emprunteur(Emprunteur emprunteur, Pret pret, Connection connect)
+	{
+		PretDAO pretDAO = new PretDAO(connect);
+		pretDAO.update_Pret_Emprunteur(emprunteur, pret);
+	}
+	
+	public void update_Confirmation(Pret pret, Connection connect)
+	{
+		PretDAO pretDAO = new PretDAO(connect);
+		pretDAO.update_Confirmation(pret);
+	}
+	
+	public void update_Pret_Preteur(Preteur preteur, Pret pret, Connection connect)
+	{
+		PretDAO pretDAO = new PretDAO(connect);
+		pretDAO.update_Pret_Preteur(preteur, pret);
+	}
+	
+	
+	public void delete_Pret_Emprunteur(Pret pret, Connection connect)
+	{
+		PretDAO pretDAO = new PretDAO(connect);
+		pretDAO.delete_Pret_Emprunteur(pret);
+	}
+	
+	
+	
+	public List<Pret> findAll(Emprunteur emprunteur, Connection connect)
+	{
+		PretDAO pretDAO = new PretDAO(connect);
+		List<Pret> listPrets = pretDAO.findAll(emprunteur);
+		
+		return listPrets;
+	}
+	
 	public List<Pret> findAllPretByEmprunteur(Emprunteur emprunteur, Connection connect)
 	{
 		PretDAO pretDAO = new PretDAO(connect);
@@ -143,7 +181,34 @@ public class Pret {
 	public boolean ConfirmationPreteurFin() {
 		return false;
 	}
-
+	
+	public boolean isAlreadyConfirmed(Pret pret, Connection connect)
+	{
+		boolean alreadyConfirmed = false;
+		PretDAO pretDAO = new PretDAO(connect);
+		alreadyConfirmed = pretDAO.isAlreadyConfirmed(pret);
+		
+		return alreadyConfirmed;
+	}
+	
+	public boolean sameReservationFound(Exemplaire exemplaire, Connection connect)
+	{
+		boolean reservationFound = false;
+		PretDAO pretDAO = new PretDAO(connect);
+		reservationFound = pretDAO.sameReservationFound(exemplaire);
+		
+		return reservationFound;
+	}
+	
+	public List<Pret> getPretEmprunteurSortByPriorites(Exemplaire exemplaire, Connection connect)
+	{
+		boolean reservationFound = false;
+		PretDAO pretDAO = new PretDAO(connect);
+		List<Pret> listPret = pretDAO.getPretEmprunteurSortByPriorites(exemplaire);
+		
+		return listPret;
+	}
+	
 	@Override
 	public String toString() {
 		return "Pret [id=" + id + ", dateDebut=" + dateDebut + ", dateFin=" + dateFin + ", confirmer_pret="

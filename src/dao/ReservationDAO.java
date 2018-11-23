@@ -91,7 +91,7 @@ public class ReservationDAO extends DAO<Reservation> {
 					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
 					.executeQuery("SELECT * FROM Reservation");
 			while (result.next()) {
-				reservation = new Reservation(result.getInt("ID"), result.getDate("DateNaiss"));
+				reservation = new Reservation(result.getInt("ID"), result.getDate("DateReservation"));
 				listReservations.add(reservation);
 			}
 		} catch (SQLException e) {
