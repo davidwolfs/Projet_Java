@@ -1,6 +1,8 @@
 package exo;
 
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -111,6 +113,18 @@ public class Preteur extends Joueur {
 		preteurDAO.update(preteur);
 	}
 	
+	public void updateCote_NombreCote(Preteur preteur, Connection connect)
+	{
+		PreteurDAO preteurDAO = new PreteurDAO(connect);
+		preteurDAO.updateCote_NombreCote(preteur);
+	}
+	
+	public void marquerPreteursEmprunteursCotes(Preteur preteur, Emprunteur emprunteur, Connection connect)
+	{
+		PreteurDAO preteurDAO = new PreteurDAO(connect);
+		preteurDAO.marquerPreteursEmprunteursCotes(preteur, emprunteur);
+	}
+	
 	public void delete(Preteur preteur, Connection connect)
 	{
 		PreteurDAO preteurDAO = new PreteurDAO(connect);
@@ -176,6 +190,29 @@ public class Preteur extends Joueur {
 		}
 		return preteur;
 	}
+	
+	public List<Preteur> findAllExceptcurrentPreteur(Preteur preteur, Connection connect)
+	{
+		PreteurDAO preteurDAO = new PreteurDAO(connect);
+		List<Preteur> listPreteurs = preteurDAO.findAllExceptcurrentPreteur(preteur);
+		
+		return listPreteurs;
+	}
+	
+	public boolean isAlreadyCote(Preteur preteur, Emprunteur emprunteur, Connection connect) {
+		boolean existe = false;
+		PreteurDAO preteurDAO = new PreteurDAO(connect);
+		boolean isalreadyCote = preteurDAO.isAlreadyCote(preteur, emprunteur);
+		
+		/*for(Preteur p : listPreteurs)
+		{
+	
+		}
+		System.out.println("methode already exist emprunteur");*/
+		
+		return isalreadyCote;
+	}
+	
 	
 	public boolean alreadyExist(Preteur preteur, Connection connect) {
 		boolean existe = false;

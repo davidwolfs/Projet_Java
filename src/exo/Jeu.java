@@ -134,24 +134,17 @@ public class Jeu {
 		JeuDAO jeuDAO = new JeuDAO(connect);
 		List<Jeu> listJeux = jeuDAO.findAll();
 		
-		List<Console> listConsoles = console.findAll(connect);
-		
-		for(Jeu j : listJeux)
-		{
-			for(Console c : listConsoles)
-			{
-				Console console = new Console();
-				console.setId(c.getId());
-				console.setNom(c.getNom());
-				this.setId(j.getId());
-				this.setNom(c.getNom());
-				listJeux.add(j);
-			}
-		}
-		
 		return listJeux;
 	}
 	
+	public List<Jeu> findAllAvailable(Connection connect)
+	{
+		JeuDAO jeuDAO = new JeuDAO(connect);
+		List<Jeu> listJeux = jeuDAO.findAllAvailable();
+		
+		return listJeux;
+	}
+
 	public int findLastIdJeu(Connection connect)
 	{
 		int lastID = 0;

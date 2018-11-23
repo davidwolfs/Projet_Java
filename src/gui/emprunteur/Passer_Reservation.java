@@ -22,11 +22,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.awt.event.ActionEvent;
 import com.toedter.calendar.JDateChooser;
-import dao.EmprunteurDAO;
-import dao.ExemplaireDAO;
-import dao.JeuDAO;
-import dao.PretDAO;
-import dao.ReservationDAO;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
@@ -58,8 +53,8 @@ public class Passer_Reservation extends JFrame {
 		lblListeJeux.setBounds(10, 26, 153, 19);
 		contentPane.add(lblListeJeux);
 
-		JeuDAO jeuDAO = new JeuDAO(connect);
-		List<Jeu> listJeu = jeuDAO.findAllAvailable();
+		Jeu j = new Jeu();
+		List<Jeu> listJeu = j.findAllAvailable(connect);
 		Object[] jeu = listJeu.toArray();
 
 		Object[] donnees = new Object[listJeu.size()];
@@ -169,19 +164,18 @@ public class Passer_Reservation extends JFrame {
 					Passer_Reservation passer_Reservation = new Passer_Reservation(connect, currentEmprunteur);
 					passer_Reservation.setVisible(true);
 					passer_Reservation.setResizable(false);
-					ReservationDAO reservationDAO = new ReservationDAO(connect);
+					Reservation r = new Reservation();
 					Jeu jeu = new Jeu(listJeu.get(index).getId(), listJeu.get(index).getNom(),
 							listJeu.get(index).isDispo(), listJeu.get(index).getTarif(),
 							listJeu.get(index).getDateTarif(), listJeu.get(index).getConsole());
 					java.util.Date date = new java.util.Date();
 					Exemplaire exemplaire = new Exemplaire(jeu);
-					ExemplaireDAO exemplaireDAO = new ExemplaireDAO(connect);
-					exemplaire = exemplaireDAO.findExemplaireByIdJeu(jeu);
-					if (exemplaireDAO.isLastExemplaire(listJeu.get(index))) {
+					exemplaire = exemplaire.findExemplaireByIdJeu(jeu, connect);
+					if (exemplaire.isLastExemplaire(listJeu.get(index), connect)) {
 						System.out.println("C EST LE LAST EXEMPLAIRE");
 
 					} else {
-						exemplaireDAO.update(exemplaire);
+						exemplaire.update(exemplaire, connect);
 					}
 					exemplaire.setJeu(jeu);
 					System.out.println(exemplaire.getId());
@@ -191,14 +185,14 @@ public class Passer_Reservation extends JFrame {
 							currentEmprunteur);
 					System.out.println(pret);
 					System.out.println("ID RESERVATION : " + reservation.getId());
-					EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
-					Emprunteur emprunteur = emprunteurDAO.findIdByEmprunteur(currentEmprunteur);
-					reservationDAO.createReservation(reservation, emprunteur);
+					Emprunteur emprunteur = new Emprunteur();
+					emprunteur = emprunteur.findIdByEmprunteur(currentEmprunteur, connect);
+					reservation.createReservation(reservation, emprunteur, connect);
 					int lastId = reservation.findLastIdReservation(connect);
 					reservation.setId(lastId);
-					reservationDAO.create_Ligne_Reservation(reservation, jeu);
-					PretDAO pretDAO = new PretDAO(connect);
-					pretDAO.create_Pret(pret, emprunteur, exemplaire);
+					reservation.create_Ligne_Reservation(reservation, jeu, connect);
+					Pret p = new Pret();
+					p.create_Pret(pret, emprunteur, exemplaire, connect);
 				}
 			}
 		});

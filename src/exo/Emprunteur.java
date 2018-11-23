@@ -197,6 +197,23 @@ public class Emprunteur extends Joueur {
 		return existe;
 	}
 	
+	public Emprunteur findEmprunteurById(Emprunteur emprunteur, Connection connect) {
+		EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
+		Emprunteur e = emprunteurDAO.find(emprunteur.getiD());
+		
+		return e;
+	}
+	
+	//TODO
+	public Emprunteur findIdByEmprunteur(Emprunteur emprunteur, Connection connect) {
+		EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
+		Emprunteur e = emprunteurDAO.findIdByEmprunteur(emprunteur);
+		
+		
+		return e;
+	}
+	
+	
 	public Emprunteur findEmprunteurByEmailPassword(String email, String password, Connection connect) {
 		Emprunteur emprunteur = new Emprunteur();
 		EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);

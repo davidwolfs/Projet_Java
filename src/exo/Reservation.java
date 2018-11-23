@@ -57,6 +57,18 @@ public class Reservation {
 		this.jeu = jeu;
 	}
 
+	public void createReservation(Reservation reservation, Emprunteur emprunteur, Connection connect)
+	{
+		ReservationDAO reservationDAO = new ReservationDAO(connect);
+		reservationDAO.createReservation(reservation, emprunteur);
+	}
+	
+	public void create_Ligne_Reservation(Reservation reservation, Jeu jeu, Connection connect)
+	{
+		ReservationDAO reservationDAO = new ReservationDAO(connect);
+		reservationDAO.create_Ligne_Reservation(reservation, jeu);
+	}
+	
 	public int findLastIdReservation(Connection connect)
 	{
 		int lastID = 0;

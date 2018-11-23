@@ -1,5 +1,11 @@
 package exo;
 
+import java.sql.Connection;
+import java.util.List;
+
+import dao.ExemplaireDAO;
+import dao.JeuDAO;
+
 public class Exemplaire {
 	private int id;
 	private int nbrExemplaire;
@@ -46,6 +52,29 @@ public class Exemplaire {
 		this.jeu = jeu;
 	}
 
+	public void update(Exemplaire exemplaire, Connection connect)
+	{
+		ExemplaireDAO exemplaireDAO = new ExemplaireDAO(connect);
+		exemplaireDAO.update(exemplaire);
+	}
+	
+	public Exemplaire findExemplaireByIdJeu(Jeu jeu, Connection connect)
+	{
+		ExemplaireDAO exemplaireDAO = new ExemplaireDAO(connect);
+		Exemplaire exemplaire = exemplaireDAO.findExemplaireByIdJeu(jeu);
+		
+		return exemplaire;
+	}
+	
+	public boolean isLastExemplaire(Jeu jeu, Connection connect)
+	{
+		boolean lastExemplaire = false;
+		ExemplaireDAO exemplaireDAO = new ExemplaireDAO(connect);
+		lastExemplaire = exemplaireDAO.isLastExemplaire(jeu);
+		
+		return lastExemplaire;
+	}
+	
 	@Override
 	public String toString() {
 		return "Exemplaire [id=" + id + ", nbrExemplaire=" + nbrExemplaire + ", jeu=" + jeu + "]";

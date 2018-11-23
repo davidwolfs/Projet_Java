@@ -62,12 +62,12 @@ public class Console {
 		ConsoleDAO consoleDAO = new ConsoleDAO(connect);
 		List<Console> listConsoles = consoleDAO.findAll();
 		
-		for(Console c : listConsoles)
+		/*for(Console c : listConsoles)
 		{
 			this.setId(c.getId());
 			this.setNom(c.getNom());
 			listConsoles.add(c);
-		}
+		}*/
 		
 		return listConsoles;
 	}

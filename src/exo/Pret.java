@@ -1,6 +1,11 @@
 package exo;
 
+import java.sql.Connection;
 import java.util.Date;
+import java.util.List;
+
+import dao.PretDAO;
+import dao.ReservationDAO;
 
 public class Pret {
 	private int id;
@@ -109,6 +114,20 @@ public class Pret {
 		this.id = id;
 	}
 
+	public void create_Pret(Pret pret, Emprunteur emprunteur, Exemplaire exemplaire, Connection connect)
+	{
+		PretDAO pretDAO = new PretDAO(connect);
+		pretDAO.create_Pret(pret, emprunteur, exemplaire);
+	}
+	
+	public List<Pret> findAllPretByEmprunteur(Emprunteur emprunteur, Connection connect)
+	{
+		PretDAO pretDAO = new PretDAO(connect);
+		List<Pret> listPrets = pretDAO.findAllPretByEmprunteur(emprunteur);
+		
+		return listPrets;
+	}
+	
 	public boolean ConfirmationEmprunteurDebut() {
 		return false;
 	}

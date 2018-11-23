@@ -3,7 +3,6 @@ package gui.emprunteur;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import dao.EmprunteurDAO;
 import exo.Emprunteur;
 import gui.Main;
 import javax.swing.JLabel;
@@ -90,9 +89,8 @@ public class Dashboard_Emprunteur extends JFrame {
 
 		JLabel lblNombreUnite = new JLabel("");
 		lblNombreUnite.setBounds(255, 244, 46, 14);
-		EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
-		Emprunteur emprunteur;
-		emprunteur = emprunteurDAO.findEmprunteurById(currentEmprunteur);
+		Emprunteur emprunteur = new Emprunteur();
+		emprunteur = emprunteur.findEmprunteurById(currentEmprunteur, connect);
 		lblNombreUnite.setText(String.valueOf(emprunteur.getUnite()));
 		contentPane.add(lblNombreUnite);
 

@@ -6,7 +6,6 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import dao.PretDAO;
 import exo.Emprunteur;
 import exo.Pret;
 import javax.swing.JLabel;
@@ -41,8 +40,8 @@ public class Voir_Reservation extends JFrame {
 		lblListeReservations.setBounds(10, 24, 153, 14);
 		contentPane.add(lblListeReservations);
 
-		PretDAO pretDAO = new PretDAO(connect);
-		List<Pret> listPret = pretDAO.findAllPretByEmprunteur(currentEmprunteur);
+		Pret p = new Pret();
+		List<Pret> listPret = p.findAllPretByEmprunteur(currentEmprunteur, connect);
 		Object[] reservation = listPret.toArray();
 
 		Object[] donnees = new Object[listPret.size()];
