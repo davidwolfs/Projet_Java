@@ -73,7 +73,7 @@ public class Reservation {
 	{
 		int lastID = 0;
 		ReservationDAO reservationDAO = new ReservationDAO(connect);
-		List<Reservation> listReservations = reservationDAO.findAllReservation();
+		List<Reservation> listReservations = reservationDAO.findAll();
 		
 		for(Reservation reservation : listReservations)
 		{

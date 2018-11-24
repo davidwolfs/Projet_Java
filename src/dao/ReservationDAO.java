@@ -83,7 +83,7 @@ public class ReservationDAO extends DAO<Reservation> {
 		return null;
 	}
 
-	public List<Reservation> findAllReservation() {
+	public List<Reservation> findAll() {
 		List<Reservation> listReservations = new ArrayList<>();
 		Reservation reservation = new Reservation();
 		try {
@@ -99,20 +99,4 @@ public class ReservationDAO extends DAO<Reservation> {
 		}
 		return listReservations;
 	}
-	
-	public int findLastIdReservation() {
-		int lastID = 0;
-		try {
-			ResultSet result = this.connect
-					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
-					.executeQuery("SELECT * FROM Reservation ORDER BY ID DESC");
-			if (result.first()) {
-				lastID = result.getInt("ID");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return lastID;
-	}
-
 }

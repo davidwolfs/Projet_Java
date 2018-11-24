@@ -152,7 +152,22 @@ public class Jeu {
 	public List<Jeu> findAllAvailable(Connection connect)
 	{
 		JeuDAO jeuDAO = new JeuDAO(connect);
-		List<Jeu> listJeux = jeuDAO.findAllAvailable();
+		List<Jeu> listJeux = jeuDAO.findAll();
+		
+		for(Jeu j : listJeux)
+		{
+			if(j.isDispo())
+			{
+				Console console = new Console();
+				console.setId(j.getConsole().getId());
+				console.setNom(j.getConsole().getNom());
+				this.setId(j.getId());
+				this.setNom(j.getNom());
+				this.setDispo(j.isDispo());
+				this.setTarif(j.getTarif());
+				this.setDateTarif(j.getDateTarif());
+			}
+		}
 		
 		return listJeux;
 	}

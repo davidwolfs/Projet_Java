@@ -9,6 +9,7 @@ import exo.Emprunteur;
 import exo.Exemplaire;
 import exo.Jeu;
 import exo.Pret;
+import exo.Preteur;
 import exo.Reservation;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -171,7 +172,9 @@ public class Passer_Reservation extends JFrame {
 					java.util.Date date = new java.util.Date();
 					Exemplaire exemplaire = new Exemplaire(jeu);
 					exemplaire = exemplaire.findExemplaireByIdJeu(jeu, connect);
-					if (exemplaire.isLastExemplaire(listJeu.get(index), connect)) {
+					Preteur preteur = new Preteur();
+					preteur.setiD(currentEmprunteur.getiD());
+					if (exemplaire.isLastExemplaire(listJeu.get(index), preteur, connect)) {
 						System.out.println("C EST LE LAST EXEMPLAIRE");
 
 					} else {

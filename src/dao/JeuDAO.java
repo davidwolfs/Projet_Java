@@ -194,49 +194,6 @@ public class JeuDAO extends DAO<Jeu>{
 		}
 		return listJeux;
 	}
-	
-	public List<Jeu> findAllAvailable(){
-		List<Jeu> listJeux = new ArrayList<>();
-		Jeu jeu = new Jeu();
-		try{
-			ResultSet result = this.connect.createStatement(
-					ResultSet.TYPE_SCROLL_INSENSITIVE,
-	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Jeu INNER JOIN Ligne_Jeu ON Jeu.ID = Ligne_Jeu.ID_Jeu INNER JOIN Console ON Ligne_Jeu.ID_Console = Console.ID WHERE Dispo = TRUE");
-			while(result.next())
-			{
-				Console console = new Console();
-				console.setId(result.getInt("ID_Console"));
-				console.setNom(result.getString("Console.NOM"));
-				jeu = new Jeu(result.getInt("ID"), result.getString("Jeu.Nom"), result.getBoolean("Dispo"),
-						result.getInt("Tarif"), result.getDate("DateTarif"), console);
-				listJeux.add(jeu);
-			}
-		}
-		catch(SQLException e){
-			e.printStackTrace();
-		}
-		return listJeux;
-	}
-	
-	public List<Jeu> findAll_LigneJeu(){
-		List<Jeu> listJeux = new ArrayList<>();
-		Jeu jeu = new Jeu();
-		try{
-			ResultSet result = this.connect.createStatement(
-					ResultSet.TYPE_SCROLL_INSENSITIVE,
-	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Jeu INNER JOIN Ligne_Jeu ON Jeu.ID = Ligne_Jeu.IDJeu INNER JOIN Console ON Console.ID = Ligne_Jeu.IDJeu");
-			while(result.next())
-			{
-				jeu = new Jeu(result.getInt("ID"), result.getString("Nom"), result.getBoolean("Dispo"),
-						result.getInt("Tarif"), result.getDate("DateTarif"));
-				listJeux.add(jeu);
-			}
-		}
-		catch(SQLException e){
-			e.printStackTrace();
-		}
-		return listJeux;
-	}
 
 	public List<Jeu> findAllJeu(){
 		List<Jeu> listJeux = new ArrayList<>();
@@ -257,27 +214,4 @@ public class JeuDAO extends DAO<Jeu>{
 		}
 		return listJeux;
 	}
-	
-	/*public boolean alreadyExist(Jeu jeu)
-	{
-		boolean existe = false;
-		try{
-			String sql = "SELECT * FROM Console INNER JOIN (Jeu INNER JOIN Ligne_Jeu ON Jeu.ID = Ligne_Jeu.ID_Jeu) ON Console.ID = Ligne_Jeu.ID_Console WHERE Jeu.Nom = " + "'" + jeu.getNom() + "'" + " AND Console.Nom = " + "'" + jeu.getConsole().getNom() + "'";
-			if(jeu.getId()>0) {
-				sql = sql + " AND Jeu.ID != " + jeu.getId();
-			}
-			System.out.println(sql);
-			ResultSet result = this.connect.createStatement(
-					ResultSet.TYPE_SCROLL_INSENSITIVE,
-	ResultSet.CONCUR_READ_ONLY).executeQuery(sql);
-			if(result.first())
-			{
-				existe = true;
-			}
-		}
-		catch(SQLException e){
-			e.printStackTrace();
-		}
-		return existe;
-	}*/
 }

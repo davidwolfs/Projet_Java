@@ -1,18 +1,13 @@
 package exo;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import dao.AdministrateurDAO;
-import dao.JeuDAO;
 
 public class Administrateur extends Personne {
-	private Connection connect;
-
+	
 	public Administrateur(int id, String nom, String prenom, Date date, String email, String password) {
 		super(id, nom, prenom, date, email, password);
 	}

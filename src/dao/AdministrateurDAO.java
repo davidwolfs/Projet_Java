@@ -18,11 +18,6 @@ public class AdministrateurDAO extends DAO<Administrateur> {
 
 	@Override
 	public boolean create(Administrateur administrateur) {
-		/*
-		 * Date maintenant = new Date(); SimpleDateFormat formatDateJour = new
-		 * SimpleDateFormat("dd-MM-yy"); String dateFormatee =
-		 * formatDateJour.format(maintenant);
-		 */
 		java.util.Date date = new java.util.Date();
 		date = administrateur.getDateNaiss();
 		System.out.println(new Timestamp(date.getTime()));
@@ -92,43 +87,6 @@ public class AdministrateurDAO extends DAO<Administrateur> {
 		return null;
 	}
 
-	/*public boolean findByEmailPassword(String email, String password) {
-		boolean existe = false;
-		Administrateur administrateur;
-		try {
-			ResultSet result = this.connect
-					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
-					.executeQuery("SELECT * FROM Administrateur WHERE Email = " + "\"" + email + "\" AND Password = "
-							+ "\"" + password + "\"");
-			if (result.first()) {
-				administrateur = new Administrateur(result.getInt("ID"), result.getString("Nom"),
-						result.getString("Prenom"), result.getDate("DateNaiss"), email, password);
-				existe = true;
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return existe;
-	}*/
-
-	/*public Administrateur findAdministrateurByEmailPassword(String email, String password) {
-		Administrateur administrateur = new Administrateur();
-		try {
-			ResultSet result = this.connect
-					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
-					.executeQuery("SELECT * FROM Administrateur WHERE Email = " + "\"" + email + "\" AND Password = "
-							+ "\"" + password + "\"");
-			if (result.first()) {
-				administrateur = new Administrateur(result.getInt("ID"), result.getString("Nom"),
-						result.getString("Prenom"), result.getDate("DateNaiss"), email, password);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return administrateur;
-	}*/
-
 	public List<Administrateur> findAll() {
 		List<Administrateur> listAdministrateurs = new ArrayList<>();
 		Administrateur administrateur = new Administrateur();
@@ -147,24 +105,4 @@ public class AdministrateurDAO extends DAO<Administrateur> {
 		}
 		return listAdministrateurs;
 	}
-
-	/*public boolean alreadyExist(Administrateur administrateur) {
-		boolean existe = false;
-		try {
-			String sql = "SELECT * FROM Administrateur WHERE Email = " + "\"" + administrateur.getEmail() + "\"";
-			if (administrateur.getiD() > 0) {
-				sql = sql + " AND Administrateur.ID != " + administrateur.getiD();
-			}
-			System.out.println(sql);
-			ResultSet result = this.connect
-					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery(sql);
-			if (result.first()) {
-				existe = true;
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return existe;
-	}*/
 }

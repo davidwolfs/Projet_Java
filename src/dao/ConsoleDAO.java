@@ -93,24 +93,4 @@ public class ConsoleDAO extends DAO<Console> {
 		}
 		return listConsole;
 	}
-
-	/*public boolean alreadyExist(Console console) {
-		boolean existe = false;
-		try {
-			String sql = "SELECT * FROM Console WHERE Nom = " + "'" + console.getNom() + "'";
-			if (console.getId() > 0) {
-				sql = sql + " AND Console.ID != " + console.getId();
-			}
-			System.out.println(sql);
-			ResultSet result = this.connect
-					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery(sql);
-			if (result.first()) {
-				existe = true;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return existe;
-	}*/
-
 }

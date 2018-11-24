@@ -126,65 +126,10 @@ public class PreteurDAO extends DAO<Preteur> {
 		try {
 			ResultSet result = this.connect
 					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
-					.executeQuery("SELECT * FROM Emprunteur WHERE ID <> 19");
+					.executeQuery("SELECT * FROM Preteur");
 			while (result.next()) {
 				preteur = new Preteur(result.getInt("ID"), result.getString("Nom"), result.getString("Prenom"),
-						result.getDate("DateNaiss"), result.getString("Email"), result.getString("Password"),
-						result.getInt("Unite"));
-				listPreteurs.add(preteur);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return listPreteurs;
-	}
-	
-	/*public boolean findByEmailPassword(String email, String password) {
-		boolean existe = false;
-		Preteur preteur = null;
-		try {
-			ResultSet result = this.connect
-					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
-					.executeQuery("SELECT * FROM Preteur WHERE Email = " + "\"" + email + "\" AND Password = " + "\""
-							+ password + "\"");
-			if (result.first()) {
-				preteur = new Preteur(result.getString("Nom"), result.getString("Prenom"), result.getDate("DateNaiss"),
-						email, password);
-				existe = true;
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return existe;
-	}*/
-
-	/*public Preteur findPreteurByEmailPassword(String email, String password) {
-		Preteur preteur = new Preteur();
-		try {
-			ResultSet result = this.connect
-					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
-					.executeQuery("SELECT * FROM Preteur WHERE Email = " + "\"" + email + "\" AND Password = " + "\""
-							+ password + "\"");
-			if (result.first()) {
-				preteur = new Preteur(result.getInt("ID"), result.getString("Nom"), result.getString("Prenom"),
-						result.getDate("DateNaiss"), email, password, result.getInt("Cote"));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return preteur;
-	}*/
-
-	public List<Preteur> findAllExceptcurrentPreteur(Preteur preteur) {
-		List<Preteur> listPreteurs = new ArrayList<>();
-		try {
-			ResultSet result = this.connect
-					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
-					.executeQuery("SELECT * FROM Preteur WHERE ID <> " + preteur.getiD());
-			while (result.next()) {
-				preteur = new Preteur(result.getInt("ID"), result.getString("Nom"), result.getString("Prenom"),
-						result.getDate("DateNaiss"), result.getString("Email"), result.getString("Password"),
+						result.getDate("DateNaiss"), result.getString("Email"), result.getString("Password"), 
 						result.getInt("Cote"), result.getInt("NombreCote"));
 				listPreteurs.add(preteur);
 			}
@@ -192,26 +137,6 @@ public class PreteurDAO extends DAO<Preteur> {
 			e.printStackTrace();
 		}
 		return listPreteurs;
-	}
-
-	public boolean alreadyExist(Preteur preteur) {
-		boolean existe = false;
-		try {
-			String sql = "SELECT * FROM Preteur WHERE Email = " + "\"" + preteur.getEmail() + "\"";
-			if (preteur.getiD() > 0) {
-				sql = sql + " AND Preteur.ID != " + preteur.getiD();
-			}
-			System.out.println(sql);
-			ResultSet result = this.connect
-					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery(sql);
-			if (result.first()) {
-				existe = true;
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return existe;
 	}
 
 	public boolean marquerPreteursEmprunteursCotes(Preteur preteur, Emprunteur emprunteur) {
@@ -232,6 +157,25 @@ public class PreteurDAO extends DAO<Preteur> {
 		return statementResult;
 	}
 
+	public List<Preteur> findAllCote() {
+		List<Preteur> listPreteurs = new ArrayList<>();
+		Preteur preteur = new Preteur();
+		try {
+			ResultSet result = this.connect
+					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
+					.executeQuery("SELECT * FROM Emprunteur INNER JOIN (Preteur INNER JOIN Cote ON Preteur.ID = Cote.IDPreteur) ON Emprunteur.ID = Cote.IDEmprunteur");
+			while (result.next()) {
+				preteur = new Preteur(result.getInt("ID"), result.getString("Nom"), result.getString("Prenom"),
+						result.getDate("DateNaiss"), result.getString("Email"), result.getString("Password"), 
+						result.getInt("Cote"), result.getInt("NombreCote"));
+				listPreteurs.add(preteur);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return listPreteurs;
+	}
+	
 	public boolean isAlreadyCote(Preteur preteur, Emprunteur emprunteur) {
 		boolean isAlreadyCote = false;
 		try {

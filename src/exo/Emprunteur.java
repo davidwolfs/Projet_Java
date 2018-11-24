@@ -3,13 +3,10 @@ package exo;
 import java.sql.Connection;
 import java.util.Date;
 import java.util.List;
-
-import dao.AdministrateurDAO;
 import dao.EmprunteurDAO;
 import dao.PreteurDAO;
 
 public class Emprunteur extends Joueur {
-	private Connection connect;
 	private int unite;
 	private double cote;
 	private int nbrCote = 0;
@@ -178,13 +175,13 @@ public class Emprunteur extends Joueur {
 		EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
 		List<Emprunteur> listEmprunteurs = emprunteurDAO.findAll();
 		
-		for(Emprunteur e : listEmprunteurs)
+		/*for(Emprunteur e : listEmprunteurs)
 		{
 			this.setNom(e.getNom());
 			this.setPrenom(e.getPrenom());
 			this.setDateNaiss(e.getDateNaiss());
 			this.setEmail(e.getEmail());
-		}
+		}*/
 		
 		return listEmprunteurs;
 	}
@@ -216,13 +213,20 @@ public class Emprunteur extends Joueur {
 		return e;
 	}
 	
-	//TODO
 	public Emprunteur findIdByEmprunteur(Emprunteur emprunteur, Connection connect) {
 		EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
-		Emprunteur e = emprunteurDAO.findIdByEmprunteur(emprunteur);
+		List<Emprunteur> listEmprunteurs = emprunteurDAO.findAll();
 		
+		for(Emprunteur e : listEmprunteurs)
+		{
+			if(e.getEmail().equals(emprunteur.getEmail()))
+			{
+				emprunteur = new Emprunteur(e.getiD(), e.getNom(),
+						e.getPrenom(), e.getDateNaiss(), email, password);
+			}
+		}
 		
-		return e;
+		return emprunteur;
 	}
 	
 	
@@ -244,7 +248,16 @@ public class Emprunteur extends Joueur {
 	
 	public List<Emprunteur> findAllExceptcurrentEmprunteur(Emprunteur emprunteur, Connection connect) {
 		EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
-		List<Emprunteur> listEmprunteurs = emprunteurDAO.findAllExceptcurrentEmprunteur(emprunteur);
+		List<Emprunteur> listEmprunteurs = emprunteurDAO.findAll();
+		
+		for(Emprunteur e : listEmprunteurs)
+		{
+			if(e.getiD() != (emprunteur.getiD()))
+			{
+				emprunteur = new Emprunteur(e.getiD(), e.getNom(),
+						e.getPrenom(), e.getDateNaiss(), e.getEmail(), e.getPassword(), e.getUnite(), e.getCote(), e.getNbrCote());
+			}
+		}
 		
 		return listEmprunteurs;
 	}

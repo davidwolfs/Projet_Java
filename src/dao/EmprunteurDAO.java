@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import exo.Emprunteur;
+import exo.Preteur;
 
 public class EmprunteurDAO extends DAO<Emprunteur> {
 
@@ -140,99 +141,13 @@ public class EmprunteurDAO extends DAO<Emprunteur> {
 
 	}
 
-	public Emprunteur findIdByEmprunteur(Emprunteur emprunteur) {
-		try {
-			ResultSet result = this.connect
-					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
-					.executeQuery("SELECT * FROM Emprunteur WHERE Email = " + "\"" + emprunteur.getEmail() + "\"");
-			if (result.first())
-				emprunteur = new Emprunteur(result.getInt("ID"), result.getString("Nom"), result.getString("Prenom"),
-						result.getDate("DateNaiss"), result.getString("Email"), result.getString("Password"),
-						result.getDate("Date_en"), result.getInt("Unite"), result.getInt("Cote"));
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return emprunteur;
-	}
-
-	/*public boolean findByEmailPassword(String email, String password) {
-		boolean existe = false;
-		Emprunteur emprunteur;
-		try {
-			ResultSet result = this.connect
-					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
-					.executeQuery("SELECT * FROM Emprunteur WHERE Email = " + "\"" + email + "\" AND Password = " + "\""
-							+ password + "\"");
-			if (result.first()) {
-				emprunteur = new Emprunteur(result.getInt("ID"), result.getString("Nom"), result.getString("Prenom"),
-						result.getDate("DateNaiss"), email, password);
-				existe = true;
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return existe;
-	}*/
-
-	public Emprunteur findEmprunteurById(Emprunteur emprunteur) {
-		try {
-			ResultSet result = this.connect
-					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
-					.executeQuery("SELECT * FROM Emprunteur WHERE ID = " + emprunteur.getiD());
-			if (result.first()) {
-				emprunteur = new Emprunteur(result.getInt("ID"), result.getString("Nom"), result.getString("Prenom"),
-						result.getDate("DateNaiss"), result.getString("Email"), result.getString("Password"),
-						result.getInt("Unite"));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return emprunteur;
-	}
-
-	/*public Emprunteur findEmprunteurByEmailPassword(String email, String password) {
-		Emprunteur emprunteur = new Emprunteur();
-		try {
-			ResultSet result = this.connect
-					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
-					.executeQuery("SELECT * FROM Emprunteur WHERE Email = " + "\"" + email + "\" AND Password = " + "\""
-							+ password + "\"");
-			if (result.first()) {
-				emprunteur = new Emprunteur(result.getInt("ID"), result.getString("Nom"), result.getString("Prenom"),
-						result.getDate("DateNaiss"), email, password, result.getInt("Unite"));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return emprunteur;
-	}*/
-
 	public List<Emprunteur> findAll() {
 		List<Emprunteur> listEmprunteurs = new ArrayList<>();
 		Emprunteur emprunteur = new Emprunteur();
 		try {
 			ResultSet result = this.connect
 					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
-					.executeQuery("SELECT * FROM Emprunteur WHERE ID <> 19");
-			while (result.next()) {
-				emprunteur = new Emprunteur(result.getInt("ID"), result.getString("Nom"), result.getString("Prenom"),
-						result.getDate("DateNaiss"), result.getString("Email"), result.getString("Password"),
-						result.getInt("Unite"));
-				listEmprunteurs.add(emprunteur);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return listEmprunteurs;
-	}
-
-	public List<Emprunteur> findAllExceptcurrentEmprunteur(Emprunteur emprunteur) {
-		List<Emprunteur> listEmprunteurs = new ArrayList<>();
-		try {
-			ResultSet result = this.connect
-					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
-					.executeQuery("SELECT * FROM Emprunteur WHERE ID <> " + emprunteur.getiD());
+					.executeQuery("SELECT * FROM Emprunteur");
 			while (result.next()) {
 				emprunteur = new Emprunteur(result.getInt("ID"), result.getString("Nom"), result.getString("Prenom"),
 						result.getDate("DateNaiss"), result.getString("Email"), result.getString("Password"),
@@ -244,24 +159,23 @@ public class EmprunteurDAO extends DAO<Emprunteur> {
 		}
 		return listEmprunteurs;
 	}
-
-	/*public boolean alreadyExist(Emprunteur emprunteur) {
-		boolean existe = false;
+	
+	public List<Emprunteur> findAllCote() {
+		List<Emprunteur> listEmprunteurs = new ArrayList<>();
+		Emprunteur emprunteur = new Emprunteur();
 		try {
-			String sql = "SELECT * FROM Emprunteur WHERE Email = " + "\"" + emprunteur.getEmail() + "\"";
-			if (emprunteur.getiD() > 0) {
-				sql = sql + " AND Emprunteur.ID != " + emprunteur.getiD();
-			}
-			System.out.println(sql);
 			ResultSet result = this.connect
-					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery(sql);
-			if (result.first()) {
-				existe = true;
+					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
+					.executeQuery("SELECT * FROM Emprunteur INNER JOIN (Preteur INNER JOIN Cote ON Preteur.ID = Cote.IDPreteur) ON Emprunteur.ID = Cote.IDEmprunteur");
+			while (result.next()) {
+				emprunteur = new Emprunteur(result.getInt("ID"), result.getString("Nom"), result.getString("Prenom"),
+						result.getDate("DateNaiss"), result.getString("Email"), result.getString("Password"), result.getInt("Unite"),
+						result.getInt("Cote"), result.getInt("NombreCote"));
+				listEmprunteurs.add(emprunteur);
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return existe;
-	}*/
+		return listEmprunteurs;
+	}
 }

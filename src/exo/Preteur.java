@@ -194,25 +194,19 @@ public class Preteur extends Joueur {
 	public List<Preteur> findAllExceptcurrentPreteur(Preteur preteur, Connection connect)
 	{
 		PreteurDAO preteurDAO = new PreteurDAO(connect);
-		List<Preteur> listPreteurs = preteurDAO.findAllExceptcurrentPreteur(preteur);
+		List<Preteur> listPreteurs = preteurDAO.findAll();
+		
+		for(Preteur p : listPreteurs)
+		{
+			if(p.getiD() != (preteur.getiD()))
+			{
+				preteur = new Preteur(p.getiD(), p.getNom(),
+						p.getPrenom(), p.getDateNaiss(), p.getEmail(), p.getPassword(), p.getCote(), p.getNbrCote());
+			}
+		}
 		
 		return listPreteurs;
 	}
-	
-	public boolean isAlreadyCote(Preteur preteur, Emprunteur emprunteur, Connection connect) {
-		boolean existe = false;
-		PreteurDAO preteurDAO = new PreteurDAO(connect);
-		boolean isalreadyCote = preteurDAO.isAlreadyCote(preteur, emprunteur);
-		
-		/*for(Preteur p : listPreteurs)
-		{
-	
-		}
-		System.out.println("methode already exist emprunteur");*/
-		
-		return isalreadyCote;
-	}
-	
 	
 	public boolean alreadyExist(Preteur preteur, Connection connect) {
 		boolean existe = false;
@@ -239,6 +233,13 @@ public class Preteur extends Joueur {
 		System.out.println("methode already exist emprunteur");
 		
 		return existe;
+	}
+	
+	public boolean isAlreadyCote(Preteur preteur, Emprunteur emprunteur, Connection connect) {
+		PreteurDAO preteurDAO = new PreteurDAO(connect);
+		boolean alreadyCote = preteurDAO.isAlreadyCote(preteur, emprunteur);
+		
+		return alreadyCote;
 	}
 	
 	@Override
