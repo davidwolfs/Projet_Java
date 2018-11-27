@@ -18,7 +18,12 @@ import javax.swing.ListSelectionModel;
 
 public class Liste_Jeux_A_Preter extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -43520900108954949L;
 	private JPanel contentPane;
+	@SuppressWarnings("unused")
 	private Connection connect;
 	@SuppressWarnings("unused")
 	private Preteur currentPreteur;
@@ -47,12 +52,9 @@ public class Liste_Jeux_A_Preter extends JFrame {
 		currentPreteur.setListExamplaire(listExemplaires);
 		List<Exemplaire> listExemplaire = currentPreteur.getListExemplaire();
 
-		Object[] exemplaire = listExemplaire.toArray();
-
 		Object[] donnees = new Object[listExemplaire.size()];
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yy");
-
-		System.out.println("SIZE : " + listExemplaire.size());
+		
 		for (int i = 0; i < listExemplaire.size(); i++) {
 			String dispo = " ";
 			if (listExemplaire.get(i).getJeu().isDispo()) {
@@ -60,8 +62,7 @@ public class Liste_Jeux_A_Preter extends JFrame {
 			} else {
 				dispo = "Indisponible";
 			}
-
-			System.out.println(listExemplaire.get(i).toString());
+			
 			donnees[i] = listExemplaire.get(i).getNbrExemplaire() + " - " + listExemplaire.get(i).getJeu().getNom()
 					+ " - " + listExemplaire.get(i).getJeu().getConsole().getNom() + " - " + dispo + " - " + "Tarif : "
 					+ listExemplaire.get(i).getJeu().getTarif() + " - " + "Date tarif : "

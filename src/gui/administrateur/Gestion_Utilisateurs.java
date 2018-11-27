@@ -22,6 +22,10 @@ import javax.swing.JScrollPane;
 
 public class Gestion_Utilisateurs extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8555210606447165855L;
 	private JPanel contentPane;
 
 	/**
@@ -48,7 +52,6 @@ public class Gestion_Utilisateurs extends JFrame {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yy");
 
 		for (int i = 0; i < listAdministrateur.size(); i++) {
-			System.out.println(listAdministrateur.get(i).toString());
 			donnees[i] = listAdministrateur.get(i).getNom() + " " + listAdministrateur.get(i).getPrenom() + " - "
 					+ simpleDateFormat.format(listAdministrateur.get(i).getDateNaiss()) + " - "
 					+ listAdministrateur.get(i).getEmail();
@@ -116,7 +119,6 @@ public class Gestion_Utilisateurs extends JFrame {
 				if (index == -1) {
 					lblMsgErrorAdministrateur.setText("Veuillez sélectionner un administrateur.");
 				} else {
-					System.out.println(index);
 					dispose();
 					Modifier_Administrateur modifier_Administrateur = new Modifier_Administrateur(connect,
 							currentAdministrateur, listAdministrateur.get(index));
@@ -135,7 +137,6 @@ public class Gestion_Utilisateurs extends JFrame {
 				
 				int index = listAdministrateurs.getSelectedIndex();
 				SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yy");
-				System.out.println(index);
 				if (index == -1) {
 					lblMsgErrorAdministrateur.setText("Veuillez sélectionner un administrateur.");
 				} else if (index == 0) {
@@ -147,8 +148,6 @@ public class Gestion_Utilisateurs extends JFrame {
 					int input = JOptionPane.showConfirmDialog(null,
 							"Êtes-vous sûr de bien vouloir supprimer votre propre compte administrateur ? Vous serez ensuite déconnecté.");
 					if (input == 0) {
-						int id = listAdministrateur.get(index).getiD();
-						System.out.println(id);
 						JOptionPane.showMessageDialog(null, "Votre compte administrateur a bien été supprimé.");
 						administrateur.delete(listAdministrateur.get(index), connect);
 						dispose();
@@ -158,8 +157,6 @@ public class Gestion_Utilisateurs extends JFrame {
 					int input = JOptionPane.showConfirmDialog(null,
 							"Êtes-vous sûr de bien vouloir supprimer cette administrateur ?");
 					if (input == 0) {
-						int id = listAdministrateur.get(index).getiD();
-						System.out.println(id);
 						administrateur.delete(listAdministrateur.get(index), connect);
 
 						dispose();
@@ -186,7 +183,6 @@ public class Gestion_Utilisateurs extends JFrame {
 		Object[] donnees2 = new Object[listEmprunteurs.size()];
 
 		for (int i = 0; i < listEmprunteurs.size(); i++) {
-			System.out.println(listEmprunteurs.get(i).toString());
 			donnees2[i] = listEmprunteurs.get(i).getNom() + " " + listEmprunteurs.get(i).getPrenom() + " - "
 					+ simpleDateFormat.format(listEmprunteurs.get(i).getDateNaiss()) + " - "
 					+ listEmprunteurs.get(i).getEmail() + " - " + listEmprunteurs.get(i).getUnite() + " U";
@@ -219,7 +215,6 @@ public class Gestion_Utilisateurs extends JFrame {
 				if (index == -1) {
 					lblMsgErrorParticipant.setText("Veuillez sélectionner un participant.");
 				} else {
-					System.out.println(index);
 					dispose();
 					Modifier_Participant modifier_Participant = new Modifier_Participant(connect, currentAdministrateur,
 							listEmprunteurs.get(index), p.find(listEmprunteurs.get(index).getiD(), connect));
@@ -238,7 +233,6 @@ public class Gestion_Utilisateurs extends JFrame {
 			
 			public void actionPerformed(ActionEvent e) {
 				int index = listEmprunteur.getSelectedIndex();
-				System.out.println(index);
 				if (index == -1) {
 					lblMsgErrorParticipant.setText("Veuillez sélectionner un participant.");
 				} else {
@@ -246,9 +240,8 @@ public class Gestion_Utilisateurs extends JFrame {
 							"Êtes-vous sûr de bien vouloir supprimer ce participant ?");
 					if (input == 0) {
 						int id = listEmprunteurs.get(index).getiD();
-						System.out.println(id);
-						emprunteur.delete(listEmprunteurs.get(index), connect);
-						preteur.delete(p.find(id, connect), connect);
+						emprunteur.rayerJoueur(listEmprunteurs.get(index), connect);
+						preteur.rayerJoueur(p.find(id, connect), connect);
 
 						dispose();
 						Gestion_Utilisateurs gestion_Utilisateurs = new Gestion_Utilisateurs(connect,

@@ -1,7 +1,6 @@
 package gui.emprunteur;
 
 import java.sql.Connection;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -17,7 +16,12 @@ import javax.swing.JScrollPane;
 
 public class Voir_Reservation extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1073186536044092320L;
 	private JPanel contentPane;
+	@SuppressWarnings("unused")
 	private Connection connect;
 	@SuppressWarnings("unused")
 	private Emprunteur currentEmprunteur;
@@ -42,10 +46,7 @@ public class Voir_Reservation extends JFrame {
 
 		Pret p = new Pret();
 		List<Pret> listPret = p.findAllPretByEmprunteur(currentEmprunteur, connect);
-		Object[] reservation = listPret.toArray();
-
 		Object[] donnees = new Object[listPret.size()];
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yy");
 
 		for (int i = 0; i < listPret.size(); i++) {
 
@@ -57,7 +58,6 @@ public class Voir_Reservation extends JFrame {
 				confirmer_pret = "En attente de confirmation par le prêteur";
 			}
 
-			System.out.println(listPret.get(i).toString());
 			donnees[i] = /*
 							 * "Date de réservation : " +
 							 * simpleDateFormat.format(listPret.get(i).getEmprunteur().getReservation().

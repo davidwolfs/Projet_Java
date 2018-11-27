@@ -14,11 +14,16 @@ import java.awt.event.ActionEvent;
 
 public class Ajouter_Console extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7907158422454634533L;
 	private JPanel contentPane;
 	private JTextField textFieldNom;
 	private JButton btnAjouterConsole;
 	private JLabel labelMsgErreur;
 	private JButton btnRetour;
+	@SuppressWarnings("unused")
 	private Connection connect;
 
 	/**

@@ -1,5 +1,6 @@
 package exo;
 
+import java.sql.Connection;
 import java.util.Date;
 
 public abstract class Joueur extends Personne {
@@ -47,9 +48,7 @@ public abstract class Joueur extends Personne {
 		this.date_en = date_en;
 	}
 
-	public void rayerJoueur() {
-
-	}
+	public abstract void rayerJoueur(Joueur joueur, Connection connect);
 	
 	public abstract double CalculerMoyenneCote();
 

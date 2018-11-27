@@ -13,9 +13,14 @@ import java.awt.event.ActionEvent;
 
 public class Dashboard_Emprunteur extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5550832703424208099L;
 	private JPanel contentPane;
 	@SuppressWarnings("unused")
 	private Emprunteur currentEmprunteur;
+	@SuppressWarnings("unused")
 	private Connection connect;
 
 	/**
@@ -35,7 +40,6 @@ public class Dashboard_Emprunteur extends JFrame {
 				+ ", vous êtes connecté en tant que : Emprunteur");
 		lblBienvenue.setBounds(10, 26, 414, 24);
 		contentPane.add(lblBienvenue);
-		System.out.println(currentEmprunteur.getUnite());
 		JButton btnDeconnexion = new JButton("D\u00E9connexion");
 		btnDeconnexion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {

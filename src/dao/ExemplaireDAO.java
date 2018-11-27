@@ -103,7 +103,7 @@ public class ExemplaireDAO extends DAO<Exemplaire> {
 		}
 		return listExemplaire;
 	}
-	
+
 	public List<Exemplaire> findAll(Preteur currentPreteur) {
 		List<Exemplaire> listExemplaire = new ArrayList<>();
 		Jeu jeu;

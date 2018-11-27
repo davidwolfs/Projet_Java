@@ -15,7 +15,12 @@ import java.awt.event.ActionEvent;
 
 public class Attribuer_Cote extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8925634245375056477L;
 	private JPanel contentPane;
+	@SuppressWarnings("unused")
 	private Connection connect;
 	@SuppressWarnings("unused")
 	private Emprunteur currentEmprunteur;
@@ -57,8 +62,6 @@ public class Attribuer_Cote extends JFrame {
 				if (cote <= 0) {
 					lblMsgErrorEmprunteur.setText("Veuillez indiquer une cote de 1 à 5.");
 				} else {
-					System.out.println(cote);
-					System.out.println(preteurACoter);
 					preteurACoter.setCote(cote);
 					preteurACoter.incrementerNbrCote();
 					Preteur preteur = new Preteur();

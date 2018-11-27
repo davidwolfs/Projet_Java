@@ -16,7 +16,6 @@ import exo.Jeu;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.JSpinner;
@@ -24,9 +23,14 @@ import javax.swing.SpinnerNumberModel;
 
 public class Modifier_Jeu extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1359226715577926028L;
 	private JPanel contentPane;
 	private JTextField textFieldNom;
 	private JTextField textFieldTarif;
+	@SuppressWarnings("unused")
 	private Connection connect;
 	@SuppressWarnings("unused")
 	private Jeu jeuAModifier;
@@ -104,13 +108,9 @@ public class Modifier_Jeu extends JFrame {
 		Console c = new Console();
 		List<Console> listConsole = c.findAll(connect);
 
-		Object[] console = listConsole.toArray();
-
 		Object[] donnees = new Object[listConsole.size()];
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yy");
 
 		for (int i = 0; i < listConsole.size(); i++) {
-			System.out.println(listConsole.get(i).toString());
 			donnees[i] = listConsole.get(i).getNom();
 		}
 
@@ -123,7 +123,6 @@ public class Modifier_Jeu extends JFrame {
 				index = i;
 			}
 		}
-		System.out.println("Index : " + index);
 		listConsoles.setSelectedIndex(index);
 		contentPane.add(listConsoles);
 
@@ -163,14 +162,11 @@ public class Modifier_Jeu extends JFrame {
 					jeuAModifier.setDispo((chckbxDisponibilite.isSelected()));
 					jeuAModifier.setTarif((Double.parseDouble(textFieldTarif.getText())));
 					jeuAModifier.setDateTarif(new Timestamp(date.getTime()));
-					System.out
-							.println("index selected : " + listConsole.get(listConsoles.getSelectedIndex()).toString());
 					jeuAModifier.setConsole(listConsole.get(listConsoles.getSelectedIndex()));
 					if (jeuAModifier.alreadyExist(jeuAModifier, connect)) {
 						labelMsgErreur.setText("Ce jeu existe déjà pour cette console.");
 
 					} else {
-						System.out.println(chckbxDisponibilite.getText().isEmpty());
 
 						jeuAModifier.adapterTarif((double) spinnerDiminuerTarif.getValue());
 						jeu.update(jeuAModifier, connect);

@@ -15,16 +15,19 @@ import exo.Jeu;
 import exo.Preteur;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
-import java.text.SimpleDateFormat;
 import java.util.List;
-
 import java.awt.event.ActionEvent;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
 public class Ajouter_Exemplaire extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8557487527970742323L;
 	private JPanel contentPane;
+	@SuppressWarnings("unused")
 	private Connection connect;
 	@SuppressWarnings("unused")
 	private Preteur currentPreteur;
@@ -89,13 +92,9 @@ public class Ajouter_Exemplaire extends JFrame {
 		contentPane.add(lblListeConsoles);
 		Console c = new Console();
 		List<Console> listConsole = c.findAll(connect);
-		Object[] console = listConsole.toArray();
 
 		Object[] donnees = new Object[listConsole.size()];
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yy");
-
 		for (int i = 0; i < listConsole.size(); i++) {
-			System.out.println(listConsole.get(i).toString());
 			donnees[i] = listConsole.get(i).getNom();
 		}
 
@@ -111,7 +110,7 @@ public class Ajouter_Exemplaire extends JFrame {
 				index = i;
 			}
 		}
-		System.out.println("Index : " + index);
+		
 		listConsoles.setSelectedIndex(index);
 		contentPane.add(listConsoles);
 
@@ -144,7 +143,6 @@ public class Ajouter_Exemplaire extends JFrame {
 
 			public void actionPerformed(ActionEvent e) {
 				if (champsVide()) {
-					System.out.println(spinnerNombreExemplaires.getValue());
 					Jeu jeu = new Jeu();
 					Exemplaire ex = new Exemplaire();
 					jeuAModifier.setNom(lblNom2.getText());
@@ -168,8 +166,6 @@ public class Ajouter_Exemplaire extends JFrame {
 						labelMsgErreur.setText("Ce jeu existe déjà pour cette console.");
 
 					} else {
-						System.out.println("Nombre d'exemplaires : " + currentPreteur.getListExemplaire().size());
-						System.out.println(currentPreteur.getListExemplaire());
 						dispose();
 						Liste_Jeux liste_Jeux = new Liste_Jeux(connect, currentPreteur);
 						liste_Jeux.setVisible(true);

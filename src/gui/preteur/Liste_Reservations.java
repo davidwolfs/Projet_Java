@@ -3,7 +3,6 @@ package gui.preteur;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -23,7 +22,12 @@ import javax.swing.ListSelectionModel;
 
 public class Liste_Reservations extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3604722132557838656L;
 	private JPanel contentPane;
+	@SuppressWarnings("unused")
 	private Connection connect;
 	@SuppressWarnings("unused")
 	private Preteur currentPreteur;
@@ -50,10 +54,7 @@ public class Liste_Reservations extends JFrame {
 		Pret p = new Pret();
 		List<Pret> listPret = p.findAll(emprunteur, connect);
 
-		Object[] pret = listPret.toArray();
-
 		Object[] donnees = new Object[listPret.size()];
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yy");
 
 		for (int i = 0; i < listPret.size(); i++) {
 			String confirmer_pret = " ";
@@ -122,13 +123,10 @@ public class Liste_Reservations extends JFrame {
 		btnConfirmer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				int index = listPrets.getSelectedIndex();
-				System.out.println(index);
 				if (index == -1) {
 					lblMsgError.setText("Veuillez sélectionner un prêt.");
 				} else {
-					System.out.println(index);
 					if (p.sameReservationFound(listPret.get(index).getExemplaire(), connect)) {
-						System.out.println("Même réservation trouvée.");
 						List<Pret> listPret = p.findAll(emprunteur, connect);
 						Emprunteur emprunteur = new Emprunteur();
 						List<Pret> listPretEmprunteur = p
@@ -137,12 +135,9 @@ public class Liste_Reservations extends JFrame {
 						Pret pret = new Pret();
 						pret.setId(listPretEmprunteur.get(0).getId());
 						emprunteur.setiD(listPretEmprunteur.get(0).getEmprunteur().getiD());
-						System.out.println(listPretEmprunteur.get(0).getEmprunteur().getiD());
 						pret.update_Pret_Emprunteur(emprunteur, pret, connect);
 
 						for (int i = 1; i < listPretEmprunteur.size(); i++) {
-
-							System.out.println(listPretEmprunteur.get(i));
 							pret.delete_Pret_Emprunteur(listPretEmprunteur.get(i), connect);
 						}
 
@@ -152,19 +147,12 @@ public class Liste_Reservations extends JFrame {
 						Emprunteur emprunteurACrediter = new Emprunteur();
 						emprunteurACrediter.setiD(currentPreteur.getiD());
 						emprunteurACrediter = emprunteur.findEmprunteurById(emprunteurACrediter, connect);
-						System.out.println(
-								"Unite de l'emprunteur : " + listPretEmprunteur.get(0).getEmprunteur().getUnite());
-						System.out.println("Unite de prêteur: " + emprunteurACrediter.getUnite());
-
 						emprunteurADebiter
 								.soustraireUnite((int) listPretEmprunteur.get(0).getExemplaire().getJeu().getTarif());
 
 						emprunteurACrediter.setiD(currentPreteur.getiD());
 						emprunteurACrediter
 								.ajouterUnite(((int) listPretEmprunteur.get(0).getExemplaire().getJeu().getTarif()));
-						System.out.println(
-								"Unite de l'emprunteur : " + listPretEmprunteur.get(0).getEmprunteur().getUnite());
-						System.out.println("Unite de prêteur: " + emprunteurACrediter.getUnite());
 						emprunteur.updateUnite(emprunteurADebiter, connect);
 						emprunteur.updateUnite(emprunteurACrediter, connect);
 						pret.update_Confirmation(listPretEmprunteur.get(0), connect);
@@ -174,7 +162,6 @@ public class Liste_Reservations extends JFrame {
 						exemplaire.update(listPretEmprunteur.get(0).getExemplaire(), connect);
 						Jeu jeu = new Jeu();
 						jeu.update_Dispo_False(listPretEmprunteur.get(0).getExemplaire().getJeu(), connect);
-						System.out.println(listPretEmprunteur.get(0).isConfirmer_pret());
 						Liste_Reservations liste_Reservations = new Liste_Reservations(connect, currentPreteur);
 						liste_Reservations.setVisible(true);
 						liste_Reservations.setResizable(false);
@@ -186,22 +173,16 @@ public class Liste_Reservations extends JFrame {
 						Emprunteur emprunteurACrediter = new Emprunteur();
 						emprunteurACrediter.setiD(currentPreteur.getiD());
 						emprunteurACrediter = e.findEmprunteurById(emprunteurACrediter, connect);
-						System.out.println(listPret.get(index));
-						System.out.println("Unite de l'emprunteur : " + listPret.get(index).getEmprunteur().getUnite());
-						System.out.println("Unite de prêteur: " + emprunteurACrediter.getUnite());
 						emprunteurADebiter
 								.soustraireUnite((int) listPret.get(index).getExemplaire().getJeu().getTarif());
 
 						emprunteurACrediter.setiD(currentPreteur.getiD());
 						emprunteurACrediter
 								.ajouterUnite(((int) listPret.get(index).getExemplaire().getJeu().getTarif()));
-						System.out.println("Unite de l'emprunteur : " + listPret.get(index).getEmprunteur().getUnite());
-						System.out.println("Unite de prêteur: " + emprunteurACrediter.getUnite());
 						e.updateUnite(emprunteurADebiter, connect);
 						e.updateUnite(emprunteurACrediter, connect);
 						p.update_Confirmation(listPret.get(index), connect);
 						p.update_Pret_Preteur(currentPreteur, listPret.get(index), connect);
-						System.out.println(listPret.get(index).isConfirmer_pret());
 						Liste_Reservations liste_Reservations = new Liste_Reservations(connect, currentPreteur);
 						liste_Reservations.setVisible(true);
 						liste_Reservations.setResizable(false);

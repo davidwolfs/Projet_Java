@@ -3,12 +3,7 @@ package exo;
 import java.sql.Connection;
 import java.util.Date;
 import java.util.List;
-
-import dao.ConsoleDAO;
-import dao.EmprunteurDAO;
-import dao.JeuDAO;
 import dao.PretDAO;
-import dao.ReservationDAO;
 
 public class Pret {
 	private int id;
@@ -202,7 +197,6 @@ public class Pret {
 	
 	public List<Pret> getPretEmprunteurSortByPriorites(Exemplaire exemplaire, Connection connect)
 	{
-		boolean reservationFound = false;
 		PretDAO pretDAO = new PretDAO(connect);
 		List<Pret> listPret = pretDAO.getPretEmprunteurSortByPriorites(exemplaire);
 		

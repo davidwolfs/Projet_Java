@@ -20,7 +20,6 @@ public class AdministrateurDAO extends DAO<Administrateur> {
 	public boolean create(Administrateur administrateur) {
 		java.util.Date date = new java.util.Date();
 		date = administrateur.getDateNaiss();
-		System.out.println(new Timestamp(date.getTime()));
 		boolean statementResult;
 		try {
 			Statement statement = connect.createStatement();
@@ -60,7 +59,6 @@ public class AdministrateurDAO extends DAO<Administrateur> {
 
 	@Override
 	public boolean update(Administrateur administrateur) {
-		System.out.println("Mon objet depuis la méthode update : " + administrateur);
 		boolean statementResult;
 		try {
 			Statement statement = connect.createStatement();

@@ -20,6 +20,10 @@ import javax.swing.ListSelectionModel;
 
 public class Coter_Emprunteurs extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5173004681407778032L;
 	private JPanel contentPane;
 	@SuppressWarnings("unused")
 	private Connection connect;
@@ -62,7 +66,6 @@ public class Coter_Emprunteurs extends JFrame {
 		java.text.DecimalFormat df = new java.text.DecimalFormat("0.#");
 
 		for (int i = 0; i < listEmprunteur.size(); i++) {
-			System.out.println(listEmprunteur.get(i).toString());
 			donnees2[i] = listEmprunteur.get(i).getNom() + " " + listEmprunteur.get(i).getPrenom() + " - "
 					+ simpleDateFormat.format(listEmprunteur.get(i).getDateNaiss()) + " - "
 					+ listEmprunteur.get(i).getEmail() + " - " + listEmprunteur.get(i).getUnite() + " U" + " - " + " - "
@@ -102,7 +105,6 @@ public class Coter_Emprunteurs extends JFrame {
 				if (index == -1) {
 					lblMsgErrorEmprunteur.setText("Veuillez sélectionner un emprunteur.");
 				} else {
-					System.out.println(index);
 					dispose();
 					Attribuer_Cote attribuer_Cote = new Attribuer_Cote(connect, currentPreteur,
 							listEmprunteur.get(index));

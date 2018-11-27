@@ -8,7 +8,6 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import exo.Emprunteur;
-import exo.Preteur;
 
 public class EmprunteurDAO extends DAO<Emprunteur> {
 
@@ -22,7 +21,6 @@ public class EmprunteurDAO extends DAO<Emprunteur> {
 		java.util.Date date = new java.util.Date();
 		java.util.Date currentDate = new java.util.Date();
 		date = emprunteur.getDateNaiss();
-		System.out.println(new Timestamp(date.getTime()));
 
 		boolean statementResult;
 		try {
@@ -63,7 +61,6 @@ public class EmprunteurDAO extends DAO<Emprunteur> {
 
 	@Override
 	public boolean update(Emprunteur emprunteur) {
-		System.out.println("Mon objet depuis la méthode update : " + emprunteur);
 		boolean statementResult;
 		try {
 			Statement statement = connect.createStatement();
@@ -85,7 +82,6 @@ public class EmprunteurDAO extends DAO<Emprunteur> {
 	}
 
 	public boolean updateCote_NombreCote(Emprunteur emprunteur) {
-		System.out.println("Mon objet depuis la méthode update : " + emprunteur);
 		boolean statementResult;
 		try {
 			Statement statement = connect.createStatement();
@@ -104,8 +100,6 @@ public class EmprunteurDAO extends DAO<Emprunteur> {
 	}
 
 	public boolean updateUnite(Emprunteur emprunteur) {
-		System.out.println("Mon objet depuis la méthode update : " + emprunteur.getiD() + " " + emprunteur.getNom()
-				+ " " + emprunteur.getPrenom());
 		boolean statementResult;
 		try {
 			Statement statement = connect.createStatement();

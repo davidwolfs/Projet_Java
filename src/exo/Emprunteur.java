@@ -1,10 +1,10 @@
 package exo;
 
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import dao.EmprunteurDAO;
-import dao.PreteurDAO;
 
 public class Emprunteur extends Joueur {
 	private int unite;
@@ -130,7 +130,6 @@ public class Emprunteur extends Joueur {
 				moyenneCote = (cote / nbrCote);
 				
 			}
-			System.out.println(moyenneCote);
 		}
 		catch(ArithmeticException ex)
 		{
@@ -164,10 +163,10 @@ public class Emprunteur extends Joueur {
 		emprunteurDAO.updateUnite(emprunteur);
 	}
 	
-	public void delete(Emprunteur emprunteur, Connection connect)
+	public void rayerJoueur(Joueur joueur, Connection connect)
 	{
 		EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
-		emprunteurDAO.delete(emprunteur);
+		emprunteurDAO.delete((Emprunteur)joueur);
 	}
 	
 	public List<Emprunteur> findAll(Connection connect)
@@ -186,6 +185,7 @@ public class Emprunteur extends Joueur {
 		return listEmprunteurs;
 	}
 	
+	@SuppressWarnings("unused")
 	public boolean findByEmailPassword(String email, String password, Connection connect) {
 		boolean existe = false;
 		EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
@@ -249,6 +249,7 @@ public class Emprunteur extends Joueur {
 	public List<Emprunteur> findAllExceptcurrentEmprunteur(Emprunteur emprunteur, Connection connect) {
 		EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
 		List<Emprunteur> listEmprunteurs = emprunteurDAO.findAll();
+		List<Emprunteur> listPreteursExceptCurrentEmprunteur = new ArrayList<>();
 		
 		for(Emprunteur e : listEmprunteurs)
 		{
@@ -256,10 +257,11 @@ public class Emprunteur extends Joueur {
 			{
 				emprunteur = new Emprunteur(e.getiD(), e.getNom(),
 						e.getPrenom(), e.getDateNaiss(), e.getEmail(), e.getPassword(), e.getUnite(), e.getCote(), e.getNbrCote());
+				listPreteursExceptCurrentEmprunteur.add(emprunteur);
 			}
 		}
 		
-		return listEmprunteurs;
+		return listPreteursExceptCurrentEmprunteur;
 	}
 	
 	public boolean alreadyExist(Emprunteur emprunteur, Connection connect) {

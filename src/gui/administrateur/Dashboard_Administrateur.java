@@ -13,7 +13,12 @@ import java.awt.event.ActionEvent;
 
 public class Dashboard_Administrateur extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4972326230545344791L;
 	private JPanel contentPane;
+	@SuppressWarnings("unused")
 	private Connection connect;
 	@SuppressWarnings("unused")
 	private Administrateur currentAdministrateur;

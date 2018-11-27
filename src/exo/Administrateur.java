@@ -54,6 +54,7 @@ public class Administrateur extends Personne {
 		return listAdministrateurs;
 	}
 	
+	@SuppressWarnings("unused")
 	public boolean findByEmailPassword(String email, String password, Connection connect) {
 		boolean existe = false;
 		AdministrateurDAO administrateurDAO = new AdministrateurDAO(connect);

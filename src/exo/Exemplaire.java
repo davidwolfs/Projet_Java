@@ -2,9 +2,8 @@ package exo;
 
 import java.sql.Connection;
 import java.util.List;
-
 import dao.ExemplaireDAO;
-import dao.JeuDAO;
+
 
 public class Exemplaire {
 	private int id;
@@ -97,6 +96,7 @@ public class Exemplaire {
 		return listExemplaires.size();
 	}
 	
+	@SuppressWarnings("unused")
 	public boolean isLastExemplaire(Jeu jeu, Preteur preteur, Connection connect)
 	{
 		boolean lastExemplaire = false;

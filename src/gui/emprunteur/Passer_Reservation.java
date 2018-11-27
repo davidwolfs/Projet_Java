@@ -28,10 +28,15 @@ import javax.swing.JScrollPane;
 
 public class Passer_Reservation extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7406286562825163838L;
 	private JPanel contentPane;
 	private JButton btnReservation;
 	@SuppressWarnings("rawtypes")
 	private JList list;
+	@SuppressWarnings("unused")
 	private Connection connect;
 	@SuppressWarnings("unused")
 	private Emprunteur currentEmprunteur;
@@ -56,7 +61,6 @@ public class Passer_Reservation extends JFrame {
 
 		Jeu j = new Jeu();
 		List<Jeu> listJeu = j.findAllAvailable(connect);
-		Object[] jeu = listJeu.toArray();
 
 		Object[] donnees = new Object[listJeu.size()];
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yy");
@@ -68,8 +72,7 @@ public class Passer_Reservation extends JFrame {
 			} else {
 				dispo = "Indisponible";
 			}
-
-			System.out.println(listJeu.get(i).toString());
+			
 			donnees[i] = listJeu.get(i).getNom() + " - " + listJeu.get(i).getConsole().getNom() + " - " + "Tarif : "
 					+ listJeu.get(i).getTarif() + " - " + simpleDateFormat.format(listJeu.get(i).getDateTarif()) + " - "
 					+ dispo;
@@ -138,8 +141,6 @@ public class Passer_Reservation extends JFrame {
 
 					dateDebut = new Timestamp(dateDebut.getTime());
 					dateFin = new Timestamp(dateFin.getTime());
-					System.out.println(dateDebut);
-					System.out.println(dateFin);
 
 					int res = dateDebut.compareTo(dateFin);
 
@@ -152,15 +153,13 @@ public class Passer_Reservation extends JFrame {
 				return valid;
 			}
 
+			@SuppressWarnings("unused")
 			public void actionPerformed(ActionEvent e) {
 				int index = listJeux.getSelectedIndex();
-				System.out.println(index);
 				if (index == -1) {
 					lblMsgError.setText("Veuillez sélectionner un jeu.");
 				} else if (champsVide()) {
 					int id = listJeu.get(index).getId();
-					System.out.println("JEU SELECTIONNE : " + listJeu.get(index));
-					System.out.println(id);
 					dispose();
 					Passer_Reservation passer_Reservation = new Passer_Reservation(connect, currentEmprunteur);
 					passer_Reservation.setVisible(true);
@@ -181,13 +180,10 @@ public class Passer_Reservation extends JFrame {
 						exemplaire.update(exemplaire, connect);
 					}
 					exemplaire.setJeu(jeu);
-					System.out.println(exemplaire.getId());
 					Reservation reservation = new Reservation(new Timestamp(date.getTime()), jeu);
 					reservation.setId(-1);
 					Pret pret = new Pret(dateChooserDateDebut.getDate(), dateChooserDateFin.getDate(),
 							currentEmprunteur);
-					System.out.println(pret);
-					System.out.println("ID RESERVATION : " + reservation.getId());
 					Emprunteur emprunteur = new Emprunteur();
 					emprunteur = emprunteur.findIdByEmprunteur(currentEmprunteur, connect);
 					reservation.createReservation(reservation, emprunteur, connect);

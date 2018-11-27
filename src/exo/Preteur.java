@@ -1,18 +1,12 @@
 package exo;
 
 import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import dao.AdministrateurDAO;
-import dao.EmprunteurDAO;
 import dao.PreteurDAO;
 
 public class Preteur extends Joueur {
-	private Connection connect;
 	private List<Exemplaire> listExemplaire = new ArrayList<>();
 	private double cote;
 	private int nbrCote = 0;
@@ -93,7 +87,6 @@ public class Preteur extends Joueur {
 				moyenneCote = (cote / nbrCote);
 
 			}
-			System.out.println(moyenneCote);
 		} catch (ArithmeticException ex) {
 			ex.getMessage();
 		}
@@ -125,10 +118,10 @@ public class Preteur extends Joueur {
 		preteurDAO.marquerPreteursEmprunteursCotes(preteur, emprunteur);
 	}
 	
-	public void delete(Preteur preteur, Connection connect)
+	public void rayerJoueur(Joueur joueur, Connection connect)
 	{
 		PreteurDAO preteurDAO = new PreteurDAO(connect);
-		preteurDAO.delete(preteur);
+		preteurDAO.delete((Preteur)joueur);
 	}
 	
 	public Preteur find(int id, Connection connect)
@@ -155,6 +148,7 @@ public class Preteur extends Joueur {
 		return listPreteurs;
 	}
 	
+	@SuppressWarnings("unused")
 	public boolean findByEmailPassword(String email, String password, Connection connect) {
 		boolean existe = false;
 		PreteurDAO preteurDAO = new PreteurDAO(connect);
@@ -195,17 +189,19 @@ public class Preteur extends Joueur {
 	{
 		PreteurDAO preteurDAO = new PreteurDAO(connect);
 		List<Preteur> listPreteurs = preteurDAO.findAll();
-		
+		List<Preteur> listPreteursExceptCurrentPreteur = new ArrayList<>();
+				
 		for(Preteur p : listPreteurs)
 		{
 			if(p.getiD() != (preteur.getiD()))
 			{
 				preteur = new Preteur(p.getiD(), p.getNom(),
 						p.getPrenom(), p.getDateNaiss(), p.getEmail(), p.getPassword(), p.getCote(), p.getNbrCote());
+				listPreteursExceptCurrentPreteur.add(preteur);
 			}
 		}
 		
-		return listPreteurs;
+		return listPreteursExceptCurrentPreteur;
 	}
 	
 	public boolean alreadyExist(Preteur preteur, Connection connect) {

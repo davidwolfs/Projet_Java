@@ -30,7 +30,6 @@ public class PretDAO extends DAO<Pret> {
 	}
 
 	public boolean create_Pret(Pret pret, Emprunteur emprunteur, Exemplaire exemplaire) {
-		System.out.println("ID EXEMPLAIRE : " + exemplaire.getId());
 		java.util.Date dateDebut = new java.util.Date();
 		java.util.Date dateFin = new java.util.Date();
 		dateDebut = pret.getDateDebut();
@@ -84,7 +83,6 @@ public class PretDAO extends DAO<Pret> {
 	}
 
 	public boolean update_Confirmation(Pret pret) {
-		System.out.println("Mon objet depuis la méthode update : " + pret);
 		boolean statementResult;
 		try {
 			Statement statement = connect.createStatement();
@@ -103,7 +101,6 @@ public class PretDAO extends DAO<Pret> {
 	}
 
 	public boolean update_Pret_Emprunteur(Emprunteur emprunteur, Pret pret) {
-		System.out.println("Mon objet depuis la méthode update : " + emprunteur);
 		boolean statementResult;
 		try {
 			Statement statement = connect.createStatement();
@@ -121,7 +118,6 @@ public class PretDAO extends DAO<Pret> {
 	}
 
 	public boolean update_Pret_Preteur(Preteur preteur, Pret pret) {
-		System.out.println("Mon objet depuis la méthode update : " + pret);
 		boolean statementResult;
 		try {
 			Statement statement = connect.createStatement();
@@ -167,17 +163,14 @@ public class PretDAO extends DAO<Pret> {
 				console.setNom(result.getString("NOMCONSOLE"));
 				jeu.setId(result.getInt("ID_JEU"));
 				JeuDAO jeuDAO = new JeuDAO(connect);
-				System.out.println("ID DU JEU : " + jeu.getId());
 				jeu = jeuDAO.find(jeu.getId());
 				jeu.setNom(jeu.getNom());
-				System.out.println("ID JEU : " + jeu.getId());
 				jeu.setNom(result.getString("NOMJEU"));
 				jeu.setDispo(result.getBoolean("DISPO"));
 				jeu.setTarif(result.getDouble("TARIF"));
 				jeu.setDateTarif(result.getDate("DATETARIF"));
 				jeu.setConsole(console);
 				exemplaire.setJeu(jeu);
-				System.out.println("Exemplaire : " + exemplaire);
 				// reservation.setId(result.getInt("ID_Reservation"));
 				reservation.setDateReservation(result.getDate("DATERESERVATION"));
 				reservation.setJeu(jeu);
@@ -278,7 +271,6 @@ public class PretDAO extends DAO<Pret> {
 		Jeu jeu;
 		Console console;
 		Pret pret;
-		Reservation reservation;
 		Preteur preteur;
 		try {
 			ResultSet result = this.connect
@@ -296,7 +288,6 @@ public class PretDAO extends DAO<Pret> {
 				console.setNom(result.getString("NOMCONSOLE"));
 				jeu.setId(result.getInt("IDJEU"));
 				jeu.setNom(result.getString("NOMJEU"));
-				System.out.println("NOM DU JEU  : " + jeu.getNom());
 				/*
 				 * jeu.setDispo(result.getBoolean("Dispo"));
 				 * jeu.setTarif(result.getDouble("Tarif"));

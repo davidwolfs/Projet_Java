@@ -15,7 +15,12 @@ import java.awt.event.ActionEvent;
 
 public class Dashboard_Preteur extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 580979136656844193L;
 	private JPanel contentPane;
+	@SuppressWarnings("unused")
 	private Connection connect;
 	@SuppressWarnings("unused")
 	private Preteur currentPreteur;

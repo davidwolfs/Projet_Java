@@ -18,7 +18,12 @@ import javax.swing.ListSelectionModel;
 
 public class Liste_Jeux extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3663445351038537103L;
 	private JPanel contentPane;
+	@SuppressWarnings("unused")
 	private Connection connect;
 	@SuppressWarnings("unused")
 	private Preteur currentPreteur;
@@ -43,8 +48,7 @@ public class Liste_Jeux extends JFrame {
 
 		Jeu j = new Jeu();
 		List<Jeu> listJeu = j.findAll(connect);
-		
-		Object[] jeu = listJeu.toArray();
+
 
 		Object[] donnees = new Object[listJeu.size()];
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yy");
@@ -56,8 +60,7 @@ public class Liste_Jeux extends JFrame {
 			} else {
 				dispo = "Indisponible";
 			}
-
-			System.out.println(listJeu.get(i).toString());
+			
 			donnees[i] = listJeu.get(i).getNom() + " - " + dispo + " - " + listJeu.get(i).getTarif() + " - "
 					+ simpleDateFormat.format(listJeu.get(i).getDateTarif()) + " - "
 					+ listJeu.get(i).getConsole().getNom();
@@ -79,7 +82,6 @@ public class Liste_Jeux extends JFrame {
 				if (index == -1) {
 					lblMsgErrorJeux.setText("Veuillez sélectionner un jeu.");
 				} else {
-					System.out.println(index);
 					dispose();
 					Ajouter_Exemplaire ajouter_Exemplaire = new Ajouter_Exemplaire(connect, currentPreteur,
 							listJeu.get(index));

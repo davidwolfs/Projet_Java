@@ -15,7 +15,6 @@ import exo.Jeu;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.JSpinner;
@@ -23,8 +22,13 @@ import javax.swing.SpinnerNumberModel;
 
 public class Ajouter_Jeu extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3562576914533804942L;
 	private JPanel contentPane;
 	private JTextField textFieldNom;
+	@SuppressWarnings("unused")
 	private Connection connect;
 
 	/**
@@ -68,13 +72,9 @@ public class Ajouter_Jeu extends JFrame {
 		Console c = new Console();
 		List<Console> listConsole = c.findAll(connect);
 
-		Object[] console = listConsole.toArray();
-
 		Object[] donnees = new Object[listConsole.size()];
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yy");
 
 		for (int i = 0; i < listConsole.size(); i++) {
-			System.out.println(listConsole.get(i).toString());
 			donnees[i] = listConsole.get(i).getNom();
 		}
 
@@ -123,11 +123,8 @@ public class Ajouter_Jeu extends JFrame {
 						labelMsgErreur.setText("Ce jeu existe déjà pour cette console.");
 					} else {
 
-						System.out.println(jeu.getNom() + " " + jeu.isDispo() + " " + jeu.getTarif() + " "
-								+ jeu.getDateTarif() + " " + jeu.getConsole());
 						jeu.create(jeu, currentAdministrateur, connect);
 						int lastId = jeu.findLastIdJeu(connect);
-						System.out.println("LAST ID : " + lastId);
 						jeu.setId(lastId);
 						jeu.create_Ligne_Jeu(jeu, currentAdministrateur, connect);
 						dispose();

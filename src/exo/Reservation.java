@@ -3,8 +3,6 @@ package exo;
 import java.sql.Connection;
 import java.util.Date;
 import java.util.List;
-
-import dao.JeuDAO;
 import dao.ReservationDAO;
 
 public class Reservation {

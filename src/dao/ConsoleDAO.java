@@ -53,7 +53,6 @@ public class ConsoleDAO extends DAO<Console> {
 
 	@Override
 	public boolean update(Console console) {
-		System.out.println("Mon objet depuis la méthode update : " + console);
 		boolean statementResult;
 		try {
 			Statement statement = connect.createStatement();

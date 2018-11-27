@@ -14,6 +14,10 @@ import java.awt.event.ActionEvent;
 
 public class Modifier_Console extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5581557558046069998L;
 	private JPanel contentPane;
 	private JTextField textFieldNom;
 	private JButton btnModifierConsole;
@@ -21,6 +25,7 @@ public class Modifier_Console extends JFrame {
 	private JButton btnRetour;
 	@SuppressWarnings("unused")
 	private Console consoleAModifier;
+	@SuppressWarnings("unused")
 	private Connection connect;
 
 	/**

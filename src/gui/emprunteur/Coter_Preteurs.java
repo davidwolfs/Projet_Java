@@ -19,7 +19,12 @@ import javax.swing.JScrollPane;
 
 public class Coter_Preteurs extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4903296286659925322L;
 	private JPanel contentPane;
+	@SuppressWarnings("unused")
 	private Connection connect;
 	@SuppressWarnings("unused")
 	private Emprunteur currentEmprunteur;
@@ -58,7 +63,6 @@ public class Coter_Preteurs extends JFrame {
 		java.text.DecimalFormat df = new java.text.DecimalFormat("0.#");
 
 		for (int i = 0; i < listPreteur.size(); i++) {
-			System.out.println(listPreteur.get(i).toString());
 			donnees2[i] = listPreteur.get(i).getNom() + " " + listPreteur.get(i).getPrenom() + " - "
 					+ simpleDateFormat.format(listPreteur.get(i).getDateNaiss()) + " - " + listPreteur.get(i).getEmail()
 					+ " - " + " - " + "Cote : " + df.format(listPreteur.get(i).CalculerMoyenneCote()) + "/5" + " - "
@@ -96,7 +100,6 @@ public class Coter_Preteurs extends JFrame {
 				if (index == -1) {
 					lblMsgErrorEmprunteur.setText("Veuillez sélectionner un prêteur.");
 				} else {
-					System.out.println(index);
 					dispose();
 					Attribuer_Cote attribuer_Cote = new Attribuer_Cote(connect, currentEmprunteur,
 							listPreteur.get(index));

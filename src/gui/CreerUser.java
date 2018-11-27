@@ -17,6 +17,11 @@ import exo.Preteur;
 import javax.swing.JPasswordField;
 
 public class CreerUser extends JFrame {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7016429919484100741L;
+	@SuppressWarnings("unused")
 	private Connection connect;
 	private JPanel contentPane;
 	private JTextField textFieldNom;
@@ -103,7 +108,7 @@ public class CreerUser extends JFrame {
 				Matcher matcher = pattern.matcher(textFieldEmail.getText());
 				Matcher matcher2 = pattern2
 						.matcher(((JTextField) dateChooserDateNaiss.getDateEditor().getUiComponent()).getText());
-				System.out.println();
+				
 				boolean valid = true;
 				if (textFieldNom.getText().isEmpty() || textFieldPrenom.getText().isEmpty()
 						|| ((JTextField) dateChooserDateNaiss.getDateEditor().getUiComponent()).getText().isEmpty()

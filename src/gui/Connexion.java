@@ -21,6 +21,11 @@ import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
 
 public class Connexion extends JFrame {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5802302544469570734L;
+	@SuppressWarnings("unused")
 	private Connection connect;
 	private JPanel contentPane;
 	private JTextField textFieldUser;

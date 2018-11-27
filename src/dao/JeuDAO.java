@@ -46,7 +46,6 @@ public class JeuDAO extends DAO<Jeu>{
 	}
 	
 	public boolean create_Ligne_Jeu(Jeu jeu) {
-		System.out.println("LIGNE JEU : " + jeu);
 		boolean statementResult;
 		try {
 			Statement statement = connect.createStatement();
@@ -86,7 +85,6 @@ public class JeuDAO extends DAO<Jeu>{
 		java.util.Date date = new java.util.Date();
 		date = jeu.getDateTarif();
 		
-		System.out.println("Mon objet depuis la méthode update : " + jeu);
 		boolean statementResult;
 		try {
 			Statement statement = connect.createStatement();
@@ -113,7 +111,6 @@ public class JeuDAO extends DAO<Jeu>{
 	}
 
 	public boolean update_Dispo(Jeu jeu) {
-		System.out.println("Mon objet depuis la méthode update : " + jeu);
 		boolean statementResult;
 		try {
 			Statement statement = connect.createStatement();
@@ -131,7 +128,6 @@ public class JeuDAO extends DAO<Jeu>{
 	}
 	
 	public boolean update_Dispo_False(Jeu jeu) {
-		System.out.println("Mon objet depuis la méthode update : " + jeu);
 		boolean statementResult;
 		try {
 			Statement statement = connect.createStatement();

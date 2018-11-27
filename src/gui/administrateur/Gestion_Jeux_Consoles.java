@@ -21,7 +21,12 @@ import javax.swing.JScrollPane;
 
 public class Gestion_Jeux_Consoles extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4257037139531636329L;
 	private JPanel contentPane;
+	@SuppressWarnings("unused")
 	private Connection connect;
 	@SuppressWarnings("unused")
 	private Administrateur currentAdministrateur;
@@ -46,13 +51,9 @@ public class Gestion_Jeux_Consoles extends JFrame {
 		Console c = new Console();
 		List<Console> listConsole = c.findAll(connect);
 
-		Object[] console = listConsole.toArray();
-
 		Object[] donnees = new Object[listConsole.size()];
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yy");
 
 		for (int i = 0; i < listConsole.size(); i++) {
-			System.out.println(listConsole.get(i).toString());
 			donnees[i] = listConsole.get(i).getNom();
 		}
 
@@ -88,7 +89,6 @@ public class Gestion_Jeux_Consoles extends JFrame {
 				if (index == -1) {
 					lblMsgErrorConsole.setText("Veuillez sélectionner une console.");
 				} else {
-					System.out.println(index);
 					dispose();
 					Modifier_Console modifier_Console = new Modifier_Console(connect, currentAdministrateur,
 							listConsole.get(index));
@@ -104,15 +104,12 @@ public class Gestion_Jeux_Consoles extends JFrame {
 		btnSupprimerConsole.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int index = listConsoles.getSelectedIndex();
-				System.out.println(index);
 				if (index == -1) {
 					lblMsgErrorConsole.setText("Veuillez sélectionner une console.");
 				} else {
 					int input = JOptionPane.showConfirmDialog(null,
 							"Êtes-vous sûr de bien vouloir supprimer cette console ?");
 					if (input == 0) {
-						int id = listConsole.get(index).getId();
-						System.out.println(id);
 						c.delete(listConsole.get(index), connect);
 
 						dispose();
@@ -134,8 +131,6 @@ public class Gestion_Jeux_Consoles extends JFrame {
 		Jeu j = new Jeu();
 		List<Jeu> listJeu = j.findAll(connect);
 
-		Object[] jeu = listJeu.toArray();
-
 		Object[] donnees2 = new Object[listJeu.size()];
 		SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("dd-MM-yy");
 
@@ -147,7 +142,6 @@ public class Gestion_Jeux_Consoles extends JFrame {
 				dispo = "Indisponible";
 			}
 
-			System.out.println(listJeu.get(i).toString());
 			donnees2[i] = listJeu.get(i).getNom() + " - " + dispo + " - " + listJeu.get(i).getTarif() + " - "
 					+ simpleDateFormat2.format(listJeu.get(i).getDateTarif()) + " - "
 					+ listJeu.get(i).getConsole().getNom();
@@ -188,7 +182,6 @@ public class Gestion_Jeux_Consoles extends JFrame {
 				if (index == -1) {
 					lblMsgErrorJeux.setText("Veuillez sélectionner un jeu.");
 				} else {
-					System.out.println(index);
 					dispose();
 					Modifier_Jeu modifier_Jeu = new Modifier_Jeu(connect, currentAdministrateur, listJeu.get(index));
 					modifier_Jeu.setVisible(true);
@@ -204,14 +197,11 @@ public class Gestion_Jeux_Consoles extends JFrame {
 		btnSupprimerJeu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int index = listJeux.getSelectedIndex();
-				System.out.println(index);
 				if (index == -1) {
 					lblMsgErrorJeux.setText("Veuillez sélectionner un jeu.");
 				} else {
 					int input = JOptionPane.showConfirmDialog(null, "Êtes-vous sûr de bien vouloir supprimer ce jeu ?");
 					if (input == 0) {
-						int id = listJeu.get(index).getId();
-						System.out.println(id);
 						j.delete(listJeu.get(index), connect);
 
 						dispose();

@@ -22,7 +22,7 @@ public class PreteurDAO extends DAO<Preteur> {
 		java.util.Date date = new java.util.Date();
 		java.util.Date currentDate = new java.util.Date();
 		date = preteur.getDateNaiss();
-		System.out.println(new Timestamp(date.getTime()));
+		
 		boolean statementResult;
 		try {
 			Statement statement = connect.createStatement();
@@ -62,7 +62,7 @@ public class PreteurDAO extends DAO<Preteur> {
 
 	@Override
 	public boolean update(Preteur preteur) {
-		System.out.println("Mon objet depuis la méthode update : " + preteur);
+		
 		boolean statementResult;
 		try {
 			Statement statement = connect.createStatement();
@@ -84,7 +84,6 @@ public class PreteurDAO extends DAO<Preteur> {
 	}
 
 	public boolean updateCote_NombreCote(Preteur preteur) {
-		System.out.println("Mon objet depuis la méthode update : " + preteur);
 		boolean statementResult;
 		try {
 			Statement statement = connect.createStatement();

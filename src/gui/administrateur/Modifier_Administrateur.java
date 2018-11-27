@@ -16,6 +16,11 @@ import exo.Administrateur;
 import javax.swing.JPasswordField;
 
 public class Modifier_Administrateur extends JFrame {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4795138339326707012L;
+	@SuppressWarnings("unused")
 	private Connection connect;
 	private JPanel contentPane;
 	private JTextField textFieldNom;
@@ -116,7 +121,7 @@ public class Modifier_Administrateur extends JFrame {
 				Matcher matcher = pattern.matcher(textFieldEmail.getText());
 				Matcher matcher2 = pattern2
 						.matcher(((JTextField) dateChooserDateNaiss.getDateEditor().getUiComponent()).getText());
-				System.out.println();
+				
 				boolean valid = true;
 				if (textFieldNom.getText().isEmpty() || textFieldPrenom.getText().isEmpty()
 						|| ((JTextField) dateChooserDateNaiss.getDateEditor().getUiComponent()).getText().isEmpty()
