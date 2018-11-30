@@ -10,11 +10,13 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
 import exo.Emprunteur;
 import exo.Exemplaire;
 import exo.Jeu;
 import exo.Pret;
 import exo.Preteur;
+
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
@@ -138,7 +140,7 @@ public class Liste_Reservations extends JFrame {
 						pret.update_Pret_Emprunteur(emprunteur, pret, connect);
 
 						for (int i = 1; i < listPretEmprunteur.size(); i++) {
-							pret.delete_Pret_Emprunteur(listPretEmprunteur.get(i), connect);
+							pret.delete(listPretEmprunteur.get(i), connect);
 						}
 
 						dispose();

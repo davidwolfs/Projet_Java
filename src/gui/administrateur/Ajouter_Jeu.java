@@ -3,15 +3,18 @@ package gui.administrateur;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import exo.Administrateur;
+import exo.Console;
+import exo.Jeu;
+
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.JCheckBox;
-import exo.Administrateur;
-import exo.Console;
-import exo.Jeu;
+
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.Timestamp;

@@ -1,7 +1,6 @@
 package exo;
 
 import java.sql.Connection;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import dao.EmprunteurDAO;
@@ -246,22 +245,12 @@ public class Emprunteur extends Joueur {
 		return emprunteur;
 	}
 	
-	public List<Emprunteur> findAllExceptcurrentEmprunteur(Emprunteur emprunteur, Connection connect) {
+	public List<Emprunteur> findAllExceptcurrentEmprunteur(Emprunteur emprunteur, Connection connect)
+	{
 		EmprunteurDAO emprunteurDAO = new EmprunteurDAO(connect);
-		List<Emprunteur> listEmprunteurs = emprunteurDAO.findAll();
-		List<Emprunteur> listPreteursExceptCurrentEmprunteur = new ArrayList<>();
+		List<Emprunteur> listEmprunteurs = emprunteurDAO.findAllExceptcurrentEmprunteur(emprunteur);
 		
-		for(Emprunteur e : listEmprunteurs)
-		{
-			if(e.getiD() != (emprunteur.getiD()))
-			{
-				emprunteur = new Emprunteur(e.getiD(), e.getNom(),
-						e.getPrenom(), e.getDateNaiss(), e.getEmail(), e.getPassword(), e.getUnite(), e.getCote(), e.getNbrCote());
-				listPreteursExceptCurrentEmprunteur.add(emprunteur);
-			}
-		}
-		
-		return listPreteursExceptCurrentEmprunteur;
+		return listEmprunteurs;
 	}
 	
 	public boolean alreadyExist(Emprunteur emprunteur, Connection connect) {
@@ -286,7 +275,6 @@ public class Emprunteur extends Joueur {
 				}
 			}
 		}
-		System.out.println("methode already exist emprunteur");
 		
 		return existe;
 	}

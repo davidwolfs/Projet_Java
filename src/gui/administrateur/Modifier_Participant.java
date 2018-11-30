@@ -12,9 +12,11 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import com.toedter.calendar.JDateChooser;
+
 import exo.Administrateur;
 import exo.Emprunteur;
 import exo.Preteur;
+
 import javax.swing.JPasswordField;
 
 public class Modifier_Participant extends JFrame {

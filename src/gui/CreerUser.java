@@ -12,8 +12,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import com.toedter.calendar.JDateChooser;
+
 import exo.Emprunteur;
 import exo.Preteur;
+
 import javax.swing.JPasswordField;
 
 public class CreerUser extends JFrame {

@@ -6,7 +6,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
 import exo.Console;
+import exo.Emprunteur;
 import exo.Exemplaire;
 import exo.Jeu;
 import exo.Preteur;
@@ -136,5 +138,53 @@ public class ExemplaireDAO extends DAO<Exemplaire> {
 			e.printStackTrace();
 		}
 		return listExemplaire;
+	}
+	
+	public List<Exemplaire> findAll(Emprunteur currentEmprunteur) {
+		List<Exemplaire> listExemplaire = new ArrayList<>();
+		Jeu jeu;
+		Console console;
+		Exemplaire exemplaire;
+		try {
+			ResultSet result = this.connect
+					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery(
+							"SELECT COUNT(*) AS NOMBREEXEMPLAIRE, Jeu.ID AS IDJEU, Jeu.Nom AS NOMJEU, Dispo, Tarif, DateTarif, Console.ID AS IDCONSOLE, Console.Nom AS NOMCONSOLE FROM Console INNER JOIN ((Jeu INNER JOIN Exemplaire ON Jeu.ID = Exemplaire.IDJeu) INNER JOIN Ligne_Jeu ON Jeu.ID = Ligne_Jeu.ID_Jeu) ON Console.ID = Ligne_Jeu.ID_Console WHERE IDPreteur <> "
+									+ currentEmprunteur.getiD()
+									+ " AND Reserve = False GROUP BY Jeu.ID, Jeu.Nom, Dispo, Tarif, DateTarif, Console.ID, Console.Nom");
+			while (result.next()) {
+				console = new Console();
+				jeu = new Jeu();
+				exemplaire = new Exemplaire();
+				console.setId(result.getInt("IDCONSOLE"));
+				console.setNom(result.getString("NOMCONSOLE"));
+				jeu.setId(result.getInt("IDJEU"));
+				jeu.setNom(result.getString("NOMJEU"));
+				jeu.setDispo(result.getBoolean("Dispo"));
+				jeu.setTarif(result.getDouble("Tarif"));
+				jeu.setDateTarif(result.getDate("DateTarif"));
+				jeu.setConsole(console);
+				exemplaire.setNbrExemplaire(result.getInt("NOMBREEXEMPLAIRE"));
+				exemplaire.setJeu(jeu);
+				listExemplaire.add(exemplaire);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return listExemplaire;
+	}
+	public boolean isLastExemplaire(Jeu jeu) {
+		boolean isLastExemplaire = false;
+		try {
+			ResultSet result = this.connect
+					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
+					.executeQuery("SELECT COUNT(*)  FROM Exemplaire WHERE IDJeu = " + jeu.getId()
+							+ " AND Reserve = False GROUP BY IDJeu HAVING COUNT(*) = 1");
+			if (result.first()) {
+				isLastExemplaire = true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return isLastExemplaire;
 	}
 }

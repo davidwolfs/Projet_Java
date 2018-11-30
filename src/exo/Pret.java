@@ -1,6 +1,7 @@
 package exo;
 
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import dao.PretDAO;
@@ -112,10 +113,10 @@ public class Pret {
 		this.id = id;
 	}
 
-	public void create_Pret(Pret pret, Emprunteur emprunteur, Exemplaire exemplaire, Connection connect)
+	public void create_Pret(Pret pret, Emprunteur emprunteur, Exemplaire exemplaire, Reservation reservation, Connection connect)
 	{
 		PretDAO pretDAO = new PretDAO(connect);
-		pretDAO.create_Pret(pret, emprunteur, exemplaire);
+		pretDAO.create_Pret(pret, emprunteur, reservation, exemplaire);
 	}
 	
 	public void update_Pret_Emprunteur(Emprunteur emprunteur, Pret pret, Connection connect)
@@ -137,20 +138,28 @@ public class Pret {
 	}
 	
 	
-	public void delete_Pret_Emprunteur(Pret pret, Connection connect)
+	public void delete(Pret pret, Connection connect)
 	{
 		PretDAO pretDAO = new PretDAO(connect);
-		pretDAO.delete_Pret_Emprunteur(pret);
+		pretDAO.delete(pret);
 	}
-	
-	
 	
 	public List<Pret> findAll(Emprunteur emprunteur, Connection connect)
 	{
 		PretDAO pretDAO = new PretDAO(connect);
-		List<Pret> listPrets = pretDAO.findAll(emprunteur);
+		List<Pret> listPrets = pretDAO.findAll();
+		List<Pret> listPretsARenvoyer = new ArrayList<>();
 		
-		return listPrets;
+		for(Pret pret : listPrets)
+		{
+			if(pret.getEmprunteur().getiD() != emprunteur.getiD())
+			{
+				listPretsARenvoyer.add(pret);
+			}
+			
+		}
+		
+		return listPretsARenvoyer;
 	}
 	
 	public List<Pret> findAllPretByEmprunteur(Emprunteur emprunteur, Connection connect)
@@ -159,22 +168,6 @@ public class Pret {
 		List<Pret> listPrets = pretDAO.findAllPretByEmprunteur(emprunteur);
 		
 		return listPrets;
-	}
-	
-	public boolean ConfirmationEmprunteurDebut() {
-		return false;
-	}
-
-	public boolean ConfirmationPreteurDebut() {
-		return false;
-	}
-
-	public boolean ConfirmationEmprunteurFin() {
-		return false;
-	}
-
-	public boolean ConfirmationPreteurFin() {
-		return false;
 	}
 	
 	public boolean isAlreadyConfirmed(Pret pret, Connection connect)

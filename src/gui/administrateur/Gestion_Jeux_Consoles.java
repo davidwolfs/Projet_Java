@@ -4,10 +4,12 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
+
 import exo.Administrateur;
 import exo.Console;
 import exo.Jeu;
 import gui.Connexion;
+
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.sql.Connection;

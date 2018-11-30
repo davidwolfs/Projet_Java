@@ -188,20 +188,10 @@ public class Preteur extends Joueur {
 	public List<Preteur> findAllExceptcurrentPreteur(Preteur preteur, Connection connect)
 	{
 		PreteurDAO preteurDAO = new PreteurDAO(connect);
-		List<Preteur> listPreteurs = preteurDAO.findAll();
-		List<Preteur> listPreteursExceptCurrentPreteur = new ArrayList<>();
-				
-		for(Preteur p : listPreteurs)
-		{
-			if(p.getiD() != (preteur.getiD()))
-			{
-				preteur = new Preteur(p.getiD(), p.getNom(),
-						p.getPrenom(), p.getDateNaiss(), p.getEmail(), p.getPassword(), p.getCote(), p.getNbrCote());
-				listPreteursExceptCurrentPreteur.add(preteur);
-			}
-		}
+		List<Preteur> listPreteurs = preteurDAO.findAllExceptcurrentPreteur(preteur);
 		
-		return listPreteursExceptCurrentPreteur;
+		
+		return listPreteurs;
 	}
 	
 	public boolean alreadyExist(Preteur preteur, Connection connect) {

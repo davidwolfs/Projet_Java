@@ -9,7 +9,6 @@ public class Reservation {
 	private int id;
 	private Date dateReservation;
 	private Jeu jeu;
-	private Connection connect;
 	
 	public Reservation() {
 
@@ -81,15 +80,9 @@ public class Reservation {
 		
 		return lastID;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "Reservation [dateReservation=" + dateReservation + ", connect=" + connect + ", jeu=" + jeu + "]";
+		return "Reservation [id=" + id + ", dateReservation=" + dateReservation + ", jeu=" + jeu + "]";
 	}
-
-	/*
-	 * public void create(Reservation reservation) { ReservationDAO reservationDAO =
-	 * new ReservationDAO(connect); reservationDAO.createReservation(reservation); }
-	 */
-
 }

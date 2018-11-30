@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+
 import exo.Emprunteur;
 import exo.Preteur;
 
@@ -22,7 +23,7 @@ public class PreteurDAO extends DAO<Preteur> {
 		java.util.Date date = new java.util.Date();
 		java.util.Date currentDate = new java.util.Date();
 		date = preteur.getDateNaiss();
-		
+
 		boolean statementResult;
 		try {
 			Statement statement = connect.createStatement();
@@ -62,7 +63,7 @@ public class PreteurDAO extends DAO<Preteur> {
 
 	@Override
 	public boolean update(Preteur preteur) {
-		
+
 		boolean statementResult;
 		try {
 			Statement statement = connect.createStatement();
@@ -128,7 +129,25 @@ public class PreteurDAO extends DAO<Preteur> {
 					.executeQuery("SELECT * FROM Preteur");
 			while (result.next()) {
 				preteur = new Preteur(result.getInt("ID"), result.getString("Nom"), result.getString("Prenom"),
-						result.getDate("DateNaiss"), result.getString("Email"), result.getString("Password"), 
+						result.getDate("DateNaiss"), result.getString("Email"), result.getString("Password"),
+						result.getInt("Cote"), result.getInt("NombreCote"));
+				listPreteurs.add(preteur);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return listPreteurs;
+	}
+
+	public List<Preteur> findAllExceptcurrentPreteur(Preteur preteur) {
+		List<Preteur> listPreteurs = new ArrayList<>();
+		try {
+			ResultSet result = this.connect
+					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
+					.executeQuery("SELECT * FROM Preteur WHERE ID <> " + preteur.getiD());
+			while (result.next()) {
+				preteur = new Preteur(result.getInt("ID"), result.getString("Nom"), result.getString("Prenom"),
+						result.getDate("DateNaiss"), result.getString("Email"), result.getString("Password"),
 						result.getInt("Cote"), result.getInt("NombreCote"));
 				listPreteurs.add(preteur);
 			}
@@ -156,25 +175,6 @@ public class PreteurDAO extends DAO<Preteur> {
 		return statementResult;
 	}
 
-	public List<Preteur> findAllCote() {
-		List<Preteur> listPreteurs = new ArrayList<>();
-		Preteur preteur = new Preteur();
-		try {
-			ResultSet result = this.connect
-					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
-					.executeQuery("SELECT * FROM Emprunteur INNER JOIN (Preteur INNER JOIN Cote ON Preteur.ID = Cote.IDPreteur) ON Emprunteur.ID = Cote.IDEmprunteur");
-			while (result.next()) {
-				preteur = new Preteur(result.getInt("ID"), result.getString("Nom"), result.getString("Prenom"),
-						result.getDate("DateNaiss"), result.getString("Email"), result.getString("Password"), 
-						result.getInt("Cote"), result.getInt("NombreCote"));
-				listPreteurs.add(preteur);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return listPreteurs;
-	}
-	
 	public boolean isAlreadyCote(Preteur preteur, Emprunteur emprunteur) {
 		boolean isAlreadyCote = false;
 		try {

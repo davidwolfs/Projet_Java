@@ -8,8 +8,10 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
 import exo.Emprunteur;
 import exo.Preteur;
+
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JButton;

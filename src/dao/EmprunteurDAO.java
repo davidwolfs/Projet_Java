@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+
 import exo.Emprunteur;
 
 public class EmprunteurDAO extends DAO<Emprunteur> {
@@ -154,20 +155,20 @@ public class EmprunteurDAO extends DAO<Emprunteur> {
 		return listEmprunteurs;
 	}
 	
-	public List<Emprunteur> findAllCote() {
+	public List<Emprunteur> findAllExceptcurrentEmprunteur(Emprunteur emprunteur) {
 		List<Emprunteur> listEmprunteurs = new ArrayList<>();
-		Emprunteur emprunteur = new Emprunteur();
-		try {
-			ResultSet result = this.connect
-					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
-					.executeQuery("SELECT * FROM Emprunteur INNER JOIN (Preteur INNER JOIN Cote ON Preteur.ID = Cote.IDPreteur) ON Emprunteur.ID = Cote.IDEmprunteur");
-			while (result.next()) {
+		try{
+			ResultSet result = this.connect.createStatement(
+					ResultSet.TYPE_SCROLL_INSENSITIVE,
+	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Emprunteur WHERE ID <> " + emprunteur.getiD());
+			while(result.next())
+			{
 				emprunteur = new Emprunteur(result.getInt("ID"), result.getString("Nom"), result.getString("Prenom"),
-						result.getDate("DateNaiss"), result.getString("Email"), result.getString("Password"), result.getInt("Unite"),
-						result.getInt("Cote"), result.getInt("NombreCote"));
+						result.getDate("DateNaiss"), result.getString("Email"), result.getString("Password"), result.getInt("Unite"), result.getInt("Cote"), result.getInt("NombreCote"));
 				listEmprunteurs.add(emprunteur);
 			}
-		} catch (SQLException e) {
+		}
+		catch(SQLException e){
 			e.printStackTrace();
 		}
 		return listEmprunteurs;

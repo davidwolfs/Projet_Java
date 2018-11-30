@@ -71,6 +71,14 @@ public class Exemplaire {
 		return listExemplaire;
 	}
 	
+	public List<Exemplaire> findAll(Emprunteur emprunteur, Connection connect)
+	{
+		ExemplaireDAO exemplaireDAO = new ExemplaireDAO(connect);
+		List<Exemplaire> listExemplaire = exemplaireDAO.findAll(emprunteur);
+		
+		return listExemplaire;
+	}
+	
 	public Exemplaire findExemplaireByIdJeu(Jeu jeu, Connection connect)
 	{
 		ExemplaireDAO exemplaireDAO = new ExemplaireDAO(connect);
@@ -87,23 +95,14 @@ public class Exemplaire {
 		
 		return exemplaire;
 	}
-	
-	public int getNombreExemplaireJeu(Jeu jeu, Preteur preteur, Connection connect)
-	{
-		ExemplaireDAO exemplaireDAO = new ExemplaireDAO(connect);
-		List<Exemplaire> listExemplaires = exemplaireDAO.findAll(preteur);
-		
-		return listExemplaires.size();
-	}
-	
-	@SuppressWarnings("unused")
+
 	public boolean isLastExemplaire(Jeu jeu, Preteur preteur, Connection connect)
 	{
 		boolean lastExemplaire = false;
 		ExemplaireDAO exemplaireDAO = new ExemplaireDAO(connect);
-		List<Exemplaire> listExemplaires = exemplaireDAO.findAll(preteur);
+		lastExemplaire = exemplaireDAO.isLastExemplaire(jeu);
 		
-		int element = 0;
+		/*int element = 0;
 		
 		for(Exemplaire e : listExemplaires)
 		{
@@ -113,7 +112,7 @@ public class Exemplaire {
 		if(element == 1)
 		{
 			lastExemplaire = true;
-		}
+		}*/
 		
 		return lastExemplaire;
 	}

@@ -4,9 +4,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
 import exo.Emprunteur;
 import exo.Preteur;
 import gui.Main;
+
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -38,7 +40,7 @@ public class Dashboard_Preteur extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblBienvenue = new JLabel("Bienvenue " + currentPreteur.getNom() + " " + currentPreteur.getPrenom() + ", vous êtes connecté en tant que : Preteur");
+		JLabel lblBienvenue = new JLabel("Bienvenue " + currentPreteur.getPrenom() + " " + currentPreteur.getNom() + ", vous êtes connecté en tant que : Preteur");
 		lblBienvenue.setBounds(10, 25, 414, 20);
 		contentPane.add(lblBienvenue);
 		

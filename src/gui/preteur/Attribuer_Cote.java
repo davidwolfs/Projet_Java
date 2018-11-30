@@ -4,8 +4,10 @@ import java.sql.Connection;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
 import exo.Emprunteur;
 import exo.Preteur;
+
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.JSpinner;

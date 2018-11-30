@@ -9,10 +9,12 @@ import javax.swing.JButton;
 import javax.swing.ListSelectionModel;
 import javax.swing.JCheckBox;
 import com.toedter.calendar.JDateChooser;
+
 import exo.Console;
 import exo.Exemplaire;
 import exo.Jeu;
 import exo.Preteur;
+
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.util.List;

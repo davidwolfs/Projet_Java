@@ -5,12 +5,6 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import exo.Emprunteur;
-import exo.Exemplaire;
-import exo.Jeu;
-import exo.Pret;
-import exo.Preteur;
-import exo.Reservation;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -23,6 +17,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.awt.event.ActionEvent;
 import com.toedter.calendar.JDateChooser;
+
+import exo.Emprunteur;
+import exo.Exemplaire;
+import exo.Jeu;
+import exo.Pret;
+import exo.Preteur;
+import exo.Reservation;
+
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
@@ -59,22 +61,22 @@ public class Passer_Reservation extends JFrame {
 		lblListeJeux.setBounds(10, 26, 153, 19);
 		contentPane.add(lblListeJeux);
 
-		Jeu j = new Jeu();
-		List<Jeu> listJeu = j.findAllAvailable(connect);
+		Exemplaire e = new Exemplaire();
+		List<Exemplaire> listExemplaires = e.findAll(currentEmprunteur, connect);
 
-		Object[] donnees = new Object[listJeu.size()];
+		Object[] donnees = new Object[listExemplaires.size()];
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yy");
 
-		for (int i = 0; i < listJeu.size(); i++) {
+		for (int i = 0; i < listExemplaires.size(); i++) {
 			String dispo = " ";
-			if (listJeu.get(i).isDispo()) {
+			if (listExemplaires.get(i).getJeu().isDispo()) {
 				dispo = "Disponible";
 			} else {
 				dispo = "Indisponible";
 			}
 			
-			donnees[i] = listJeu.get(i).getNom() + " - " + listJeu.get(i).getConsole().getNom() + " - " + "Tarif : "
-					+ listJeu.get(i).getTarif() + " - " + simpleDateFormat.format(listJeu.get(i).getDateTarif()) + " - "
+			donnees[i] = listExemplaires.get(i).getNbrExemplaire() + " - " + listExemplaires.get(i).getJeu().getNom() + " - " + listExemplaires.get(i).getJeu().getConsole().getNom() + " - " + "Tarif : "
+					+ listExemplaires.get(i).getJeu().getTarif() + " - " + simpleDateFormat.format(listExemplaires.get(i).getJeu().getDateTarif()) + " - "
 					+ dispo;
 		}
 
@@ -159,21 +161,18 @@ public class Passer_Reservation extends JFrame {
 				if (index == -1) {
 					lblMsgError.setText("Veuillez sélectionner un jeu.");
 				} else if (champsVide()) {
-					int id = listJeu.get(index).getId();
+					int id = listExemplaires.get(index).getJeu().getId();
 					dispose();
-					Passer_Reservation passer_Reservation = new Passer_Reservation(connect, currentEmprunteur);
-					passer_Reservation.setVisible(true);
-					passer_Reservation.setResizable(false);
 					Reservation r = new Reservation();
-					Jeu jeu = new Jeu(listJeu.get(index).getId(), listJeu.get(index).getNom(),
-							listJeu.get(index).isDispo(), listJeu.get(index).getTarif(),
-							listJeu.get(index).getDateTarif(), listJeu.get(index).getConsole());
+					Jeu jeu = new Jeu(listExemplaires.get(index).getJeu().getId(), listExemplaires.get(index).getJeu().getNom(),
+							listExemplaires.get(index).getJeu().isDispo(), listExemplaires.get(index).getJeu().getTarif(),
+							listExemplaires.get(index).getJeu().getDateTarif(), listExemplaires.get(index).getJeu().getConsole());
 					java.util.Date date = new java.util.Date();
 					Exemplaire exemplaire = new Exemplaire(jeu);
 					exemplaire = exemplaire.findExemplaireByIdJeu(jeu, connect);
 					Preteur preteur = new Preteur();
 					preteur.setiD(currentEmprunteur.getiD());
-					if (exemplaire.isLastExemplaire(listJeu.get(index), preteur, connect)) {
+					if (exemplaire.isLastExemplaire(listExemplaires.get(index).getJeu(), preteur, connect)) {
 						System.out.println("C EST LE LAST EXEMPLAIRE");
 
 					} else {
@@ -191,7 +190,10 @@ public class Passer_Reservation extends JFrame {
 					reservation.setId(lastId);
 					reservation.create_Ligne_Reservation(reservation, jeu, connect);
 					Pret p = new Pret();
-					p.create_Pret(pret, emprunteur, exemplaire, connect);
+					p.create_Pret(pret, emprunteur, exemplaire, reservation, connect);
+					Passer_Reservation passer_Reservation = new Passer_Reservation(connect, currentEmprunteur);
+					passer_Reservation.setVisible(true);
+					passer_Reservation.setResizable(false);
 				}
 			}
 		});
@@ -203,7 +205,7 @@ public class Passer_Reservation extends JFrame {
 			@Override
 			public void valueChanged(ListSelectionEvent arg0) {
 				int index = listJeux.getSelectedIndex();
-				if (currentEmprunteur.getUnite() < listJeu.get(index).getTarif()) {
+				if (currentEmprunteur.getUnite() < listExemplaires.get(index).getJeu().getTarif()) {
 					lblMsgError.setText("Vous n'avez pas assez d'unité pour réserver ce jeu.");
 					btnReservation.setEnabled(false);
 				} else {
